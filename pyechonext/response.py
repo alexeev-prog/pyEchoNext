@@ -99,7 +99,9 @@ class Response:
 		self.headers.append(("User-Agent", environ["HTTP_USER_AGENT"]))
 		self.headers.append(("Content-Length", str(len(self.body))))
 
-		logger.debug(f"[{self.status_code}] Run response: {self.content_type}")
+		logger.debug(
+			f"[{environ['REQUEST_METHOD']} {self.status_code}] Run response: {self.content_type}"
+		)
 		start_response(status=self.status_code, headers=self.headers)
 
 		return iter([self.body])

@@ -35,4 +35,40 @@ class pyEchoNextException(Exception):
 		:rtype:		str
 		"""
 		logger.error(f"{self.__class__.__name__}: {self.get_explanation()}")
-		return f"SQLSymphonyException has been raised. {self.get_explanation()}"
+		return f"pyEchoNextException has been raised. {self.get_explanation()}"
+
+
+class RoutePathExistsError(pyEchoNextException):
+	def __str__(self):
+		"""
+		Returns a string representation of the object.
+
+		:returns:	String representation of the object.
+		:rtype:		str
+		"""
+		logger.error(f"{self.__class__.__name__}: {self.get_explanation()}")
+		return f"RoutePathExistsError has been raised. {self.get_explanation()}"
+
+
+class URLNotFound(pyEchoNextException):
+	def __str__(self):
+		"""
+		Returns a string representation of the object.
+
+		:returns:	String representation of the object.
+		:rtype:		str
+		"""
+		logger.error(f"{self.__class__.__name__}: {self.get_explanation()}")
+		return f"URLNotFound has been raised. {self.get_explanation()}"
+
+
+class MethodNotAllow(pyEchoNextException):
+	def __str__(self):
+		"""
+		Returns a string representation of the object.
+
+		:returns:	String representation of the object.
+		:rtype:		str
+		"""
+		logger.error(f"{self.__class__.__name__}: {self.get_explanation()}")
+		return f"MethodNotAllow has been raised. {self.get_explanation()}"
