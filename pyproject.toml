@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "pyechonext"
+version = "0.1.0"
+description = "EchoNext is a lightweight, fast and scalable async web framework for Python"
+authors = ["alexeev-prog <alexeev.dev@mail.ru>"]
+license = "LGPL-2.1"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+asyncio = "^3.4.3"
+rich = "^13.9.3"
+loguru = "^0.7.2"
+uvicorn = "^0.32.0"
+gunicorn = "^23.0.0"
+socks = "^0"
+pysocks = "^1.7.1"
+sqlsymphony-orm = "0.3.14"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+ruff = ">=0.6.9"
+Sphinx = "^8.1.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
