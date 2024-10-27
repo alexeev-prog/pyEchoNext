@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyechonext"
-version = "0.1.0"
+version = "0.1.1"
 description = "EchoNext is a lightweight, fast and scalable async web framework for Python"
 authors = ["alexeev-prog <alexeev.dev@mail.ru>"]
 license = "LGPL-2.1"
