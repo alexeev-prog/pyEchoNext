@@ -13,7 +13,7 @@ class UsersView(View):
 		)
 
 	def post(self, request, response, **kwargs):
-		return {"users": "post"}
+		return Response(body='post users')
 
 
 url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]

@@ -1,3 +1,9 @@
+commit a8690ed649529baa6a8fd31eebd1b96ee9d9ad3c
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Mon Oct 28 23:38:57 2024 +0700
+
+    feat: create built-in template engine, create settings
+
 commit fc58f8f30efd759f59b4ec87800442a105f5c592
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Mon Oct 28 21:23:05 2024 +0700
