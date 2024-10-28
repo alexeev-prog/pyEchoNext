@@ -3,14 +3,17 @@ from pyechonext.app import ApplicationType, EchoNext
 from pyechonext.views import View
 from pyechonext.urls import URL, IndexView
 from pyechonext.config import Settings
+from pyechonext.template_engine.builtin import render_template
 
 
 class UsersView(View):
 	def get(self, request, response, **kwargs):
-		return "users get"
+		return render_template(
+			request, "index.html", user_name="User", friends=["Bob", "Anna", "John"]
+		)
 
 	def post(self, request, response, **kwargs):
-		return "users post"
+		return {"users": "post"}
 
 
 url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
@@ -25,7 +28,7 @@ echonext = EchoNext(
 @echonext.route_page("/book")
 class BooksResource(View):
 	def get(self, request, response, **kwargs):
-		return f"Books Page: {request.GET}"
+		return f"GET Params: {request.GET}"
 
 	def post(self, request, response, **kwargs):
-		return "Endpoint to create a book"
+		return f"POST Params: {request.POST}"

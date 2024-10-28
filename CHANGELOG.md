@@ -1,3 +1,9 @@
+commit fc58f8f30efd759f59b4ec87800442a105f5c592
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Mon Oct 28 21:23:05 2024 +0700
+
+    docs/feat/fix: improve routing views (fix bugs), improve readme
+
 commit 313ad646d2fdb10c45692e564b4381b548fe3a55
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Mon Oct 28 00:34:48 2024 +0700

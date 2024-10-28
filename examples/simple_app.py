@@ -1,10 +1,15 @@
+import os
 from pyechonext.app import ApplicationType, EchoNext
+from pyechonext.config import Settings
 from sqlsymphony_orm.datatypes.fields import IntegerField, RealField, TextField
 from sqlsymphony_orm.models.session_models import SessionModel
 from sqlsymphony_orm.models.session_models import SQLiteSession
 
 
-echonext = EchoNext(__name__, application_type=ApplicationType.HTML)
+settings = Settings(
+	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+)
+echonext = EchoNext(__name__, settings, application_type=ApplicationType.HTML)
 session = SQLiteSession("echonext.db")
 
 

@@ -107,37 +107,43 @@ Once installed, you can start using the library in your Python projects. Check o
 ## 💻 Usage Examples
 
 ### Advanced app with flask-like and django-like routes
-Django-line classes with get-post methods and routing pages:
+Django-line classes with get-post methods and routing pages. And with the built-in template engine!
 
 ```python
+import os
 from pyechonext.app import ApplicationType, EchoNext
 from pyechonext.views import View
 from pyechonext.urls import URL, IndexView
+from pyechonext.config import Settings
+from pyechonext.template_engine.builtin import render_template
 
 
 class UsersView(View):
 	def get(self, request, response, **kwargs):
-		return "users get"
+		return render_template(
+			request, "index.html", user_name="User", friends=["Bob", "Anna", "John"]
+		)
 
 	def post(self, request, response, **kwargs):
-		return "users post"
+		return {"users": "post"}
 
 
-url_patterns = [
-	URL(url='/', view=IndexView),
-	URL(url='/users', view=UsersView)
-]
-
-echonext = EchoNext(__name__, urls=url_patterns, application_type=ApplicationType.HTML)
+url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
+settings = Settings(
+	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+)
+echonext = EchoNext(
+	__name__, settings, urls=url_patterns, application_type=ApplicationType.HTML
+)
 
 
 @echonext.route_page("/book")
 class BooksResource(View):
 	def get(self, request, response, **kwargs):
-		return f"Books Page: {request.query_params}"
+		return f"GET Params: {request.GET}"
 
 	def post(self, request, response, **kwargs):
-		return "Endpoint to create a book"
+		return f"POST Params: {request.POST}"
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -146,14 +152,18 @@ class BooksResource(View):
 In this example we are using SQLSymphony ORM (our other project, a fast and simple ORM for python)
 
 ```python
+import os
 from pyechonext.app import ApplicationType, EchoNext
+from pyechonext.config import Settings
 from sqlsymphony_orm.datatypes.fields import IntegerField, RealField, TextField
 from sqlsymphony_orm.models.session_models import SessionModel
 from sqlsymphony_orm.models.session_models import SQLiteSession
-from sqlsymphony_orm.queries import QueryBuilder
 
 
-echonext = EchoNext(__name__, application_type=ApplicationType.HTML)
+settings = Settings(
+	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+)
+echonext = EchoNext(__name__, settings, application_type=ApplicationType.HTML)
 session = SQLiteSession("echonext.db")
 
 
@@ -170,7 +180,7 @@ class User(SessionModel):
 
 @echonext.route_page("/")
 def home(request, response):
-	user = User(name='John', cash=100.0)
+	user = User(name="John", cash=100.0)
 	session.add(user)
 	session.commit()
 	response.body = "Hello from the HOME page"
@@ -179,8 +189,9 @@ def home(request, response):
 @echonext.route_page("/users")
 def about(request, response):
 	users = session.get_all_by_model(User)
-	
+
 	response.body = f"Users: {[f'{user.name}: {user.cash}$' for user in users]}"
+
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -51,36 +51,48 @@ class Response:
 			self.charset = charset
 
 		if body is not None:
-			self.body = body.encode()
+			self.body = body
 		else:
-			self.body = b""
+			self.body = ""
 
 		self._headerslist = headers
-		self.headers = [
-			("Content-Type", f"{self.content_type}; charset={self.charset}")
+
+		self._update_headers()
+
+	def _structuring_headers(self, environ):
+		headers = {
+			"Host": environ["HTTP_HOST"],
+			"Connection": environ["HTTP_CONNECTION"],
+			"Accept": environ["HTTP_ACCEPT"],
+			"User-Agent": environ["HTTP_USER_AGENT"],
+		}
+
+		for name, value in headers.items():
+			self._headerslist.append((name, value))
+
+	def _update_headers(self) -> None:
+		"""
+		Sets the headers by environ.
+
+		:param		environ:  The environ
+		:type		environ:  dict
+		"""
+		self._headerslist = [
+			("Content-Type", f"{self.content_type}; charset={self.charset}"),
+			("Content-Length", str(len(self.body))),
 		]
 
-		self._structuring_headers()
-
-	def _structuring_headers(self):
-		for header_name, header_value in self._headerslist.items():
-			self.headers.append((header_name, header_value))
-
-	@property
-	def json(self) -> dict:
+	def _encode_body(self):
 		"""
-		Parse request body as JSON.
-
-		:returns:	json body
-		:rtype:		dict
+		Encodes a body.
 		"""
-		if self.body:
-			if self.content_type.split("/")[-1] == "json":
-				return json.loads(self.body.decode())
-			else:
-				return json.loads(json.dumps(self.body.decode()))
+		if self.content_type.split("/")[-1] == "json":
+			self.body = str(self.json)
 
-		return {}
+		try:
+			self.body = self.body.encode("UTF-8")
+		except AttributeError:
+			self.body = str(self.body).encode("UTF-8")
 
 	def __call__(self, environ: dict, start_response: method) -> Iterable:
 		"""
@@ -94,17 +106,34 @@ class Response:
 		:returns:	response body
 		:rtype:		Iterable
 		"""
-		self.body = self.body.encode()
+		self._encode_body()
 
-		self.headers.append(("User-Agent", environ["HTTP_USER_AGENT"]))
-		self.headers.append(("Content-Length", str(len(self.body))))
+		self._update_headers()
+		self._structuring_headers(environ)
 
 		logger.debug(
 			f"[{environ['REQUEST_METHOD']} {self.status_code}] Run response: {self.content_type}"
 		)
-		start_response(status=self.status_code, headers=self.headers)
+
+		start_response(status=self.status_code, headers=self._headerslist)
 
 		return iter([self.body])
+
+	@property
+	def json(self) -> dict:
+		"""
+		Parse request body as JSON.
+
+		:returns:	json body
+		:rtype:		dict
+		"""
+		if self.body:
+			if self.content_type.split("/")[-1] == "json":
+				return json.dumps(self.body)
+			else:
+				return json.dumps(self.body.decode("UTF-8"))
+
+		return {}
 
 	def __repr__(self):
 		return f"<{self.__class__.__name__} at 0x{abs(id(self)):x} {self.status_code}>"

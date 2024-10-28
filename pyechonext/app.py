@@ -15,6 +15,7 @@ from pyechonext.utils.exceptions import (
 	WebError,
 )
 from pyechonext.utils import _prepare_url
+from pyechonext.config import Settings
 
 
 class ApplicationType(Enum):
@@ -24,6 +25,7 @@ class ApplicationType(Enum):
 
 	JSON = "application/json"
 	HTML = "text/html"
+	PLAINTEXT = "text/plain"
 
 
 class EchoNext:
@@ -31,11 +33,12 @@ class EchoNext:
 	This class describes an EchoNext WSGI Application.
 	"""
 
-	__slots__ = ("app_name", "application_type", "urls", "routes")
+	__slots__ = ("app_name", "settings", "application_type", "urls", "routes")
 
 	def __init__(
 		self,
 		app_name: str,
+		settings: Settings,
 		urls: Optional[List[URL]] = [],
 		application_type: Optional[ApplicationType] = ApplicationType.JSON,
 	):
@@ -46,6 +49,7 @@ class EchoNext:
 		:type		app_name:  str
 		"""
 		self.app_name = app_name
+		self.settings = settings
 		self.application_type = application_type
 		self.routes = {}
 		self.urls = urls
@@ -107,7 +111,7 @@ class EchoNext:
 		:returns:	The request.
 		:rtype:		Request
 		"""
-		return Request(environ)
+		return Request(environ, self.settings)
 
 	def _get_response(self) -> Response:
 		"""
@@ -201,7 +205,12 @@ class EchoNext:
 				if handler is None:
 					raise MethodNotAllow(f"Method not allowed: {request.method}")
 
-			response.body = handler(request, response, **kwargs)
+			result = handler(request, response, **kwargs)
+
+			if isinstance(result, Response):
+				response = result
+			else:
+				response.body = result
 		else:
 			raise URLNotFound(f'URL "{request.path}" not found.')
 
