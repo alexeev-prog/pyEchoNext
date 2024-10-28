@@ -9,4 +9,4 @@ class URL:
 	view: Type[View]
 
 
-url_patterns = [URL(url="", view=IndexView)]
+url_patterns = [URL(url="/", view=IndexView)]
