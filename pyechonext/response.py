@@ -62,7 +62,6 @@ class Response:
 	def _structuring_headers(self, environ):
 		headers = {
 			"Host": environ["HTTP_HOST"],
-			"Connection": environ["HTTP_CONNECTION"],
 			"Accept": environ["HTTP_ACCEPT"],
 			"User-Agent": environ["HTTP_USER_AGENT"],
 		}

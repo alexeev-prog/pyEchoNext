@@ -195,6 +195,7 @@ class EchoNext:
 		:returns:	Response callable object
 		:rtype:		Response
 		"""
+		logger.debug(f'Handle request: {request.path}')
 		response = self._get_response()
 
 		handler, kwargs = self._find_handler(request)
@@ -234,8 +235,10 @@ class EchoNext:
 		try:
 			response = self._handle_request(request)
 		except URLNotFound as err:
+			logger.error(f'URLNotFound error has been raised: set default response (404)')
 			self._default_response(response, error=err)
 		except MethodNotAllow as err:
+			logger.error(f'MethodNotAllow error has been raised: set default response (405)')
 			self._default_response(response, error=err)
 
 		return response(environ, start_response)

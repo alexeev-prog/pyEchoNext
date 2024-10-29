@@ -1,4 +1,5 @@
 import os
+from pyechonext.utils.exceptions import MethodNotAllow
 from pyechonext.app import ApplicationType, EchoNext
 from pyechonext.views import View
 from pyechonext.urls import URL, IndexView
@@ -13,7 +14,7 @@ class UsersView(View):
 		)
 
 	def post(self, request, response, **kwargs):
-		return Response(body='post users')
+		raise MethodNotAllow(f'Request {request.path}: method not allow')
 
 
 url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]

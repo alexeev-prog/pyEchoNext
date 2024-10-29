@@ -1,5 +1,6 @@
 import os
 import re
+from loguru import logger
 from pyechonext.request import Request
 from pyechonext.utils.exceptions import TemplateNotFileError
 
@@ -144,5 +145,7 @@ def render_template(request: Request, template_name: str, **kwargs) -> str:
 	engine = TemplateEngine(request.settings.BASE_DIR, request.settings.TEMPLATES_DIR)
 
 	context = kwargs
+
+	logger.debug(f'Built-in template engine: render {template_name} ({request.path})')
 
 	return engine.build(context, template_name)

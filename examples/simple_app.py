@@ -29,11 +29,11 @@ def home(request, response):
 	user = User(name="John", cash=100.0)
 	session.add(user)
 	session.commit()
-	response.body = "Hello from the HOME page"
+	return "Hello from the HOME page"
 
 
 @echonext.route_page("/users")
 def about(request, response):
 	users = session.get_all_by_model(User)
 
-	response.body = f"Users: {[f'{user.name}: {user.cash}$' for user in users]}"
+	return f"Users: {[f'{user.name}: {user.cash}$' for user in users]}"

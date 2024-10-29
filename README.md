@@ -1,4 +1,4 @@
-# 🌟 **Echonext: The Future of Web Development in Python!** 🚀
+# 🌟 **EchoNext: The Future of Web** 🚀
 <a id="readme-top"></a> 
 
 <div align="center">  
@@ -102,6 +102,20 @@ pip install pyechonext
 
 Once installed, you can start using the library in your Python projects. Check out the [documentation](https://alexeev-prog.github.io/pyEchoNext) for detailed usage examples and API reference.
 
+You can create example app architecture:
+
+```bash
+python3 -m pyechonext --name exampleapp
+
+# Generated arhitecture:
+exampleapp/
+├── exampleapp.py
+├── templates
+└── views
+    ├── __init__.py
+    └── main.py
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 💻 Usage Examples
@@ -183,14 +197,14 @@ def home(request, response):
 	user = User(name="John", cash=100.0)
 	session.add(user)
 	session.commit()
-	response.body = "Hello from the HOME page"
+	return "Hello from the HOME page"
 
 
 @echonext.route_page("/users")
 def about(request, response):
 	users = session.get_all_by_model(User)
 
-	response.body = f"Users: {[f'{user.name}: {user.cash}$' for user in users]}"
+	return f"Users: {[f'{user.name}: {user.cash}$' for user in users]}"
 
 ```
 
@@ -273,6 +287,41 @@ class IndexView(View):
 		:type		kwargs:	   dictionary
 		"""
 		return "Message has accepted!"
+```
+
+Or you can return response:
+
+```python
+class IndexView(View):
+	def get(self, request: Request, response: Response, **kwargs):
+		"""
+		Get
+
+		:param		request:   The request
+		:type		request:   Request
+		:param		response:  The response
+		:type		response:  Response
+		:param		args:	   The arguments
+		:type		args:	   list
+		:param		kwargs:	   The keywords arguments
+		:type		kwargs:	   dictionary
+		"""
+		return Response(body="Hello World!")
+
+	def post(self, request: Request, response: Response, **kwargs):
+		"""
+		Post
+
+		:param		request:   The request
+		:type		request:   Request
+		:param		response:  The response
+		:type		response:  Response
+		:param		args:	   The arguments
+		:type		args:	   list
+		:param		kwargs:	   The keywords arguments
+		:type		kwargs:	   dictionary
+		"""
+		return Response(body="Message has accepted!")
 ```
 
 ## 💬 Support

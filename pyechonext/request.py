@@ -27,9 +27,21 @@ class Request:
 		logger.debug(f"New request created: {self.method} {self.path}")
 
 	def build_get_params_dict(self, raw_params: str):
+		"""
+		Builds a get parameters dictionary.
+
+		:param      raw_params:  The raw parameters
+		:type       raw_params:  str
+		"""
 		self.GET = parse_qs(raw_params)
 
 	def build_post_params_dict(self, raw_params: bytes):
+		"""
+		Builds a post parameters dictionary.
+
+		:param      raw_params:  The raw parameters
+		:type       raw_params:  bytes
+		"""
 		self.POST = parse_qs(raw_params.decode())
 
 	@property
