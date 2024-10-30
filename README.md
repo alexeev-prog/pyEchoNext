@@ -63,22 +63,22 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 ## 🌟 Comparison with Alternatives
 
-| Feature                        | **pyEchoNext**| Flask         | FastAPI     | Django         | Starlette          |
-|--------------------------------|---------------|---------------|-------------|----------------|--------------------|
-| Asynchronous Capabilities      | COMING SOON   | ❌           | ✔️           | ❌            | ✔️                 |
-| Performance                    | 🔥 High       | 🐢 Moderate  | 🚀 Very High | 🐢 Moderate   | 🚀 Very High       |
-| Framework Weight               | ✔️            | ✔️           | ✔️           | ❌ Heavy      | ✔️                 |
-| Ecosystem                      | 🛠️ Modular    | 🎨 Flexible  | 🎨 Modular   | ⚙️ Monolithic | ⚙️ Modular         |
-| Ease of Use                    | ✔️            | ✔️           | ✔️           | ✔️            | ✔️                 |
-| Configurability                | ✔️            | ✔️           | ✔️           | ❌            | ✔️                 |
-| Documentation Quality          | 📚 Excellent  | 📚 Good      | 📚 Excellent | 📚 Very Good  | 📚 Good            |
-| Flexible Deployments           | 🌍 Flexible   | 🌍 Standard  | 🌍 Standard  | 🌍 Standard   | 🌍 Flexible        |
-| Testing Support                | ✔️            | ✔️           | ✔️           | ✔️            | ✔️                 |
-| Community Size                 | 📢 Growing    | 📢 Large     | 📢 Growing   | 📢 Large      | 📢 Emerging        |
-| Built-in Template Engine       | ✔️ Jinja2     | ✔️ Jinja2    | ✔️ Jinja2    | ✔️ Django     | ✔️ Jinja2          |
-| Task Queue Integration         | ✔️ Celery     | ✔️ Celery    | ✔️ Celery    | ✔️ Celery     | ✔️ Celery          |
-| Static File Serving            | 🚀 Built-in   | 🌍 Manual    | 🚀 Built-in  | 🚀 Built-in   | 🚀 Built-in        |
-| Analytics Integration          | ✔️ Easy       | 🛠️ Manual    | ✔️ Easy      | ❌            | ✔️ Easy            |
+| Feature                   | **pyEchoNext**      | Flask        | FastAPI      | Django        | Starlette    |
+|---------------------------|---------------------|--------------|--------------|---------------|--------------|
+| Asynchronous Capabilities | COMING SOON         | ❌           | ✔️           | ❌            | ✔️           |
+| Performance               | 🔥 High             | 🐢 Moderate  | 🚀 Very High | 🐢 Moderate   | 🚀 Very High |
+| Framework Weight          | ✔️                  | ✔️           | ✔️           | ❌ Heavy      | ✔️           |
+| Ecosystem                 | 🛠️ Modular          | 🎨 Flexible  | 🎨 Modular   | ⚙️ Monolithic | ⚙️ Modular   |
+| Ease of Use               | ✔️                  | ✔️           | ✔️           | ❌            | ✔️           |
+| Configurability           | ✔️                  | ✔️           | ✔️           | ✔️            | ✔️           |
+| Documentation Quality     | 📚 Excellent        | 📚 Good      | 📚 Excellent | 📚 Very Good  | 📚 Good      |
+| Flexible Deployments      | 🌍 Flexible         | 🌍 Standard  | 🌍 Standard  | 🌍 Standard   | 🌍 Flexible  |
+| Testing Support           | ✔️                  | ✔️           | ✔️           | ✔️            | ✔️           |
+| Community Size            | 📢 Growing          | 📢 Large     | 📢 Growing   | 📢 Large      | 📢 Emerging  |
+| Built-in Template Engine  | ✔️ Jinja2 & builtin | ✔️ Jinja2    | ✔️ Jinja2    | ✔️ Django     | ✔️ Jinja2    |
+| Task Queue Integration    | ❌                  | ✔️ Celery    | ✔️ Celery    | ✔️ Celery     | ✔️ Celery    |
+| Static File Serving       | 🌍 Manual           | 🌍 Manual    | 🚀 Built-in  | 🚀 Built-in   | 🚀 Built-in  |
+| Analytics Integration     | ✔️ Easy             | 🛠️ Manual    | ✔️ Easy      | ❌            | ✔️ Easy      |
 
 📈 Note: Echonext excels in performance while staying lightweight, making it a top-notch choice for your next project!
 
@@ -129,7 +129,9 @@ from pyechonext.app import ApplicationType, EchoNext
 from pyechonext.views import View
 from pyechonext.urls import URL, IndexView
 from pyechonext.config import Settings
-from pyechonext.template_engine.builtin import render_template
+from pyechonext.template_engine.builtin import render_template # built-in (alpha)
+# OR
+from pyechonext.template_engine.jinja import render_template
 
 
 class UsersView(View):
@@ -306,7 +308,7 @@ class IndexView(View):
 		:param		kwargs:	   The keywords arguments
 		:type		kwargs:	   dictionary
 		"""
-		return Response(body="Hello World!")
+		return Response(request, body="Hello World!")
 
 	def post(self, request: Request, response: Response, **kwargs):
 		"""
@@ -321,7 +323,7 @@ class IndexView(View):
 		:param		kwargs:	   The keywords arguments
 		:type		kwargs:	   dictionary
 		"""
-		return Response(body="Message has accepted!")
+		return Response(request, body="Message has accepted!")
 ```
 
 ## 💬 Support

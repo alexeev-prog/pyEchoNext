@@ -2,8 +2,9 @@
 
 ## Содержание
 
- + [Устройство веб-фреймворка](./webframework_design.md)
- + [Создание веб-приложения](./webapp_creation.md)
+1. [Устройство веб-фреймворка](./webframework_design.md)
+2. [Создание веб-приложения](./webapp_creation.md)
+3. [Создание маршрутов (routes&views)](./routes_and_views.md)
 
 ## Дополнительные материалы
 

@@ -5,6 +5,10 @@ from pyechonext.views import View, IndexView
 
 @dataclass
 class URL:
+	"""
+	This dataclass describes an url.
+	"""
+
 	url: str
 	view: Type[View]
 

@@ -10,7 +10,9 @@ class View(ABC):
 	"""
 
 	@abstractmethod
-	def get(self, request: Request, response: Response, *args, **kwargs) -> Union[Response, Any]:
+	def get(
+		self, request: Request, response: Response, *args, **kwargs
+	) -> Union[Response, Any]:
 		"""
 		Get
 
@@ -26,7 +28,9 @@ class View(ABC):
 		raise NotImplementedError
 
 	@abstractmethod
-	def post(self, request: Request, response: Response, *args, **kwargs) -> Union[Response, Any]:
+	def post(
+		self, request: Request, response: Response, *args, **kwargs
+	) -> Union[Response, Any]:
 		"""
 		Post
 
@@ -43,7 +47,9 @@ class View(ABC):
 
 
 class IndexView(View):
-	def get(self, request: Request, response: Response, **kwargs) -> Union[Response, Any]:
+	def get(
+		self, request: Request, response: Response, **kwargs
+	) -> Union[Response, Any]:
 		"""
 		Get
 
@@ -58,7 +64,9 @@ class IndexView(View):
 		"""
 		return "Hello World!"
 
-	def post(self, request: Request, response: Response, **kwargs) -> Union[Response, Any]:
+	def post(
+		self, request: Request, response: Response, **kwargs
+	) -> Union[Response, Any]:
 		"""
 		Post
 

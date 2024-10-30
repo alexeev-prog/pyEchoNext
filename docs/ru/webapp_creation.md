@@ -8,9 +8,110 @@
 ```python
 echonext = Echonext(app_name: str,
 		settings: Settings,
+		middlewaries: List[BaseMiddleware]
 		urls: Optional[List[URL]],
 		application_type: Optional[ApplicationType])
 ```
+
+## Settings
+Данный аргумент является экземпляром датакласса Settings (pyechonext.config).
+
+```python
+@dataclass
+class Settings:
+	"""
+	This class describes settings.
+	"""
+
+	BASE_DIR: str
+	TEMPLATES_DIR: str
+```
+
+Создайте экземпляр:
+
+```python
+settings = Settings(
+	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+)
+```
+
+BASE_DIR - базовая директория файла приложения, TEMPLATES_DIR - директория html-шаблонов (для встроенного шаблонизатора или Jinja2).
+
+## Middlewares
+Middlewares - "промежуточное ПО". Класс BaseMiddleware имеет следующий вид:
+
+```python
+class BaseMiddleware(ABC):
+	"""
+	This abstract class describes a base middleware.
+	"""
+
+	@abstractmethod
+	def to_request(self, request: Request):
+		"""
+		To request method
+
+		:param      request:  The request
+		:type       request:  Request
+		"""
+		raise NotImplementedError
+
+	@abstractmethod
+	def to_response(self, response: Response):
+		"""
+		To response method
+
+		:param      response:  The response
+		:type       response:  Response
+		"""
+		raise NotImplementedError
+```
+
+Для создания своего Middleware вам нужно создать новый класс на основе этого класса и обязательно реализовать методы to_request и to_response. В pyEchoNext существует базовый Middleware для создания сессий:
+
+```python
+class SessionMiddleware(BaseMiddleware):
+	"""
+	This class describes a session (cookie) middleware.
+	"""
+
+	def to_request(self, request: Request):
+		"""
+		Set to request
+
+		:param      request:  The request
+		:type       request:  Request
+		"""
+		cookie = request.environ.get('HTTP_COOKIE', None)
+		
+		if not cookie:
+			return
+
+		session_id = parse_qs(cookie)['session_id'][0]
+		request.extra['session_id'] = session_id
+
+	def to_response(self, response: Response):
+		"""
+		Set to response
+
+		:param      response:  The response
+		:type       response:  Response
+		"""
+		if not response.request.session_id:
+			response.add_headers([
+				("Set-Cookie", f'session_id={uuid4()}'),
+			])
+```
+
+Также в pyechonext.middleware есть базовый список `middlewares`, для передачи в аргументы EchoNext:
+
+```python
+middlewares = [
+	SessionMiddleware
+]
+```
+
+Таким образом вы можете импортирвать его и использовать или дополнить.
 
 ## URLS
 По умолчанию `urls` равен пустому списку. urls содержит в себе экземпляры датакласса URL (pyechonext.urls):
@@ -123,7 +224,7 @@ class IndexView(View):
 		:param		kwargs:	   The keywords arguments
 		:type		kwargs:	   dictionary
 		"""
-		return Response(body='Hello World!')
+		return Response(request, body='Hello World!')
 
 	def post(self, request: Request, response: Response, **kwargs) -> Union[Response, Any]:
 		"""
@@ -138,7 +239,7 @@ class IndexView(View):
 		:param		kwargs:	   The keywords arguments
 		:type		kwargs:	   dictionary
 		"""
-		return Response(body='Message has accepted!')
+		return Response(request, body='Message has accepted!')
 ```
 
 Можно комбинировать эти два способа. По их использованию есть следующие рекомендации:
@@ -152,8 +253,31 @@ class IndexView(View):
 
 Также вместо возвращения результата можно вызывать исключения WebError: URLNotFound и MethodNotAllow. В таком случае приложение не прекратит свою работу, а будет выводить ошибку на стороне веб-страницы. В случае же другого исключения приложение прекратит свою работу.
 
-## Settings
-Данный аргумент является экземпляром датакласса Settings (pyechonext.config)
+В pyechonext.urls также существует базовый список для передачи его в аргументы EchoNext:
+
+```python
+url_patterns = [URL(url="/", view=IndexView)]
+```
+
+IndexView здесь - это встроенный View, который вы могли увидеть выше.
+
+## application_type
+application_type - тип приложения. Аргумент принимает enum-класс ApplicationType:
+
+```python
+class ApplicationType(Enum):
+	"""
+	This enum class describes an application type.
+	"""
+
+	JSON = "application/json"
+	HTML = "text/html"
+	PLAINTEXT = "text/plain"
+```
+
+Пока поддерживается: ApplicationType.JSON, ApplicationType.HTML, ApplicationType.PLAINTEXT.
+
+По умолчанию равен ApplicationType.JSON.
 
 ---
 

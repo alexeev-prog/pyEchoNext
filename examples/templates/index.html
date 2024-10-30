@@ -10,6 +10,7 @@
 	<h3>Friends</h3>
 	{% for friend in friends %}
 		<p>{{ friend }}</p>
-	{% endblock %}
+	{% endfor %}
+	<p>Your session-id: {{ session_id }}</p>
 </body>
 </html>

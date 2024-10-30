@@ -3,6 +3,7 @@ from pyechonext.app import ApplicationType, EchoNext
 from pyechonext.views import View
 from pyechonext.urls import URL, IndexView
 from pyechonext.config import Settings
+from pyechonext.middleware import middlewares
 
 
 class UsersView(View):
@@ -18,7 +19,11 @@ settings = Settings(
 	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
 )
 echonext = EchoNext(
-	__name__, settings, urls=url_patterns, application_type=ApplicationType.HTML
+	__name__,
+	settings,
+	middlewares,
+	urls=url_patterns,
+	application_type=ApplicationType.HTML,
 )
 
 

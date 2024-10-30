@@ -16,6 +16,7 @@ from pyechonext.utils.exceptions import (
 )
 from pyechonext.utils import _prepare_url
 from pyechonext.config import Settings
+from pyechonext.middleware import BaseMiddleware
 
 
 class ApplicationType(Enum):
@@ -33,23 +34,40 @@ class EchoNext:
 	This class describes an EchoNext WSGI Application.
 	"""
 
-	__slots__ = ("app_name", "settings", "application_type", "urls", "routes")
+	__slots__ = (
+		"app_name",
+		"settings",
+		"middlewares",
+		"application_type",
+		"urls",
+		"routes",
+	)
 
 	def __init__(
 		self,
 		app_name: str,
 		settings: Settings,
+		middlewares: List[Type[BaseMiddleware]],
 		urls: Optional[List[URL]] = [],
 		application_type: Optional[ApplicationType] = ApplicationType.JSON,
 	):
 		"""
 		Constructs a new instance.
 
-		:param		app_name:  The application name
-		:type		app_name:  str
+		:param		app_name:		   The application name
+		:type		app_name:		   str
+		:param		settings:		   The settings
+		:type		settings:		   Settings
+		:param		middlewares:	  The middlewares
+		:type		middlewares:	  List[BaseMiddleware]
+		:param		urls:			   The urls
+		:type		urls:			   Array
+		:param		application_type:  The application type
+		:type		application_type:  Optional[ApplicationType]
 		"""
 		self.app_name = app_name
 		self.settings = settings
+		self.middlewares = middlewares
 		self.application_type = application_type
 		self.routes = {}
 		self.urls = urls
@@ -113,14 +131,14 @@ class EchoNext:
 		"""
 		return Request(environ, self.settings)
 
-	def _get_response(self) -> Response:
+	def _get_response(self, request: Request) -> Response:
 		"""
 		Gets the response.
 
 		:returns:	The response.
 		:rtype:		Response
 		"""
-		return Response(content_type=self.application_type.value)
+		return Response(request, content_type=self.application_type.value)
 
 	def route_page(self, page_path: str) -> Callable:
 		"""
@@ -150,6 +168,26 @@ class EchoNext:
 
 		return wrapper
 
+	def _apply_middleware_to_request(self, request: Request):
+		"""
+		Apply middleware to request
+
+		:param		request:  The request
+		:type		request:  Request
+		"""
+		for middleware in self.middlewares:
+			middleware().to_request(request)
+
+	def _apply_middleware_to_response(self, response: Response):
+		"""
+		Apply middleware to response
+
+		:param		response:  The response
+		:type		response:  Response
+		"""
+		for middleware in self.middlewares:
+			middleware().to_response(response)
+
 	def _default_response(self, response: Response, error: WebError) -> None:
 		"""
 		Get default response (404)
@@ -170,15 +208,17 @@ class EchoNext:
 		:returns:	handler function and parsed result
 		:rtype:		Tuple[Callable, str]
 		"""
+		url = _prepare_url(request.path)
+
 		for path, handler in self.routes.items():
-			parse_result = parse(path, request.path)
+			parse_result = parse(path, url)
 			if parse_result is not None:
 				return handler, parse_result.named
 
 		view = self._get_view(request)
 
 		if view is not None:
-			parse_result = parse(view.url, request.path)
+			parse_result = parse(view.url, url)
 
 			if parse_result is not None:
 				return view.view, parse_result.named
@@ -195,8 +235,8 @@ class EchoNext:
 		:returns:	Response callable object
 		:rtype:		Response
 		"""
-		logger.debug(f'Handle request: {request.path}')
-		response = self._get_response()
+		logger.debug(f"Handle request: {request.path}")
+		response = self._get_response(request)
 
 		handler, kwargs = self._find_handler(request)
 
@@ -230,15 +270,23 @@ class EchoNext:
 		:rtype:		Iterable
 		"""
 		request = self._get_request(environ)
-		response = self._get_response()
+		self._apply_middleware_to_request(request)
+		response = self._get_response(request)
 
 		try:
 			response = self._handle_request(request)
+			self._apply_middleware_to_response(response)
 		except URLNotFound as err:
-			logger.error(f'URLNotFound error has been raised: set default response (404)')
+			logger.error(
+				"URLNotFound error has been raised: set default response (404)"
+			)
+			self._apply_middleware_to_response(response)
 			self._default_response(response, error=err)
 		except MethodNotAllow as err:
-			logger.error(f'MethodNotAllow error has been raised: set default response (405)')
+			logger.error(
+				"MethodNotAllow error has been raised: set default response (405)"
+			)
+			self._apply_middleware_to_response(response)
 			self._default_response(response, error=err)
 
 		return response(environ, start_response)

@@ -4,11 +4,12 @@ from pyechonext.views import View
 from pyechonext.urls import URL, IndexView
 from pyechonext.response import Response
 from pyechonext.config import Settings
+from pyechonext.middleware import middlewares
 
 
 class UsersView(View):
 	def get(self, request, response, **kwargs):
-		return Response(body={"users": "get"})
+		return Response(request, body={"users": "get"})
 
 	def post(self, request, response, **kwargs):
 		return {"users": "post"}
@@ -21,7 +22,11 @@ settings = Settings(
 )
 
 echonext = EchoNext(
-	__name__, settings, urls=url_patterns, application_type=ApplicationType.JSON
+	__name__,
+	settings,
+	middlewares,
+	urls=url_patterns,
+	application_type=ApplicationType.JSON,
 )
 
 

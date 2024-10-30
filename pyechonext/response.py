@@ -1,7 +1,8 @@
 import json
-from typing import Dict, Iterable
+from typing import Dict, Iterable, Union, Any, List, Tuple
 from socks import method
 from loguru import logger
+from pyechonext.request import Request
 
 
 class Response:
@@ -17,6 +18,7 @@ class Response:
 
 	def __init__(
 		self,
+		request: Request,
 		status_code: int = 200,
 		body: str = None,
 		headers: Dict[str, str] = {},
@@ -56,8 +58,23 @@ class Response:
 			self.body = ""
 
 		self._headerslist = headers
+		self._added_headers = []
+		self.request = request
+		self.extra = {}
 
 		self._update_headers()
+
+	def __getattr__(self, item: Any) -> Union[Any, None]:
+		"""
+		Magic method for get attrs (from extra)
+
+		:param		item:  The item
+		:type		item:  Any
+
+		:returns:	Item from self.extra or None
+		:rtype:		Union[Any, None]
+		"""
+		return self.extra.get(item, None)
 
 	def _structuring_headers(self, environ):
 		headers = {
@@ -68,6 +85,9 @@ class Response:
 
 		for name, value in headers.items():
 			self._headerslist.append((name, value))
+
+		for header_tuple in self._added_headers:
+			self._headerslist.append(header_tuple)
 
 	def _update_headers(self) -> None:
 		"""
@@ -80,6 +100,16 @@ class Response:
 			("Content-Type", f"{self.content_type}; charset={self.charset}"),
 			("Content-Length", str(len(self.body))),
 		]
+
+	def add_headers(self, headers: List[Tuple[str, str]]):
+		"""
+		Adds new headers.
+
+		:param		headers:  The headers
+		:type		headers:  List[Tuple[str, str]]
+		"""
+		for header in headers:
+			self._added_headers.append(header)
 
 	def _encode_body(self):
 		"""
@@ -135,4 +165,10 @@ class Response:
 		return {}
 
 	def __repr__(self):
+		"""
+		Returns a unambiguous string representation of the object (for debug...).
+
+		:returns:	String representation of the object.
+		:rtype:		str
+		"""
 		return f"<{self.__class__.__name__} at 0x{abs(id(self)):x} {self.status_code}>"
