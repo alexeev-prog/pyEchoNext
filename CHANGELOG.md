@@ -1,3 +1,21 @@
+commit 476912fbc2376aec5201855dfd03ba37147158c4
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Thu Oct 31 00:06:22 2024 +0700
+
+    docs: some small changes
+
+commit a752964c23871bcf187266927ce246202b905f7b
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Wed Oct 30 23:54:45 2024 +0700
+
+    feat/docs: add jinja2 template engine, add middleware (with session cookie middleware), improve request&response, improve docs
+
+commit dd9aaac8168dfb314fb05574211f8f166393272a
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Tue Oct 29 23:58:42 2024 +0700
+
+    feat/docs: improve code, fix bugs, create new page in ru docs
+
 commit 152d1596a07e0f836a228eb0ae02304af5470474
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Mon Oct 28 23:40:27 2024 +0700
