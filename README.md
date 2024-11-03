@@ -41,6 +41,9 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
+ > Last stable version: 0.4.3 alpha
+ > Last unstable version: 0.5.3 alpha
+
 ## 🤔 Why Choose SqlSymphony?
 
 - **🔥 Featherweight Performance**: No bloat, just speed! Our framework is designed to optimize performance, making it a breeze to create and scale your applications without the overhead.

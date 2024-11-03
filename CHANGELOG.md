@@ -1,3 +1,9 @@
+commit 6a0d6d16a6386a1c22a3a3d497cd5635451d3e38
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Mon Nov 4 00:37:09 2024 +0700
+
+    docs: update docs
+
 commit e5af909f2e8564edc5bc0e5cdd933a539eedded7
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Mon Nov 4 00:34:01 2024 +0700
