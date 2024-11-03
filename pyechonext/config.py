@@ -28,6 +28,7 @@ class Settings:
 
 	BASE_DIR: str
 	TEMPLATES_DIR: str
+	SECRET_KEY: str
 
 
 class SettingsConfigType(Enum):
@@ -86,6 +87,7 @@ class SettingsLoader:
 		config = {
 			"BASE_DIR": os.environ.get("PEN_BASE_DIR"),
 			"TEMPLATES_DIR": os.environ.get("PEN_TEMPLATES_DIR"),
+			"SECRET_KEY": os.environ.get("PEN_SECRET_KEY")
 		}
 
 		return config
@@ -102,6 +104,7 @@ class SettingsLoader:
 		return {
 			"BASE_DIR": config_module.BASE_DIR,
 			"TEMPLATES_DIR": config_module.TEMPLATES_DIR,
+			"SECRET_KEY": config_module.SECRET_KEY
 		}
 
 	def get_settings(self) -> Settings:

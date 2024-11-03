@@ -368,6 +368,25 @@ Unlock your potential as a developer with Echonext. Don’t just build applicati
 
 This README is designed to grab attention from the very first lines. It emphasizes the framework's strengths and makes a compelling case for why developers should choose Echonext for their projects. Feel free to adjust any specific links or images to fit your project!
 
+## Documentation 🌍
+Extended documentation and framework specifications are available at the following links:
+
+### English
+
+1. [Index](./docs/en/index.md)
+2. [Web framework design](./docs/en/webframework_design.md)
+3. [Creating a web application](./docs/en/webapp_creation.md)
+4. [Creating routes (routes&views)](./docs/en/routes_and_views.md)
+5. [Request/Response](./docs/en/requests_responses.md)
+
+### Russian / Русский
+
+1. [Содержание](./docs/ru/index.md)
+2. [Устройство веб-фреймворка](./webframework_design.md)
+3. [Создание веб-приложения](./webapp_creation.md)
+4. [Создание маршрутов (routes&views)](./routes_and_views.md)
+5. [Request/Response](./requests_responses.md)
+
 ## License
 Distributed under the GNU LGPL 2.1 License. See [LICENSE](https://github.com/alexeev-prog/pyEchoNext/blob/main/LICENSE) for more information.
 

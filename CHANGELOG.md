@@ -1,3 +1,15 @@
+commit 2c99528375df71a95f14f6619f7051fd4e2a76e1
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Sun Nov 3 22:57:47 2024 +0700
+
+    feat/docs/fix: fix request, add settings config loader, add api docs gen, fix bugs, improve docs
+
+commit 559fdddc9a12593e2a5ba57e76d977a39c2dc296
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Thu Oct 31 00:22:33 2024 +0700
+
+    docs: update
+
 commit f4aeba6ab8eb29fbdf167dfb17a05a2cb34da3ba
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Thu Oct 31 00:06:52 2024 +0700

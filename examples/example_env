@@ -1,2 +1,3 @@
 PEN_BASE_DIR=.
 PEN_TEMPLATES_DIR=templates
+PEN_SECRET_KEY=secret-key
