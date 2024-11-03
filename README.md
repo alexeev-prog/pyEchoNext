@@ -382,10 +382,10 @@ Extended documentation and framework specifications are available at the followi
 ### Russian / Русский
 
 1. [Содержание](./docs/ru/index.md)
-2. [Устройство веб-фреймворка](./webframework_design.md)
-3. [Создание веб-приложения](./webapp_creation.md)
-4. [Создание маршрутов (routes&views)](./routes_and_views.md)
-5. [Request/Response](./requests_responses.md)
+2. [Устройство веб-фреймворка](./docs/ru/webframework_design.md)
+3. [Создание веб-приложения](./docs/ru/webapp_creation.md)
+4. [Создание маршрутов (routes&views)](./docs/ru/routes_and_views.md)
+5. [Request/Response](./docs/ru/requests_responses.md)
 
 ## License
 Distributed under the GNU LGPL 2.1 License. See [LICENSE](https://github.com/alexeev-prog/pyEchoNext/blob/main/LICENSE) for more information.

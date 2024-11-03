@@ -1,3 +1,9 @@
+commit e5af909f2e8564edc5bc0e5cdd933a539eedded7
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Mon Nov 4 00:34:01 2024 +0700
+
+    docs: translate and improve docs
+
 commit 2c99528375df71a95f14f6619f7051fd4e2a76e1
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Sun Nov 3 22:57:47 2024 +0700
