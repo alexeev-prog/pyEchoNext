@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Iterable, Union, Any, List, Tuple
+from typing import Dict, Iterable, Union, Any, List, Tuple, Optional
 from socks import method
 from loguru import logger
 from pyechonext.request import Request
@@ -10,20 +10,20 @@ class Response:
 	This dataclass describes a response.
 	"""
 
-	default_content_type = "application/json"
-	default_charset = "UTF-8"
-	unicode_errors = "strict"
-	default_conditional_response = False
-	default_body_encoding = "UTF-8"
+	default_content_type: str = "application/json"
+	default_charset: str = "UTF-8"
+	unicode_errors: str = "strict"
+	default_conditional_response: bool = False
+	default_body_encoding: str = "UTF-8"
 
 	def __init__(
 		self,
 		request: Request,
-		status_code: int = 200,
-		body: str = None,
-		headers: Dict[str, str] = {},
-		content_type: str = None,
-		charset: str = None,
+		status_code: Optional[int] = 200,
+		body: Optional[str] = None,
+		headers: Optional[Dict[str, str]] = {},
+		content_type: Optional[str] = None,
+		charset: Optional[str] = None,
 	):
 		"""
 		Constructs a new instance.
@@ -38,29 +38,29 @@ class Response:
 		:type		content_type:  str
 		"""
 		if status_code == 200:
-			self.status_code = "200 OK"
+			self.status_code: str = "200 OK"
 		else:
-			self.status_code = str(status_code)
+			self.status_code: str = str(status_code)
 
 		if content_type is None:
-			self.content_type = self.default_content_type
+			self.content_type: str = self.default_content_type
 		else:
-			self.content_type = content_type
+			self.content_type: str = content_type
 
 		if charset is None:
-			self.charset = self.default_charset
+			self.charset: str = self.default_charset
 		else:
-			self.charset = charset
+			self.charset: str = charset
 
 		if body is not None:
-			self.body = body
+			self.body: str = body
 		else:
-			self.body = ""
+			self.body: str = ""
 
-		self._headerslist = headers
-		self._added_headers = []
-		self.request = request
-		self.extra = {}
+		self._headerslist: list = headers
+		self._added_headers: list = []
+		self.request: Request = request
+		self.extra: dict = {}
 
 		self._update_headers()
 

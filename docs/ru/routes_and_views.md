@@ -1,4 +1,6 @@
-# pyEchoNext / Создание маршрутов (routes&views)
+ # pyEchoNext / Создание маршрутов (routes&views)
+
+---
 
 Маршруты - основа веб приложения.
 
@@ -94,6 +96,144 @@ class BooksResource(View):
 ```
 
 Оба метода можно смешивать, но мы рекомендуем использовать только один в одном веб-приложении.
+
+## Views
+Views - "вьюхи", специальный класс для отображения страниц сайта. Вдохновлен стилем Django.
+
+```python
+class View(ABC):
+  """
+  Page view
+  """
+
+  @abstractmethod
+  def get(
+    self, request: Request, response: Response, *args, **kwargs
+  ) -> Union[Response, Any]:
+    """
+    Get
+
+    :param    request:   The request
+    :type   request:   Request
+    :param    response:  The response
+    :type   response:  Response
+    :param    args:    The arguments
+    :type   args:    list
+    :param    kwargs:    The keywords arguments
+    :type   kwargs:    dictionary
+    """
+    raise NotImplementedError
+
+  @abstractmethod
+  def post(
+    self, request: Request, response: Response, *args, **kwargs
+  ) -> Union[Response, Any]:
+    """
+    Post
+
+    :param    request:   The request
+    :type   request:   Request
+    :param    response:  The response
+    :type   response:  Response
+    :param    args:    The arguments
+    :type   args:    list
+    :param    kwargs:    The keywords arguments
+    :type   kwargs:    dictionary
+    """
+    raise NotImplementedError
+```
+
+Для передачи их в приложение EchoNext требуется объединять Views в URL:
+
+```python
+@dataclass
+class URL:
+  """
+  This dataclass describes an url.
+  """
+
+  url: str
+  view: Type[View]
+
+
+url_patterns = [URL(url="/", view=<ВАШ View>)]
+```
+
+Пример:
+
+```python
+class IndexView(View):
+  def get(
+    self, request: Request, response: Response, **kwargs
+  ) -> Union[Response, Any]:
+    """
+    Get
+
+    :param    request:   The request
+    :type   request:   Request
+    :param    response:  The response
+    :type   response:  Response
+    :param    args:    The arguments
+    :type   args:    list
+    :param    kwargs:    The keywords arguments
+    :type   kwargs:    dictionary
+    """
+    return "Hello World!"
+
+  def post(
+    self, request: Request, response: Response, **kwargs
+  ) -> Union[Response, Any]:
+    """
+    Post
+
+    :param    request:   The request
+    :type   request:   Request
+    :param    response:  The response
+    :type   response:  Response
+    :param    args:    The arguments
+    :type   args:    list
+    :param    kwargs:    The keywords arguments
+    :type   kwargs:    dictionary
+    """
+    return "Message has accepted!"
+
+
+url_patterns = [URL(url="/", view=IndexView)]
+```
+
+## Routes
+Routes вдохновлены путем flask/fastapi:
+
+```python
+import os
+from pyechonext.app import ApplicationType, EchoNext
+from pyechonext.config import Settings
+from pyechonext.middleware import middlewares
+
+
+settings = Settings(
+  BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+)
+echonext = EchoNext(
+  __name__, settings, middlewares, application_type=ApplicationType.HTML
+)
+
+
+@echonext.route_page("/")
+def home(request, response):
+  return "Hello from the HOME page"
+
+
+@echonext.route_page("/book")
+class BooksResource(View):
+  def get(self, request, response, **kwargs):
+    return f"GET Params: {request.GET}"
+
+  def post(self, request, response, **kwargs):
+    return f"POST Params: {request.POST}"
+```
+
+Вы можете также и маршрутизировать View без передачи их в параметры, а создавая класс с декоратором роутинга страницы.
 
 ---
 

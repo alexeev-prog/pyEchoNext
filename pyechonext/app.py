@@ -13,6 +13,7 @@ from pyechonext.utils.exceptions import (
 	MethodNotAllow,
 	URLNotFound,
 	WebError,
+	TeapotError,
 )
 from pyechonext.utils import _prepare_url
 from pyechonext.config import Settings
@@ -27,6 +28,7 @@ class ApplicationType(Enum):
 	JSON = "application/json"
 	HTML = "text/html"
 	PLAINTEXT = "text/plain"
+	TEAPOT = "server/teapot"
 
 
 class EchoNext:
@@ -72,6 +74,9 @@ class EchoNext:
 		self.routes = {}
 		self.urls = urls
 		logger.debug(f"Application {self.application_type.value}: {self.app_name}")
+
+		if self.application_type == ApplicationType.TEAPOT:
+			raise TeapotError("Where's my coffie?")
 
 	def _find_view(self, raw_url: str) -> Union[Type[URL], None]:
 		"""

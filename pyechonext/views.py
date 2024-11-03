@@ -62,7 +62,7 @@ class IndexView(View):
 		:param		kwargs:	   The keywords arguments
 		:type		kwargs:	   dictionary
 		"""
-		return "Hello World!"
+		return "Welcome to pyEchoNext webapplication!"
 
 	def post(
 		self, request: Request, response: Response, **kwargs

@@ -1,4 +1,3 @@
-import json
 from typing import Any, Union
 from urllib.parse import parse_qs
 from loguru import logger
@@ -17,14 +16,16 @@ class Request:
 		:param		environ:  The environ
 		:type		environ:  dict
 		"""
-		self.environ = environ
-		self.settings = settings
-		self.method = self.environ["REQUEST_METHOD"]
-		self.path = self.environ["PATH_INFO"]
-		self.build_get_params_dict(self.environ["QUERY_STRING"])
-		self.build_post_params_dict(self.environ["wsgi.input"].read())
-		self.user_agent = self.environ["HTTP_USER_AGENT"]
-		self.extra = {}
+		self.environ: dict = environ
+		self.settings: Settings = settings
+		self.method: str = self.environ["REQUEST_METHOD"]
+		self.path: str = self.environ["PATH_INFO"]
+		self.GET: dict = self._build_get_params_dict(self.environ["QUERY_STRING"])
+		self.POST: dict = self._build_post_params_dict(
+			self.environ["wsgi.input"].read()
+		)
+		self.user_agent: str = self.environ["HTTP_USER_AGENT"]
+		self.extra: dict = {}
 
 		logger.debug(f"New request created: {self.method} {self.path}")
 
@@ -40,33 +41,20 @@ class Request:
 		"""
 		return self.extra.get(item, None)
 
-	def build_get_params_dict(self, raw_params: str):
+	def _build_get_params_dict(self, raw_params: str):
 		"""
 		Builds a get parameters dictionary.
 
 		:param		raw_params:	 The raw parameters
 		:type		raw_params:	 str
 		"""
-		self.GET = parse_qs(raw_params)
+		return parse_qs(raw_params)
 
-	def build_post_params_dict(self, raw_params: bytes):
+	def _build_post_params_dict(self, raw_params: bytes):
 		"""
 		Builds a post parameters dictionary.
 
 		:param		raw_params:	 The raw parameters
 		:type		raw_params:	 bytes
 		"""
-		self.POST = parse_qs(raw_params.decode())
-
-	@property
-	def json(self) -> dict:
-		"""
-		Parse request body as JSON.
-
-		:returns:	json body
-		:rtype:		dict
-		"""
-		if self.body:
-			return json.loads(json.dumps(self.body.decode()))
-
-		return {}
+		return parse_qs(raw_params.decode())

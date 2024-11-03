@@ -1,4 +1,7 @@
 # pyEchoNext / создание веб-приложения
+
+---
+
 Создать приложение не является сложным в pyEchoNext. Благодаря модульности и универсальности можно настроить многие параметры и использовать разные методы создания маршрутов веб-приложения.
 
  > В скобках может быть указан нужный модуль для импортирования, т.е. где хранится данная абстракция. ex. EchoNext (pyechonext.app): from echonext.app import EchoNext
@@ -36,6 +39,82 @@ settings = Settings(
 ```
 
 BASE_DIR - базовая директория файла приложения, TEMPLATES_DIR - директория html-шаблонов (для встроенного шаблонизатора или Jinja2).
+
+Также, с версии 0.4.3 вы можете использовать специальный загрузчик настроек. На данный момент он позволяет загружать настройки с трех видов файлов:
+
+ + env-файл (переменные окружения)
+ + ini-файл
+ + pymodule (модуль python)
+
+Для его использования импортируйте:
+
+```python
+from pyechonext.config import SettingsLoader, SettingsConfigType
+```
+
+SettingsLoader - и есть загрузчик, а SettingsConfigType - enum-класс с видами конфиг-файлов.
+
+SettingsLoader принимает следующие аргументы: `config_type: SettingsConfigType, filename: str`. Для получения настроек нужно вызвать метод `get_settings()`. Он возвращает объект датакласса Settings, его можно сразу передать в EchoNext-приложение.
+
+SettingsConfigType содержит следующие значения:
+
+```python
+class SettingsConfigType(Enum):
+	"""
+	This class describes a settings configuration type.
+	"""
+
+	INI = 'ini'
+	DOTENV = 'dotenv'
+	PYMODULE = 'pymodule'
+```
+
+Примеры загрузки конфига:
+
+### DOTENV
+
+```python
+config_loader = SettingsLoader(SettingsConfigType.DOTENV, 'example_env')
+settings = config_loader.get_settings()
+```
+
+Файл example_env:
+
+```env
+PEN_BASE_DIR=.
+PEN_TEMPLATES_DIR=templates
+```
+
+### INI
+
+```python
+config_loader = SettingsLoader(SettingsConfigType.INI, 'example_ini.ini')
+settings = config_loader.get_settings()
+```
+
+Файл example_ini.ini:
+
+```ini
+[Settings]
+BASE_DIR=.
+TEMPLATES_DIR=templates
+```
+
+### PyModule
+
+```python
+config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'example_module.py')
+settings = config_loader.get_settings()
+```
+
+Файл example_module.py:
+
+```python
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATES_DIR = 'templates'
+```
 
 ## Middlewares
 Middlewares - "промежуточное ПО". Класс BaseMiddleware имеет следующий вид:

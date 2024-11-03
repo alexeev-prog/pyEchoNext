@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import uuid4
 from urllib.parse import parse_qs
+from loguru import logger
 from pyechonext.response import Response
 from pyechonext.request import Request
 
@@ -49,6 +50,9 @@ class SessionMiddleware(BaseMiddleware):
 			return
 
 		session_id = parse_qs(cookie)["session_id"][0]
+		logger.debug(
+			f"Set session_id={session_id} for request {request.method} {request.path}"
+		)
 		request.extra["session_id"] = session_id
 
 	def to_response(self, response: Response):
@@ -59,9 +63,13 @@ class SessionMiddleware(BaseMiddleware):
 		:type		response:  Response
 		"""
 		if not response.request.session_id:
+			session_id = uuid4()
+			logger.debug(
+				f"Set session_id={session_id} for response {response.status_code} {response.request.path}"
+			)
 			response.add_headers(
 				[
-					("Set-Cookie", f"session_id={uuid4()}"),
+					("Set-Cookie", f"session_id={session_id}"),
 				]
 			)
 

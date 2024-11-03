@@ -13,7 +13,7 @@ BOLD = "\033[1m"  # No Color
 
 # File Extension filter. You can add new extension
 py_extensions = (".py",)
-IGNORED_DIRS = ["dist", ".git", "docs", "ignored"]
+IGNORED_DIRS = ["dist", ".git", "docs", "ignored", "examples"]
 
 RUFF = "ruff"
 SPACETABS = "./space-tabs.sh"
