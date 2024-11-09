@@ -63,6 +63,18 @@ class WebError(pyEchoNextException):
 		return f"WebError has been raised. {self.get_explanation()}"
 
 
+class LocaleNotFound(pyEchoNextException):
+	def __str__(self):
+		"""
+		Returns a string representation of the object.
+
+		:returns:	String representation of the object.
+		:rtype:		str
+		"""
+		logger.error(f"{self.__class__.__name__}: {self.get_explanation()}")
+		return f"LocaleNotFound has been raised. {self.get_explanation()}"
+
+
 class TemplateNotFileError(pyEchoNextException):
 	def __str__(self):
 		"""

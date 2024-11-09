@@ -1,3 +1,3 @@
-from pyechonext.docsgen.apigen import APIDocumentation
+from pyechonext.docsgen.projgen import ProjDocumentation
 
-all = APIDocumentation
+all = (ProjDocumentation,)

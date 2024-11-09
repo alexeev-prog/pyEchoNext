@@ -110,18 +110,21 @@ class Response:
 		headers: Optional[Dict[str, str]] = {},
 		content_type: Optional[str] = None,
 		charset: Optional[str] = None,
+		use_i18n: Optional[bool] = False
 	):
 		"""
 		Constructs a new instance.
-
-		:param		status_code:   The status code
-		:type		status_code:   int
-		:param		body:		   The body
-		:type		body:		   str
-		:param		headers:	   The headers
-		:type		headers:	   Dict[str, str]
-		:param		content_type:  The content type
-		:type		content_type:  str
+		
+		:param      status_code:   The status code
+		:type       status_code:   int
+		:param      body:          The body
+		:type       body:          str
+		:param      headers:       The headers
+		:type       headers:       Dict[str, str]
+		:param      use_i18n:      Use i18n
+		:type       use_i18n:      bool
+		:param      content_type:  The content type
+		:type       content_type:  str
 		"""
 		if status_code == 200:
 			self.status_code: str = "200 OK"
@@ -268,6 +271,7 @@ Response имеет следующие аргументы:
  + [опционально] headers (словарь) - заголовки ответа
  + [опционально] content_type (строка) - тип контента ответа
  + [опционально] charset (строка) - кодировка ответа
+ + [опционально] use_i18n (логическое значение) - использовать ли i18n (по умолчанию False)
 
 Response имеет следующие атрибуты:
 

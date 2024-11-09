@@ -10,7 +10,7 @@ class Response:
 	This dataclass describes a response.
 	"""
 
-	default_content_type: str = "application/json"
+	default_content_type: str = "text/html"
 	default_charset: str = "UTF-8"
 	unicode_errors: str = "strict"
 	default_conditional_response: bool = False
@@ -19,6 +19,7 @@ class Response:
 	def __init__(
 		self,
 		request: Request,
+		use_i18n: bool = False,
 		status_code: Optional[int] = 200,
 		body: Optional[str] = None,
 		headers: Optional[Dict[str, str]] = {},
@@ -28,6 +29,10 @@ class Response:
 		"""
 		Constructs a new instance.
 
+		:param		request:	   The request
+		:type		request:	   Request
+		:param		use_i18n:	   The use i 18 n
+		:type		use_i18n:	   bool
 		:param		status_code:   The status code
 		:type		status_code:   int
 		:param		body:		   The body
@@ -36,6 +41,8 @@ class Response:
 		:type		headers:	   Dict[str, str]
 		:param		content_type:  The content type
 		:type		content_type:  str
+		:param		charset:	   The charset
+		:type		charset:	   str
 		"""
 		if status_code == 200:
 			self.status_code: str = "200 OK"
@@ -61,6 +68,8 @@ class Response:
 		self._added_headers: list = []
 		self.request: Request = request
 		self.extra: dict = {}
+
+		self.use_i18n: bool = use_i18n
 
 		self._update_headers()
 

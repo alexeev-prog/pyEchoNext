@@ -6,6 +6,7 @@
 2. [Создание веб-приложения](./webapp_creation.md)
 3. [Создание маршрутов (routes&views)](./routes_and_views.md)
 4. [Request/Response](./requests_responses.md)
+5. [i18n](./i18n_locales.md)
 
 ## Дополнительные материалы
 

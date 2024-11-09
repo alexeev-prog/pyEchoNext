@@ -5,11 +5,8 @@
 The most important parts of web frameworks are:
 
 + Routing handlers:
-
 - Simple: `/index`
-
 - Parameterized: `/article/{article_id}`
-
 + Request handlers (views, handlers).
 
 Basic requirement: the web framework must be supported by a fast, lightweight and efficient server (eg gunicorn). Python has a WSGI guide for this.
@@ -17,48 +14,33 @@ Basic requirement: the web framework must be supported by a fast, lightweight an
 ## Web server design in Python
 
 ```
-
 REQUEST
-
 CLIENT <--------------> [HTTP (80) or HTTPS (443)] Server
-
 ANSWER
 
-
-
 > Application with logic
-
 > Data conversion for a python application <-- Web framework's area of interest (ensuring gunicorn works with it)
-
 > Gunicorn
-
 > Converted data
-
 SERVER -> NGINX
-
 > Data routing
-
 ```
 
 When developing a web application in python, we encounter the following problems:
 
 + Many frameworks (ex. django) do not know how to route response requests.
-
 + Applications are insecure and may be susceptible to DDoS (Distributed Denial of Service) attacks.
-
 + No load balancing between multiple servers.
-
 + NGINX solves the problem of load balancing, but it cannot run and communicate with Python applications.
 
 Therefore, there is a need to use a WSGI server (Web Server Gateway Interface) and a proxy server (such as NGINX).
 
-##WSGI
-
-Python currently boasts a wide range of web application frameworks such as Zope, Quixote, Webware, SkunkWeb, PSO, and Twisted Web, just to name a few. This wide variety of options can be a challenge for new Python users, as typically their choice of web framework will limit their choice of web servers to use, and vice versa.
+## WSGI
+Python currently boasts a wide range of web application frameworks such as Zope, Quixote, Webware, SkunkWeb, PSO and Twisted Web, just to name a few. This wide variety of options can be a challenge for new Python users, as typically their choice of web framework will limit their choice of web servers to use, and vice versa.
 
 In contrast, although Java has as many web application frameworks available, Java's "servlet" API allows applications written with any Java web application framework to run on any web server that supports the servlet API.
 
-The availability and widespread use of such APIs in web servers for Python—whether those servers are written in Python (e.g., Medusa), built-in Python (e.g., mod_python), or call Python through a gateway protocol (e.g., CGI, FastCGI, and etc.) - will decouple the choice of framework from the choice of web server, allowing users to choose the pair that suits them, while freeing up the framework and server developers to focus on their preferred area of specialization.
+The availability and widespread use of such APIs in web servers for Python—whether those servers are written in Python (e.g., Medusa), built-in Python (e.g., mod_python), or call Python through a gateway protocol (e.g., CGI, FastCGI, and etc.) - will separate framework selection from web server selection, allowing users to choose the pairing that suits them, while freeing up framework and server developers to focus on their preferred area specializations.
 
 Thus, this PEP offers a simple and universal interface between web servers and web applications or frameworks: the Python Web Server Gateway Interface (WSGI).
 
@@ -78,34 +60,23 @@ Of course, as of this writing, that day is undoubtedly quite far away. At the sa
 
 Finally, it should be mentioned that the current version of WSGI does not prescribe any specific mechanism for "deploying" an application for use with a web server or server gateway. Currently, this is necessarily determined by the server or gateway implementation. Once enough servers and frameworks have implemented WSGI to provide hands-on experience with various deployment requirements, it may make sense to create another PEP describing
 
-## pyEchoNext goals
-
-pyEchoNext is a universal tool with the ability to make a monolithic web application, or vice versa, a modular web application. Django was too big and clumsy for us, flask or fastapi were too small. Therefore, we decided to take some features from django and flask/fastapi, combine them and make it all symbiotic. So that you can make a large monolithic project or a small service. And to turn a small service into a large application or vice versa, a minimum of effort was required.
+## Integer pyEchoNext
+pyEchoNext is a universal tool with the ability to make a monolithic web application, or vice versa, a modular web application. Django was too big and clumsy for us, flask or fastapi was too small. Therefore, we decided to take some features from django and flask/fastapi, combine them and make it all symbiotic. So that you can make a large monolithic project or a small service. And turning a small service into a large application or vice versa required a minimum of effort.
 
 Our goals were also to make all this as clear as possible, developer-friendly, and add the ability to integrate third-party libraries.
 
 As a result, the main characteristics of the project are as follows:
 
 1. Goal: Create a universal multi-faceted web framework in python
-
 2. Tasks:
-
 + Find the good and bad sides of Flask, FastAPI
-
 + Find the good and bad sides of Django
-
 + Compare the capabilities of existing frameworks
-
 + Selection of the best features
-
 + Symbiosis of features into one whole
-
 + Build project code according to SOLID and OOP principles, easily extensible, scalable and complementary.
-
 + Make the code fast and productive, give freedom to the user and developer
-
 3. Problem: at the moment there are very few universal frameworks that allow you to create both a large monolithic application and a fast small service.
-
 4. Relevance: the web sphere is very popular at the moment, the ability to work with web frameworks, abstractions, and know the structure of sites will help everyone.
 
 ---

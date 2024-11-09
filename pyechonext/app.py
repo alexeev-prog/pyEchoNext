@@ -18,6 +18,7 @@ from pyechonext.utils.exceptions import (
 from pyechonext.utils import _prepare_url
 from pyechonext.config import Settings
 from pyechonext.middleware import BaseMiddleware
+from pyechonext.i18n.locale import JSONLocaleLoader
 
 
 class ApplicationType(Enum):
@@ -43,6 +44,7 @@ class EchoNext:
 		"application_type",
 		"urls",
 		"routes",
+		"locale_loader",
 	)
 
 	def __init__(
@@ -60,12 +62,14 @@ class EchoNext:
 		:type		app_name:		   str
 		:param		settings:		   The settings
 		:type		settings:		   Settings
-		:param		middlewares:	  The middlewares
-		:type		middlewares:	  List[BaseMiddleware]
+		:param		middlewares:	   The middlewares
+		:type		middlewares:	   List[BaseMiddleware]
 		:param		urls:			   The urls
 		:type		urls:			   Array
 		:param		application_type:  The application type
 		:type		application_type:  Optional[ApplicationType]
+		:param		locale:			   The locale
+		:type		locale:			   str
 		"""
 		self.app_name = app_name
 		self.settings = settings
@@ -73,6 +77,9 @@ class EchoNext:
 		self.application_type = application_type
 		self.routes = {}
 		self.urls = urls
+		self.locale_loader = JSONLocaleLoader(
+			self.settings.LOCALE, self.settings.LOCALE_DIR
+		)
 		logger.debug(f"Application {self.application_type.value}: {self.app_name}")
 
 		if self.application_type == ApplicationType.TEAPOT:
@@ -255,8 +262,14 @@ class EchoNext:
 
 			if isinstance(result, Response):
 				response = result
+
+				if response.use_i18n:
+					response.body = self.locale_loader.get_string(response.body)
 			else:
-				response.body = result
+				response.body = self.locale_loader.get_string(result)
+
+				if not response.use_i18n:
+					response.body = result
 		else:
 			raise URLNotFound(f'URL "{request.path}" not found.')
 

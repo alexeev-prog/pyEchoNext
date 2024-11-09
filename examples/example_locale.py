@@ -4,6 +4,7 @@ from pyechonext.app import ApplicationType, EchoNext
 from pyechonext.views import View
 from pyechonext.urls import URL, IndexView
 from pyechonext.config import SettingsLoader, SettingsConfigType
+from pyechonext.response import Response
 from pyechonext.template_engine.jinja import render_template
 from pyechonext.middleware import middlewares
 from pyechonext.docsgen import ProjDocumentation
@@ -24,7 +25,7 @@ class UsersView(View):
 
 
 url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
-config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'example_module.py')
+config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'el_config.py')
 settings = config_loader.get_settings()
 echonext = EchoNext(
 	__name__,
@@ -57,7 +58,7 @@ class BooksResource(View):
 		:returns:   result
 		:rtype:     str
 		"""
-		return f"GET Params: {request.GET}"
+		return Response(request, body="title", use_i18n=True)
 
 	def post(self, request, response, **kwargs):
 		"""

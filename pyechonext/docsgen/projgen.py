@@ -10,7 +10,7 @@ from pyechonext.docsgen.document import (
 )
 
 
-class APIDocumentation:
+class ProjDocumentation:
 	"""
 	This class describes an api documentation.
 	"""
@@ -31,7 +31,7 @@ class APIDocumentation:
 		Generate documentation
 		"""
 		section = self._generate_introduction()
-		subsections = self._generate_subsections(section)
+		self._generate_subsections(section)
 		folder = DocumentFolder(
 			"api",
 			f"{self.app_name}/docs",
@@ -42,8 +42,8 @@ class APIDocumentation:
 
 		project_manager = ProjectManager(
 			f"{self.app_name}",
-			"RESTful API Application",
-			"API application based on pyEchoNext web-framework",
+			"Project Web Application",
+			"Project application based on pyEchoNext web-framework",
 			f"{self.app_name}",
 			f"{self.app_name}",
 			f"{self.app_name}",
@@ -62,8 +62,8 @@ class APIDocumentation:
 		:rtype:		InitiationSection
 		"""
 		section = InitiationSection(
-			f"API {self.app_name}",
-			f"API Documentation for {self.app_name}",
+			f"Project {self.app_name}",
+			f"Project Documentation for {self.app_name}",
 			{"Routes": ", ".join(self.app.routes.keys())},
 		)
 		return section

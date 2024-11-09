@@ -29,6 +29,8 @@ class Settings:
 	BASE_DIR: str
 	TEMPLATES_DIR: str
 	SECRET_KEY: str
+	LOCALE: str = "DEFAULT"
+	LOCALE_DIR: str = None
 
 
 class SettingsConfigType(Enum):
@@ -87,7 +89,9 @@ class SettingsLoader:
 		config = {
 			"BASE_DIR": os.environ.get("PEN_BASE_DIR"),
 			"TEMPLATES_DIR": os.environ.get("PEN_TEMPLATES_DIR"),
-			"SECRET_KEY": os.environ.get("PEN_SECRET_KEY")
+			"SECRET_KEY": os.environ.get("PEN_SECRET_KEY"),
+			"LOCALE": os.environ.get("PEN_LOCALE", "DEFAULT"),
+			"LOCALE_DIR": os.environ.get("PEN_LOCALE_DIR", None),
 		}
 
 		return config
@@ -104,7 +108,9 @@ class SettingsLoader:
 		return {
 			"BASE_DIR": config_module.BASE_DIR,
 			"TEMPLATES_DIR": config_module.TEMPLATES_DIR,
-			"SECRET_KEY": config_module.SECRET_KEY
+			"SECRET_KEY": config_module.SECRET_KEY,
+			"LOCALE": config_module.LOCALE,
+			"LOCALE_DIR": config_module.LOCALE_DIR,
 		}
 
 	def get_settings(self) -> Settings:
@@ -122,5 +128,9 @@ class SettingsLoader:
 			self.config = self._load_pymodule_config()
 
 		return Settings(
-			BASE_DIR=self.config["BASE_DIR"], TEMPLATES_DIR=self.config["TEMPLATES_DIR"]
+			BASE_DIR=self.config["BASE_DIR"],
+			TEMPLATES_DIR=self.config["TEMPLATES_DIR"],
+			SECRET_KEY=self.config["SECRET_KEY"],
+			LOCALE=self.config["LOCALE"],
+			LOCALE_DIR=self.config.get("LOCALE_DIR", None),
 		)

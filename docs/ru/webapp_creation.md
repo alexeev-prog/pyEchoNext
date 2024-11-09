@@ -28,13 +28,17 @@ class Settings:
 
 	BASE_DIR: str
 	TEMPLATES_DIR: str
+	SECRET_KEY: str
+	LOCALE: str = "DEFAULT"
+	LOCALE_DIR: str = None
 ```
 
 Создайте экземпляр:
 
 ```python
 settings = Settings(
-	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates",
+	SECRET_KEY='your-secret-key'
 )
 ```
 
@@ -83,6 +87,9 @@ settings = config_loader.get_settings()
 ```env
 PEN_BASE_DIR=.
 PEN_TEMPLATES_DIR=templates
+PEN_SECRET_KEY=secret-key
+PEN_LOCALE=RU_RU
+PEN_LOCALE_DIR=locales
 ```
 
 ### INI
@@ -98,6 +105,8 @@ settings = config_loader.get_settings()
 [Settings]
 BASE_DIR=.
 TEMPLATES_DIR=templates
+SECRET_KEY=secret-key
+LOCALE=DEFAULT
 ```
 
 ### PyModule
@@ -114,6 +123,9 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_DIR = 'templates'
+SECRET_KEY = 'secret-key'
+LOCALE = 'DEFAULT'
+LOCALE_DIR = None
 ```
 
 ## Middlewares
