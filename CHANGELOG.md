@@ -1,3 +1,9 @@
+commit ece3798130409985feab58b683552c7d7821b50f
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Sun Nov 10 01:35:30 2024 +0700
+
+    feat/fix/docs: improve examples, add i18n support, refactor project docs gen, improve docs
+
 commit 4e28ad68cf51d8c8bfe4f1ee235f8e5586a8caa5
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Mon Nov 4 00:41:13 2024 +0700

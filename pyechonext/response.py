@@ -25,6 +25,7 @@ class Response:
 		headers: Optional[Dict[str, str]] = {},
 		content_type: Optional[str] = None,
 		charset: Optional[str] = None,
+		**kwargs,
 	):
 		"""
 		Constructs a new instance.
@@ -43,6 +44,8 @@ class Response:
 		:type		content_type:  str
 		:param		charset:	   The charset
 		:type		charset:	   str
+		:param		kwargs:		   The keywords arguments
+		:type		kwargs:		   dictionary
 		"""
 		if status_code == 200:
 			self.status_code: str = "200 OK"
@@ -70,6 +73,7 @@ class Response:
 		self.extra: dict = {}
 
 		self.use_i18n: bool = use_i18n
+		self.i18n_kwargs = kwargs
 
 		self._update_headers()
 

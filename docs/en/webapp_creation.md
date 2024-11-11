@@ -29,6 +29,8 @@ This class describes settings.
 BASE_DIR: str
 TEMPLATES_DIR: str
 SECRET_KEY: str
+VERSION: str = '1.0.0'
+DESCRIPTION: str = 'Echonext webapp'
 LOCALE: str = "DEFAULT"
 LOCALE_DIR: str = None
 ```
@@ -90,6 +92,8 @@ PEN_TEMPLATES_DIR=templates
 PEN_SECRET_KEY=secret-key
 PEN_LOCALE=RU_RU
 PEN_LOCALE_DIR=local
+PEN_VERSION=1.0.0
+PEN_DESCRIPTION=Example
 ```
 
 ### THIS
@@ -107,6 +111,8 @@ BASE_DIR=.
 TEMPLATES_DIR=templates
 SECRET_KEY=secret-key
 LOCALE=DEFAULT
+VERSION=1.0.0
+DESCRIPTION=Example
 ```
 
 ### PyModule
@@ -124,6 +130,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATES_DIR = 'templates'
 SECRET_KEY = 'secret-key'
+VERSION = '1.0.0'
+DESCRIPTION = 'Echonext webapp'
 LOCALE = 'DEFAULT'
 LOCALE_DIR = None
 ```

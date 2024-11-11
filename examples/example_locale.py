@@ -8,6 +8,7 @@ from pyechonext.response import Response
 from pyechonext.template_engine.jinja import render_template
 from pyechonext.middleware import middlewares
 from pyechonext.docsgen import ProjDocumentation
+from pyechonext.apidoc_ui import APIDocumentation
 
 
 class UsersView(View):
@@ -34,11 +35,17 @@ echonext = EchoNext(
 	urls=url_patterns,
 	application_type=ApplicationType.HTML,
 )
-apidoc = ProjDocumentation(echonext)
+apidoc = APIDocumentation(echonext)
+projdoc = ProjDocumentation(echonext)
+
+
+@echonext.route_page('/api-docs')
+def api_docs(request, response):
+	return Response(request, content_type='application/json', body=apidoc.generate_spec())
 
 
 @echonext.route_page("/book")
-@apidoc.documentate_route('/book', str, {}, ['GET', 'POST'])
+@projdoc.documentate_route('/book', str, {}, ['GET', 'POST'])
 class BooksResource(View):
 	"""
 	This class describes a books resource.
@@ -58,7 +65,7 @@ class BooksResource(View):
 		:returns:   result
 		:rtype:     str
 		"""
-		return Response(request, body="title", use_i18n=True)
+		return Response(request, body="title %{name}", use_i18n=True, name='Localization Site')
 
 	def post(self, request, response, **kwargs):
 		"""
@@ -74,7 +81,7 @@ class BooksResource(View):
 		:returns:   result
 		:rtype:     str
 		"""
-		return f"POST Params: {request.POST}"
+		return echonext.locale_loader.get_string('title %{name}', name='Localization Site')
 
 
-apidoc.generate_documentation()
+projdoc.generate_documentation()

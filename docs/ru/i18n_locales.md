@@ -20,10 +20,35 @@ from pyechonext.response import Request, Response
 # создаем request ...
 # request = ...
 
-response = Response(request, body='title', use_i18n=True)
+# ваш view или route
+	response = Response(request, body='title', use_i18n=True)
 ```
 
 Это будет сигнализировать приложению о том, что в данном Response следует использовать i18n. И приложение будет переводить вашу фразу.
+
+Также вы можете и не возвращать response:
+
+```python
+return echonext.locale_loader.get_string('title')
+```
+
+В echonext есть публичный объект locale_loader, он и является загрузчиком локализации. Метод get_string получает строку из словаря локализации. Как их создавать и читать вы можете увидеть в секции "Создание локализаций" под этой.
+
+Также вы можете использовать форматирование через Response:
+
+```python
+return Response(request, body="title %{name}", use_i18n=True, name='Localization site')
+```
+
+ > ЗАПРЕЩЕНЫ следующие аргументы (они заняты): `request: Request, use_i18n: bool = False, status_code: Optional[int] = 200, body: Optional[str] = None, headers: Optional[Dict[str, str]] = {}, content_type: Optional[str] = None, charset: Optional[str] = None, **kwargs`
+
+Но для локализации мы рекомендуем возвращать контент, а не Response, особенно если вам требуется использовать наименования выше.
+
+И вы можете как раз использовать форматирование напрямую:
+
+```python
+return echonext.locale_loader.get_string('title %{name}', name='Localization Site')
+``` 
 
 ## Создание локализаций
 В приложение вы передаете обязательный параметр Settings. В нем есть два поля относящиеся к локализации:

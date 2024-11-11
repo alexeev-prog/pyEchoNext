@@ -29,6 +29,8 @@ class Settings:
 	BASE_DIR: str
 	TEMPLATES_DIR: str
 	SECRET_KEY: str
+	VERSION: str = "1.0.0"
+	DESCRIPTION: str = "Echonext webapp"
 	LOCALE: str = "DEFAULT"
 	LOCALE_DIR: str = None
 
@@ -57,10 +59,10 @@ class SettingsLoader:
 		:param		filename:	  The filename
 		:type		filename:	  str
 		"""
-		self.config_type = config_type
-		self.filename = filename
+		self.config_type: SettingsConfigType = config_type
+		self.filename: str = filename
 
-		self.filename = Path(self.filename)
+		self.filename: Path = Path(self.filename)
 
 		if not self.filename.exists():
 			raise FileNotFoundError(f'Config file "{self.filename}" don\'t exists.')
@@ -92,6 +94,8 @@ class SettingsLoader:
 			"SECRET_KEY": os.environ.get("PEN_SECRET_KEY"),
 			"LOCALE": os.environ.get("PEN_LOCALE", "DEFAULT"),
 			"LOCALE_DIR": os.environ.get("PEN_LOCALE_DIR", None),
+			"VERSION": os.environ.get("PEN_VERSION", "1.0.0"),
+			"DESCRIPTION": os.environ.get("PEN_DESCRIPTION", "EchoNext webapp"),
 		}
 
 		return config
@@ -111,6 +115,8 @@ class SettingsLoader:
 			"SECRET_KEY": config_module.SECRET_KEY,
 			"LOCALE": config_module.LOCALE,
 			"LOCALE_DIR": config_module.LOCALE_DIR,
+			"VERSION": config_module.VERSION,
+			"DESCRIPTION": config_module.DESCRIPTION,
 		}
 
 	def get_settings(self) -> Settings:
@@ -128,9 +134,11 @@ class SettingsLoader:
 			self.config = self._load_pymodule_config()
 
 		return Settings(
-			BASE_DIR=self.config["BASE_DIR"],
-			TEMPLATES_DIR=self.config["TEMPLATES_DIR"],
-			SECRET_KEY=self.config["SECRET_KEY"],
-			LOCALE=self.config["LOCALE"],
+			BASE_DIR=self.config.get("BASE_DIR", "."),
+			TEMPLATES_DIR=self.config.get("TEMPLATES_DIR", "templates"),
+			SECRET_KEY=self.config.get("SECRET_KEY", ""),
+			LOCALE=self.config.get("LOCALE", "DEFAULT"),
 			LOCALE_DIR=self.config.get("LOCALE_DIR", None),
+			VERSION=self.config.get("VERSION", "1.0.0"),
+			DESCRIPTION=self.config.get("DESCRIPTION", "EchoNext webapp"),
 		)

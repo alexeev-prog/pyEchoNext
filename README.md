@@ -41,8 +41,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last stable version: 0.4.3 alpha
- > Last unstable version: 0.5.3 alpha
+ > Last stable version: 0.5.4 alpha
 
 ## 🤔 Why Choose SqlSymphony?
 
@@ -95,6 +94,18 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## ⚙️ Functionality
+
+ + i18n localization
+ + basic project documentation generator
+ + request/response
+ + middlewares (with basic session cookie middleware)
+ + views and routes
+ + settings and config loader
+ + built-in template engine and Jinja2
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## 🚀 Getting Started
 
 pyEchoNext is available on [PyPI](https://pypi.org/project/pyechonext). Simply install the package into your project environment with PIP:
@@ -122,6 +133,113 @@ exampleapp/
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 💻 Usage Examples
+
+### Localization i18n & OpenAPI specification generation & Settings loader from python module
+
+```python
+import os
+from pyechonext.utils.exceptions import MethodNotAllow
+from pyechonext.app import ApplicationType, EchoNext
+from pyechonext.views import View
+from pyechonext.urls import URL, IndexView
+from pyechonext.config import SettingsLoader, SettingsConfigType
+from pyechonext.response import Response
+from pyechonext.template_engine.jinja import render_template
+from pyechonext.middleware import middlewares
+from pyechonext.docsgen import ProjDocumentation
+from pyechonext.apidoc_ui import APIDocumentation
+
+
+class UsersView(View):
+	def get(self, request, response, **kwargs):
+		return render_template(
+			request,
+			"index.html",
+			user_name="User",
+			session_id=request.session_id,
+			friends=["Bob", "Anna", "John"],
+		)
+
+	def post(self, request, response, **kwargs):
+		raise MethodNotAllow(f"Request {request.path}: method not allow")
+
+
+url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
+
+config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'el_config.py')
+settings = config_loader.get_settings()
+echonext = EchoNext(
+	__name__,
+	settings,
+	middlewares,
+	urls=url_patterns,
+	application_type=ApplicationType.HTML,
+)
+apidoc = APIDocumentation(echonext)
+projdoc = ProjDocumentation(echonext)
+
+
+@echonext.route_page('/api-docs')
+def api_docs(request, response):
+	return Response(request, content_type='application/json', body=apidoc.generate_spec())
+
+
+@echonext.route_page("/book")
+@projdoc.documentate_route('/book', str, {}, ['GET', 'POST'])
+class BooksResource(View):
+	"""
+	This class describes a books resource.
+	"""
+
+	def get(self, request, response, **kwargs):
+		"""
+		get queries
+
+		:param      request:   The request
+		:type       request:   Request
+		:param      response:  The response
+		:type       response:  Response
+		:param      kwargs:    The keywords arguments
+		:type       kwargs:    dictionary
+
+		:returns:   result
+		:rtype:     str
+		"""
+		return Response(request, body="title %{name}", use_i18n=True, name='Localization Site')
+
+	def post(self, request, response, **kwargs):
+		"""
+		post queries
+
+		:param      request:   The request
+		:type       request:   Request
+		:param      response:  The response
+		:type       response:  Response
+		:param      kwargs:    The keywords arguments
+		:type       kwargs:    dictionary
+
+		:returns:   result
+		:rtype:     str
+		"""
+		return echonext.locale_loader.get_string('title %{name}', name='Localization Site')
+
+
+projdoc.generate_documentation()
+```
+
+`el_config.py`:
+
+```python
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATES_DIR = 'templates'
+SECRET_KEY = 'secret-key'
+LOCALE = 'RU_RU'
+LOCALE_DIR = 'locales'
+VERSION = "0.1.0"
+DESCRIPTION = 'Example echonext webapp'
+```
 
 ### Advanced app with flask-like and django-like routes
 Django-line classes with get-post methods and routing pages. And with the built-in template engine!
@@ -357,9 +475,8 @@ Our future goals for pyEchoNext include:
 
 - 📚 Improve middlewares
 - 🚀 Add async support
-
 - ✅ Improve logging
-- 🌍 Improve auth
+- 🌍 Add auth
 - 🌐 More stability and scalablity
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -381,6 +498,7 @@ Extended documentation and framework specifications are available at the followi
 3. [Creating a web application](./docs/en/webapp_creation.md)
 4. [Creating routes (routes&views)](./docs/en/routes_and_views.md)
 5. [Request/Response](./docs/en/requests_responses.md)
+6. [Localization i18n](./docs/en/i18n_locales.md)
 
 ### Russian / Русский
 
@@ -389,6 +507,7 @@ Extended documentation and framework specifications are available at the followi
 3. [Создание веб-приложения](./docs/ru/webapp_creation.md)
 4. [Создание маршрутов (routes&views)](./docs/ru/routes_and_views.md)
 5. [Request/Response](./docs/ru/requests_responses.md)
+6. [Локализация i18n](./docs/ru/i18n_locales.md)
 
 ## License
 Distributed under the GNU LGPL 2.1 License. See [LICENSE](https://github.com/alexeev-prog/pyEchoNext/blob/main/LICENSE) for more information.

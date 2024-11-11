@@ -5,3 +5,5 @@ TEMPLATES_DIR = 'templates'
 SECRET_KEY = 'secret-key'
 LOCALE = 'DEFAULT'
 LOCALE_DIR = None
+VERSION = 0.1.0
+DESCRIPTION = 'Example echonext webapp'

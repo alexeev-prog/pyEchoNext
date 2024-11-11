@@ -1,6 +1,7 @@
 import inspect
 from enum import Enum
 from typing import Iterable, Callable, List, Type, Tuple, Optional, Union
+from dataclasses import dataclass
 from socks import method
 from parse import parse
 from loguru import logger
@@ -32,6 +33,12 @@ class ApplicationType(Enum):
 	TEAPOT = "server/teapot"
 
 
+@dataclass
+class HistoryEntry:
+	request: Request
+	response: Response
+
+
 class EchoNext:
 	"""
 	This class describes an EchoNext WSGI Application.
@@ -45,6 +52,7 @@ class EchoNext:
 		"urls",
 		"routes",
 		"locale_loader",
+		"history",
 	)
 
 	def __init__(
@@ -65,7 +73,7 @@ class EchoNext:
 		:param		middlewares:	   The middlewares
 		:type		middlewares:	   List[BaseMiddleware]
 		:param		urls:			   The urls
-		:type		urls:			   Array
+		:type		urls:			   List[URL]
 		:param		application_type:  The application type
 		:type		application_type:  Optional[ApplicationType]
 		:param		locale:			   The locale
@@ -77,6 +85,7 @@ class EchoNext:
 		self.application_type = application_type
 		self.routes = {}
 		self.urls = urls
+		self.history: List[HistoryEntry] = []
 		self.locale_loader = JSONLocaleLoader(
 			self.settings.LOCALE, self.settings.LOCALE_DIR
 		)
@@ -264,7 +273,9 @@ class EchoNext:
 				response = result
 
 				if response.use_i18n:
-					response.body = self.locale_loader.get_string(response.body)
+					response.body = self.locale_loader.get_string(
+						response.body, **response.i18n_kwargs
+					)
 			else:
 				response.body = self.locale_loader.get_string(result)
 
@@ -274,6 +285,22 @@ class EchoNext:
 			raise URLNotFound(f'URL "{request.path}" not found.')
 
 		return response
+
+	def switch_i18n_locale(self, locale: str, locale_dir: str):
+		"""
+		Switch to another locale i18n
+
+		:param		locale:		 The locale
+		:type		locale:		 str
+		:param		locale_dir:	 The locale dir
+		:type		locale_dir:	 str
+		"""
+		logger.info(f"Switch to another locale: {locale_dir}/{locale}")
+		self.locale_loader.locale = locale
+		self.locale_loader.directory = locale_dir
+		self.locale_loader.translations = self.locale_loader.load_locale(
+			self.locale_loader.locale, self.locale_loader.directory
+		)
 
 	def __call__(self, environ: dict, start_response: method) -> Iterable:
 		"""
@@ -307,4 +334,5 @@ class EchoNext:
 			self._apply_middleware_to_response(response)
 			self._default_response(response, error=err)
 
+		self.history.append(HistoryEntry(request=request, response=response))
 		return response(environ, start_response)

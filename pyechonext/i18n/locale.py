@@ -44,8 +44,8 @@ class JSONLocaleLoader(LocaleInterface):
 		:param		directory:	The directory
 		:type		directory:	str
 		"""
-		self.locale = locale
-		self.directory = directory
+		self.locale: str = locale
+		self.directory: str = directory
 		self.translations: Dict[str, str] = self.load_locale(
 			self.locale, self.directory
 		)
@@ -74,17 +74,28 @@ class JSONLocaleLoader(LocaleInterface):
 		except FileNotFoundError:
 			raise LocaleNotFound(f"[i18n] Locale file at {file_path} not found")
 
-	def get_string(self, key: str) -> str:
+	def get_string(self, key: str, **kwargs) -> str:
 		"""
 		Gets the string.
 
-		:param		key:  The key
-		:type		key:  str
+		:param		key:	 The key
+		:type		key:	 str
+		:param		kwargs:	 The keywords arguments
+		:type		kwargs:	 dictionary
 
 		:returns:	The string.
 		:rtype:		str
 		"""
-		return self.translations.get(key, key)
+		result = ""
+
+		for word in key.split(" "):
+			result += f"{self.translations.get(word, word)} "
+
+		if kwargs:
+			for name, value in kwargs.items():
+				result = result.replace(f'{f"%{{{name}}}"}', value)
+
+		return result.strip()
 
 
 class LanguageManager:
