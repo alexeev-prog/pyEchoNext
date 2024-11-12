@@ -1,3 +1,15 @@
+commit a709254bea3fe0b653a5a9117f7cd8f8989253ac
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Tue Nov 12 23:41:51 2024 +0700
+
+    feat/fix: create l10n, fix i18n
+
+commit f6f5d9dc38988ba5b474dead9d7a52c0c073aa7c
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Mon Nov 11 23:36:01 2024 +0700
+
+    improve settings, improve i18n, improve docs, add openapi docs spec gen
+
 commit ece3798130409985feab58b683552c7d7821b50f
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Sun Nov 10 01:35:30 2024 +0700
