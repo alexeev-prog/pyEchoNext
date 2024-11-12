@@ -1,5 +1,3 @@
-
-
 class APIDocumentation:
 	"""
 	This class describes an API documentation.
@@ -43,7 +41,10 @@ class APIDocumentation:
 		for url in self._app.urls:
 			spec["paths"][url.url] = {
 				"get": {
-					"summary": str(url.view.__doc__).strip().replace('\n', '.').replace('\t', ';'),
+					"summary": str(url.view.__doc__)
+					.strip()
+					.replace("\n", ".")
+					.replace("\t", ";"),
 					"responses": {"200": {"description": "Successful response"}},
 				}
 			}
@@ -51,7 +52,10 @@ class APIDocumentation:
 		for path, handler in self._app.routes.items():
 			spec["paths"][path] = {
 				"get": {
-					"summary": str(handler.__doc__).strip().replace('\n', '.').replace('\t', ';'),
+					"summary": str(handler.__doc__)
+					.strip()
+					.replace("\n", ".")
+					.replace("\t", ";"),
 					"responses": {"200": {"description": "Successful response"}},
 				}
 			}

@@ -19,7 +19,8 @@ from pyechonext.utils.exceptions import (
 from pyechonext.utils import _prepare_url
 from pyechonext.config import Settings
 from pyechonext.middleware import BaseMiddleware
-from pyechonext.i18n.locale import JSONLocaleLoader
+from pyechonext.i18n_l10n.i18n import JSONi18nLoader
+from pyechonext.i18n_l10n.l10n import JSONLocalizationLoader
 
 
 class ApplicationType(Enum):
@@ -51,7 +52,8 @@ class EchoNext:
 		"application_type",
 		"urls",
 		"routes",
-		"locale_loader",
+		"i18n_loader",
+		"l10n_loader",
 		"history",
 	)
 
@@ -76,8 +78,6 @@ class EchoNext:
 		:type		urls:			   List[URL]
 		:param		application_type:  The application type
 		:type		application_type:  Optional[ApplicationType]
-		:param		locale:			   The locale
-		:type		locale:			   str
 		"""
 		self.app_name = app_name
 		self.settings = settings
@@ -86,7 +86,10 @@ class EchoNext:
 		self.routes = {}
 		self.urls = urls
 		self.history: List[HistoryEntry] = []
-		self.locale_loader = JSONLocaleLoader(
+		self.i18n_loader = JSONi18nLoader(
+			self.settings.LOCALE, self.settings.LOCALE_DIR
+		)
+		self.l10n_loader = JSONLocalizationLoader(
 			self.settings.LOCALE, self.settings.LOCALE_DIR
 		)
 		logger.debug(f"Application {self.application_type.value}: {self.app_name}")
@@ -273,11 +276,11 @@ class EchoNext:
 				response = result
 
 				if response.use_i18n:
-					response.body = self.locale_loader.get_string(
+					response.body = self.i18n_loader.get_string(
 						response.body, **response.i18n_kwargs
 					)
 			else:
-				response.body = self.locale_loader.get_string(result)
+				response.body = self.i18n_loader.get_string(result)
 
 				if not response.use_i18n:
 					response.body = result
@@ -296,10 +299,10 @@ class EchoNext:
 		:type		locale_dir:	 str
 		"""
 		logger.info(f"Switch to another locale: {locale_dir}/{locale}")
-		self.locale_loader.locale = locale
-		self.locale_loader.directory = locale_dir
-		self.locale_loader.translations = self.locale_loader.load_locale(
-			self.locale_loader.locale, self.locale_loader.directory
+		self.i18n_loader.locale = locale
+		self.i18n_loader.directory = locale_dir
+		self.i18n_loader.translations = self.i18n_loader.load_locale(
+			self.i18n_loader.locale, self.i18n_loader.directory
 		)
 
 	def __call__(self, environ: dict, start_response: method) -> Iterable:

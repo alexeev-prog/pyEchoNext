@@ -1,4 +1,15 @@
 {
-	"title": "pyEchoNext Веб-приложение с локалью",
-	"example one": "пример один"
+	"i18n": {
+		"title": "pyEchoNext Веб-приложение с локалью",
+		"example one": "пример один"
+	},
+	"l10n": {
+		"date_format": "%Y-%m-%d",
+		"time_format": "%H:%M",
+		"date_time_fromat": "%Y-%m-%d %H:%M",
+		"thousands_separator": ",",
+		"decimal_separator": ".",
+		"currency_symbol": "$",
+		"currency_format": "{symbol}{amount}"
+	}
 }

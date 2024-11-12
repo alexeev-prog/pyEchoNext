@@ -3,10 +3,10 @@ import os
 from abc import ABC, abstractmethod
 from typing import Dict
 from loguru import logger
-from pyechonext.utils.exceptions import LocaleNotFound
+from pyechonext.utils.exceptions import InternationalizationNotFound
 
 
-class LocaleInterface(ABC):
+class i18nInterface(ABC):
 	"""
 	This class describes a locale interface.
 	"""
@@ -24,8 +24,23 @@ class LocaleInterface(ABC):
 		"""
 		raise NotImplementedError
 
+	@abstractmethod
+	def load_locale(self, locale: str, directory: str) -> Dict[str, str]:
+		"""
+		Loads a locale.
 
-class JSONLocaleLoader(LocaleInterface):
+		:param		locale:		The locale
+		:type		locale:		str
+		:param		directory:	The directory
+		:type		directory:	str
+
+		:returns:	locale translations
+		:rtype:		Dict[str, str]
+		"""
+		raise NotImplementedError
+
+
+class JSONi18nLoader(i18nInterface):
 	"""
 	This class describes a json locale loader.
 	"""
@@ -70,9 +85,15 @@ class JSONLocaleLoader(LocaleInterface):
 		try:
 			logger.info(f"Load locale: {file_path} [{self.locale}]")
 			with open(file_path, "r", encoding="utf-8") as file:
-				return json.load(file)
+				i18n = json.load(file).get("i18n", None)
+				if i18n is None:
+					return json.load(file)
+				else:
+					return i18n
 		except FileNotFoundError:
-			raise LocaleNotFound(f"[i18n] Locale file at {file_path} not found")
+			raise InternationalizationNotFound(
+				f"[i18n] i18n file at {file_path} not found"
+			)
 
 	def get_string(self, key: str, **kwargs) -> str:
 		"""
@@ -103,12 +124,12 @@ class LanguageManager:
 	This class describes a language manager.
 	"""
 
-	def __init__(self, loader: LocaleInterface):
+	def __init__(self, loader: i18nInterface):
 		"""
 		Constructs a new instance.
 
 		:param		loader:	 The loader
-		:type		loader:	 LocaleInterface
+		:type		loader:	 i18nInterface
 		"""
 		self.loader = loader
 

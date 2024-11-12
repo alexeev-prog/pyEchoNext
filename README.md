@@ -41,7 +41,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last stable version: 0.5.4 alpha
+ > Last stable version: 0.5.5 alpha
 
 ## 🤔 Why Choose SqlSymphony?
 
@@ -498,7 +498,7 @@ Extended documentation and framework specifications are available at the followi
 3. [Creating a web application](./docs/en/webapp_creation.md)
 4. [Creating routes (routes&views)](./docs/en/routes_and_views.md)
 5. [Request/Response](./docs/en/requests_responses.md)
-6. [Localization i18n](./docs/en/i18n_locales.md)
+6. [Localization i18n/l10n](./docs/en/i18n_locales.md)
 
 ### Russian / Русский
 
@@ -507,7 +507,7 @@ Extended documentation and framework specifications are available at the followi
 3. [Создание веб-приложения](./docs/ru/webapp_creation.md)
 4. [Создание маршрутов (routes&views)](./docs/ru/routes_and_views.md)
 5. [Request/Response](./docs/ru/requests_responses.md)
-6. [Локализация i18n](./docs/ru/i18n_locales.md)
+6. [Локализация i18n/l10n](./docs/ru/i18n_locales.md)
 
 ## License
 Distributed under the GNU LGPL 2.1 License. See [LICENSE](https://github.com/alexeev-prog/pyEchoNext/blob/main/LICENSE) for more information.

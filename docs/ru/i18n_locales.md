@@ -1,10 +1,11 @@
-# pyEchoNext / i18n - локализация
+# pyEchoNext / i18n, l10n - локализация и интернационализация
 
 ---
 
 pyEchoNext с версии 0.5.3 поддерживает i18n (пока в базовом виде).
 
 i18n — это сокращённое обозначение процесса интернационализации.
+l10n - локализация, то есть процесс учитывания культуры и правила написания дат, денежных сумм, чисел.
 
 Интернационализация — это процесс разработки приложения, при котором его код независим от любых языковых и культурных особенностей региона или страны. В результате приложение становится гибким и может легко адаптироваться под разные языковые и культурные настройки.
 
@@ -29,10 +30,16 @@ from pyechonext.response import Request, Response
 Также вы можете и не возвращать response:
 
 ```python
-return echonext.locale_loader.get_string('title')
+return echonext.i18n_loader.get_string('title')
 ```
 
-В echonext есть публичный объект locale_loader, он и является загрузчиком локализации. Метод get_string получает строку из словаря локализации. Как их создавать и читать вы можете увидеть в секции "Создание локализаций" под этой.
+И для l10n вы можете возвращать только контент (не Response):
+
+```python
+return echonext.l10n_loader.format_currency(1305.50)
+```
+
+В echonext есть публичный объект i18n_loader, он и является загрузчиком локализации. Метод get_string получает строку из словаря локализации. Как их создавать и читать вы можете увидеть в секции "Создание локализаций" под этой.
 
 Также вы можете использовать форматирование через Response:
 
@@ -47,7 +54,7 @@ return Response(request, body="title %{name}", use_i18n=True, name='Localization
 И вы можете как раз использовать форматирование напрямую:
 
 ```python
-return echonext.locale_loader.get_string('title %{name}', name='Localization Site')
+return echonext.i18n_loader.get_string('title %{name}', name='Localization Site')
 ``` 
 
 ## Создание локализаций
@@ -56,7 +63,7 @@ return echonext.locale_loader.get_string('title %{name}', name='Localization Sit
  + `LOCALE: str = "DEFAULT"`
  + `LOCALE_DIR: str = None`
 
-По умолчанию они создают дефолтную локаль. Она выглядит так:
+По умолчанию они создают дефолтную локаль. Она выглядит так для i18n:
 
 ```python
 DEFAULT_LOCALE = {
@@ -65,14 +72,27 @@ DEFAULT_LOCALE = {
 }
 ```
 
+А так для l10n:
+
 То есть, если мы в response.body введем только title или только description, мы получим в итоге фразу "pyEchoNext Example Website" или "This web application is an example of the pyEchonext web framework.".
 
 Но как создать свои локали? Все просто. Создайте директорию с файлами локалей, мы рекомендуем locales, и в ней json-файлы локализации. Допустим RU_RU.json:
 
 ```json
 {
-	"title": "pyEchoNext Веб-приложение с локалью",
-	"example one": "пример один"
+	"i18n": {
+		"title": "pyEchoNext Веб-приложение с локалью",
+		"example one": "пример один"
+	},
+	"l10n": {
+		"date_format": "%Y-%m-%d",
+		"time_format": "%H:%M",
+		"date_time_fromat": "%Y-%m-%d %H:%M",
+		"thousands_separator": ",",
+		"decimal_separator": ".",
+		"currency_symbol": "$",
+		"currency_format": "{symbol}{amount}"
+	}
 }
 ```
 
