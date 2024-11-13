@@ -41,12 +41,23 @@ class APIDocumentation:
 		for url in self._app.urls:
 			spec["paths"][url.url] = {
 				"get": {
-					"summary": str(url.view.__doc__)
-					.strip()
-					.replace("\n", ".")
-					.replace("\t", ";"),
-					"responses": {"200": {"description": "Successful response"}},
-				}
+					"summary": str(f"{url.view.__doc__}. {url.view.get.__doc__}")
+					.replace("\n", "<br>")
+					.strip(),
+					"responses": {
+						"200": {"description": "Successful response"},
+						"405": {"description": "Method not allow"},
+					},
+				},
+				"post": {
+					"summary": str(f"{url.view.__doc__}. {url.view.post.__doc__}")
+					.replace("\n", "<br>")
+					.strip(),
+					"responses": {
+						"200": {"description": "Successful response"},
+						"405": {"description": "Method not allow"},
+					},
+				},
 			}
 
 		for path, handler in self._app.routes.items():
@@ -56,8 +67,21 @@ class APIDocumentation:
 					.strip()
 					.replace("\n", ".")
 					.replace("\t", ";"),
-					"responses": {"200": {"description": "Successful response"}},
-				}
+					"responses": {
+						"200": {"description": "Successful response"},
+						"405": {"description": "Method not allow"},
+					},
+				},
+				"post": {
+					"summary": str(handler.__doc__)
+					.strip()
+					.replace("\n", ".")
+					.replace("\t", ";"),
+					"responses": {
+						"200": {"description": "Successful response"},
+						"405": {"description": "Method not allow"},
+					},
+				},
 			}
 
 		return spec

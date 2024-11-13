@@ -8,7 +8,7 @@ from pyechonext.response import Response
 from pyechonext.template_engine.jinja import render_template
 from pyechonext.middleware import middlewares
 from pyechonext.docsgen import ProjDocumentation
-from pyechonext.apidoc_ui import APIDocumentation
+from pyechonext.apidoc_ui import APIDocumentation, APIDocUI
 
 
 class UsersView(View):
@@ -41,7 +41,8 @@ projdoc = ProjDocumentation(echonext)
 
 @echonext.route_page('/api-docs')
 def api_docs(request, response):
-	return Response(request, content_type='application/json', body=apidoc.generate_spec())
+	ui = APIDocUI(apidoc.generate_spec())
+	return ui.generate_html_page()
 
 
 @echonext.route_page("/book")

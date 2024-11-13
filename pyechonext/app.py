@@ -304,6 +304,11 @@ class EchoNext:
 		self.i18n_loader.translations = self.i18n_loader.load_locale(
 			self.i18n_loader.locale, self.i18n_loader.directory
 		)
+		self.l10n_loader.locale = locale
+		self.l10n_loader.directory = directory
+		self.i18n_loader.locale_settings = self.l10n_loader.load_locale(
+			self.l10n_loader.locale, self.l10n_loader.directory
+		)
 
 	def __call__(self, environ: dict, start_response: method) -> Iterable:
 		"""

@@ -1,8 +1,8 @@
 # Initiation-Project example_locale
 Project Documentation for example_locale
 
- + *Creation date*: 2024-11-12 23:30:10
- + *Modification date*: 2024-11-12 23:30:10
+ + *Creation date*: 2024-11-13 19:23:55
+ + *Modification date*: 2024-11-13 19:23:55
 
 ## Routes
 /api-docs, /book
@@ -12,7 +12,7 @@ Project Documentation for example_locale
 ## Subsections
 
 ### /book
-Creation date: 2024-11-12 23:30:10
+Creation date: 2024-11-13 19:23:55
 
 #### Route
 Methods: ['GET', 'POST']

@@ -10,5 +10,6 @@
 
 ## Дополнительные материалы
 
+ + [Как создать свой веб-фреймворк на Python](./article1.md)
  + [ASGI Documentation](https://asgi.readthedocs.io/_/downloads/en/stable/pdf/)
  + [PEP 333](https://peps.python.org/pep-0333/#the-application-framework-side)
