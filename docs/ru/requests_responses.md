@@ -91,12 +91,19 @@ Request также имеет следующие методы:
 **Response** — это ответ, который содержит данные, возвращаемые сервером, в том числе контент, код состояния и заголовки.
 
 ```python
+import json
+from typing import Dict, Iterable, Union, Any, List, Tuple, Optional
+from socks import method
+from loguru import logger
+from pyechonext.request import Request
+
+
 class Response:
 	"""
 	This dataclass describes a response.
 	"""
 
-	default_content_type: str = "application/json"
+	default_content_type: str = "text/html"
 	default_charset: str = "UTF-8"
 	unicode_errors: str = "strict"
 	default_conditional_response: bool = False
@@ -105,26 +112,33 @@ class Response:
 	def __init__(
 		self,
 		request: Request,
+		use_i18n: bool = False,
 		status_code: Optional[int] = 200,
 		body: Optional[str] = None,
 		headers: Optional[Dict[str, str]] = {},
 		content_type: Optional[str] = None,
 		charset: Optional[str] = None,
-		use_i18n: Optional[bool] = False
+		**kwargs,
 	):
 		"""
 		Constructs a new instance.
-		
-		:param      status_code:   The status code
-		:type       status_code:   int
-		:param      body:          The body
-		:type       body:          str
-		:param      headers:       The headers
-		:type       headers:       Dict[str, str]
-		:param      use_i18n:      Use i18n
-		:type       use_i18n:      bool
-		:param      content_type:  The content type
-		:type       content_type:  str
+
+		:param		request:	   The request
+		:type		request:	   Request
+		:param		use_i18n:	   The use i 18 n
+		:type		use_i18n:	   bool
+		:param		status_code:   The status code
+		:type		status_code:   int
+		:param		body:		   The body
+		:type		body:		   str
+		:param		headers:	   The headers
+		:type		headers:	   Dict[str, str]
+		:param		content_type:  The content type
+		:type		content_type:  str
+		:param		charset:	   The charset
+		:type		charset:	   str
+		:param		kwargs:		   The keywords arguments
+		:type		kwargs:		   dictionary
 		"""
 		if status_code == 200:
 			self.status_code: str = "200 OK"
@@ -150,6 +164,9 @@ class Response:
 		self._added_headers: list = []
 		self.request: Request = request
 		self.extra: dict = {}
+
+		self.use_i18n: bool = use_i18n
+		self.i18n_kwargs = kwargs
 
 		self._update_headers()
 

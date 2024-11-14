@@ -7,9 +7,13 @@ The most important parts of web frameworks are:
 + Routing handlers:
 - Simple: `/index`
 - Parameterized: `/article/{article_id}`
-+ Request handlers (views, handlers).
++ Request handlers (views).
++ Middleware
++ Request/Response
++ i18n/l10n
++ Configuration
 
-Basic requirement: the web framework must be supported by a fast, lightweight and efficient server (eg gunicorn). Python has a WSGI guide for this.
+Basic requirement: the web framework must be supported by a fast, lightweight and efficient server (eg gunicorn). Python has a WSGI guide for this - [PEP 333](https://peps.python.org/pep-0333/#the-application-framework-side).
 
 ## Web server design in Python
 
@@ -33,10 +37,10 @@ When developing a web application in python, we encounter the following problems
 + No load balancing between multiple servers.
 + NGINX solves the problem of load balancing, but it cannot run and communicate with Python applications.
 
-Therefore, there is a need to use a WSGI server (Web Server Gateway Interface) and a proxy server (such as NGINX).
+This is why there is a need to use a WSGI server (Web Server Gateway Interface) and a proxy server (such as NGINX).
 
 ## WSGI
-Python currently boasts a wide range of web application frameworks such as Zope, Quixote, Webware, SkunkWeb, PSO and Twisted Web, just to name a few. This wide variety of options can be a challenge for new Python users, as typically their choice of web framework will limit their choice of web servers to use, and vice versa.
+Python currently boasts a wide range of web application frameworks such as Zope, Quixote, Webware, SkunkWeb, PSO, and Twisted Web, just to name a few. This wide variety of options can be a challenge for new Python users, as typically their choice of web framework will limit their choice of web servers to use, and vice versa.
 
 In contrast, although Java has as many web application frameworks available, Java's "servlet" API allows applications written with any Java web application framework to run on any web server that supports the servlet API.
 
@@ -52,7 +56,7 @@ Thus, ease of implementation on both the server side and the interface framework
 
 However, it should be noted that ease of implementation for a framework author is not the same as ease of use for a web application author. WSGI provides a completely "no frills" interface for the framework author, because bells and whistles like response objects and cookie handling would simply prevent existing frameworks from solving these problems. Again, the goal of WSGI is to facilitate simple interoperability between existing servers and applications or frameworks, not to create a new web framework.
 
-It should also be noted that this target does not allow WSGI to require anything that is not already available in deployed versions of Python. Therefore, new standard library modules are not proposed or required by this specification, and nothing in WSGI requires a Python version greater than 2.2.2. (It would be nice, however, for future versions of Python to include support for this interface in the web servers provided by the standard library.)
+It should also be noted that this target does not allow WSGI to require anything that is not already available in deployed versions of Python. Therefore, new standard library modules are not proposed or required by this specification, and nothing in WSGI requires a Python version greater than 2.2.2. (However, it would be nice if future versions of Python included support for this interface in the web servers provided by the standard library.)
 
 In addition to being easy to implement for existing and future frameworks and servers, it should also be easy to create request preprocessors, response postprocessors, and other WSGI-based "middleware" components that look like an application to its containing server, while also acting as a server to its contained applications. If middleware can be both simple and reliable, and WSGI is widely available in servers and frameworks, this allows for the possibility of an entirely new type of Python web application framework: one consisting of loosely coupled WSGI middleware components. Indeed, existing framework authors may even choose to refactor their frameworks' existing services so that they are exposed in a way that becomes more like the libraries used with WSGI and less like monolithic frameworks. This would then allow application developers to select "best-of-breed" components for a specific functionality, rather than committing to all the pros and cons of a single framework.
 
@@ -61,13 +65,13 @@ Of course, as of this writing, that day is undoubtedly quite far away. At the sa
 Finally, it should be mentioned that the current version of WSGI does not prescribe any specific mechanism for "deploying" an application for use with a web server or server gateway. Currently, this is necessarily determined by the server or gateway implementation. Once enough servers and frameworks have implemented WSGI to provide hands-on experience with various deployment requirements, it may make sense to create another PEP describing
 
 ## Integer pyEchoNext
-pyEchoNext is a universal tool with the ability to make a monolithic web application, or vice versa, a modular web application. Django was too big and clumsy for us, flask or fastapi was too small. Therefore, we decided to take some features from django and flask/fastapi, combine them and make it all symbiotic. So that you can make a large monolithic project or a small service. And to turn a small service into a large application or vice versa, a minimum of effort was required.
+pyEchoNext is a universal tool with the ability to make a monolithic web application, or vice versa, a modular web application. Django was too big and clumsy for us, flask or fastapi were too small. Therefore, we decided to take some features from django and flask/fastapi, combine them and make it all symbiotic. So that you can make a large monolithic project or a small service. And to turn a small service into a large application or vice versa, a minimum of effort was required.
 
 Our goals were also to make all this as clear as possible, developer-friendly, and add the ability to integrate third-party libraries.
 
 As a result, the main characteristics of the project are as follows:
 
-1. Goal: Create a universal multifaceted web framework in python
+1. Goal: Create a universal multi-faceted web framework in python
 2. Tasks:
 + Find the good and bad sides of Flask, FastAPI
 + Find the good and bad sides of Django

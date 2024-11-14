@@ -12,57 +12,57 @@ In computer science, request-response or request-replica is one of the basic met
 
 ```python
 class Request:
-"""
-This class describes a request.
-"""
+	"""
+	This class describes a request.
+	"""
 
-def __init__(self, environ: dict, settings: Settings):
-"""
-Constructs a new instance.
+	def __init__(self, environ: dict, settings: Settings):
+		"""
+		Constructs a new instance.
 
-:param		environ:  The environ
-:type		environ:  dict
-"""
-self.environ: dict = environ
-self.settings: Settings = settings
-self.method: str = self.environ["REQUEST_METHOD"]
-self.path: str = self.environ["PATH_INFO"]
-self.GET: dict = self._build_get_params_dict(self.environ["QUERY_STRING"])
-self.POST: dict = self._build_post_params_dict(self.environ["wsgi.input"].read())
-self.user_agent: str = self.environ["HTTP_USER_AGENT"]
-self.extra: dict = {}
+		:param		environ:  The environ
+		:type		environ:  dict
+		"""
+		self.environ: dict = environ
+		self.settings: Settings = settings
+		self.method: str = self.environ["REQUEST_METHOD"]
+		self.path: str = self.environ["PATH_INFO"]
+		self.GET: dict = self._build_get_params_dict(self.environ["QUERY_STRING"])
+		self.POST: dict = self._build_post_params_dict(self.environ["wsgi.input"].read())
+		self.user_agent: str = self.environ["HTTP_USER_AGENT"]
+		self.extra: dict = {}
 
-logger.debug(f"New request created: {self.method} {self.path}")
+		logger.debug(f"New request created: {self.method} {self.path}")
 
-def __getattr__(self, item: Any) -> Union[Any, None]:
-"""
-Magic method for get attrs (from extra)
+	def __getattr__(self, item: Any) -> Union[Any, None]:
+		"""
+		Magic method for get attrs (from extra)
 
-:param		item:  The item
-:type		item:  Any
+		:param		item:  The item
+		:type		item:  Any
 
-:returns:	Item from self.extra or None
-:rtype:		Union[Any, None]
-"""
-return self.extra.get(item, None)
+		:returns:	Item from self.extra or None
+		:rtype:		Union[Any, None]
+		"""
+		return self.extra.get(item, None)
 
-def _build_get_params_dict(self, raw_params: str):
-"""
-Builds a get parameters dictionary.
+	def _build_get_params_dict(self, raw_params: str):
+		"""
+		Builds a get parameters dictionary.
 
-:param		raw_params:	 The raw parameters
-:type		raw_params:	 str
-"""
-return parse_qs(raw_params)
+		:param		raw_params:	 The raw parameters
+		:type		raw_params:	 str
+		"""
+		return parse_qs(raw_params)
 
-def _build_post_params_dict(self, raw_params: bytes):
-"""
-Builds a post parameters dictionary.
+	def _build_post_params_dict(self, raw_params: bytes):
+		"""
+		Builds a post parameters dictionary.
 
-:param		raw_params:	 The raw parameters
-:type		raw_params:	 bytes
-"""
-return parse_qs(raw_params.decode())
+		:param		raw_params:	 The raw parameters
+		:type		raw_params:	 bytes
+		"""
+		return parse_qs(raw_params.decode())
 ```
 
 Request requires the following arguments to create:
@@ -91,176 +91,194 @@ Request also has the following methods:
 **Response** is a response that contains the data returned by the server, including content, status code, and headers.
 
 ```python
+import json
+from typing import Dict, Iterable, Union, Any, List, Tuple, Optional
+from socks import method
+from loguru import logger
+from pyechonext.request import Request
+
+
 class Response:
-"""
-This dataclass describes a response.
-"""
+	"""
+	This dataclass describes a response.
+	"""
 
-default_content_type: str = "application/json"
-default_charset: str = "UTF-8"
-unicode_errors: str = "strict"
-default_conditional_response: bool = False
-default_body_encoding: str = "UTF-8"
+	default_content_type: str = "text/html"
+	default_charset: str = "UTF-8"
+	unicode_errors: str = "strict"
+	default_conditional_response: bool = False
+	default_body_encoding: str = "UTF-8"
 
-def __init__(
-self,
-request: Request,
-status_code: Optional[int] = 200,
-body: Optional[str] = None,
-headers: Optional[Dict[str, str]] = {},
-content_type: Optional[str] = None,
-charset: Optional[str] = None,
-use_i18n: Optional[bool] = False
-):
-"""
-Constructs a new instance.
+	def __init__(
+		self,
+		request: Request,
+		use_i18n: bool = False,
+		status_code: Optional[int] = 200,
+		body: Optional[str] = None,
+		headers: Optional[Dict[str, str]] = {},
+		content_type: Optional[str] = None,
+		charset: Optional[str] = None,
+		**kwargs,
+	):
+		"""
+		Constructs a new instance.
 
-:param      status_code:   The status code
-:type       status_code:   int
-:param      body:          The body
-:type       body:          str
-:param      headers:       The headers
-:type       headers:       Dict[str, str]
-:param      use_i18n:      Use i18n
-:type       use_i18n:      bool
-:param      content_type:  The content type
-:type       content_type:  str
-"""
-if status_code == 200:
-self.status_code: str = "200 OK"
-else:
-self.status_code: str = str(status_code)
+		:param		request:	   The request
+		:type		request:	   Request
+		:param		use_i18n:	   The use i 18 n
+		:type		use_i18n:	   bool
+		:param		status_code:   The status code
+		:type		status_code:   int
+		:param		body:		   The body
+		:type		body:		   str
+		:param		headers:	   The headers
+		:type		headers:	   Dict[str, str]
+		:param		content_type:  The content type
+		:type		content_type:  str
+		:param		charset:	   The charset
+		:type		charset:	   str
+		:param		kwargs:		   The keywords arguments
+		:type		kwargs:		   dictionary
+		"""
+		if status_code == 200:
+			self.status_code: str = "200 OK"
+		else:
+			self.status_code: str = str(status_code)
 
-if content_type is None:
-self.content_type: str = self.default_content_type
-else:
-self.content_type: str = content_type
+		if content_type is None:
+			self.content_type: str = self.default_content_type
+		else:
+			self.content_type: str = content_type
 
-if charset is None:
-self.charset: str = self.default_charset
-else:
-self.charset: str = charset
+		if charset is None:
+			self.charset: str = self.default_charset
+		else:
+			self.charset: str = charset
 
-if body is not None:
-self.body: str = body
-else:
-self.body: str = ""
+		if body is not None:
+			self.body: str = body
+		else:
+			self.body: str = ""
 
-self._headerslist: list = headers
-self._added_headers: list = []
-self.request: Request = request
-self.extra: dict = {}
+		self._headerslist: list = headers
+		self._added_headers: list = []
+		self.request: Request = request
+		self.extra: dict = {}
 
-self._update_headers()
+		self.use_i18n: bool = use_i18n
+		self.i18n_kwargs = kwargs
 
-def __getattr__(self, item: Any) -> Union[Any, None]:
-"""
-Magic method for get attrs (from extra)
+		self._update_headers()
 
-:param		item:  The item
-:type		item:  Any
+	def __getattr__(self, item: Any) -> Union[Any, None]:
+		"""
+		Magic method for get attrs (from extra)
 
-:returns:	Item from self.extra or None
-:rtype:		Union[Any, None]
-"""
-return self.extra.get(item, None)
+		:param		item:  The item
+		:type		item:  Any
 
-def _structuring_headers(self, environ):
-headers = {
-"Host": environ["HTTP_HOST"],
-"Accept": environ["HTTP_ACCEPT"],
-"User-Agent": environ["HTTP_USER_AGENT"],
-}
+		:returns:	Item from self.extra or None
+		:rtype:		Union[Any, None]
+		"""
+		return self.extra.get(item, None)
 
-for name, value in headers.items():
-self._headerslist.append((name, value))
+	def _structuring_headers(self, environ):
+		headers = {
+			"Host": environ["HTTP_HOST"],
+			"Accept": environ["HTTP_ACCEPT"],
+			"User-Agent": environ["HTTP_USER_AGENT"],
+		}
 
-for header_tuple in self._added_headers:
-self._headerslist.append(header_tuple)
+		for name, value in headers.items():
+			self._headerslist.append((name, value))
 
-def _update_headers(self) -> None:
-"""
-Sets the headers by environ.
+		for header_tuple in self._added_headers:
+			self._headerslist.append(header_tuple)
 
-:param		environ:  The environ
-:type		environ:  dict
-"""
-self._headerslist = [
-("Content-Type", f"{self.content_type}; charset={self.charset}"),
-("Content-Length", str(len(self.body))),
-]
+	def _update_headers(self) -> None:
+		"""
+		Sets the headers by environ.
 
-def add_headers(self, headers: List[Tuple[str, str]]):
-"""
-Adds new headers.
+		:param		environ:  The environ
+		:type		environ:  dict
+		"""
+		self._headerslist = [
+			("Content-Type", f"{self.content_type}; charset={self.charset}"),
+			("Content-Length", str(len(self.body))),
+		]
 
-:param		headers:  The headers
-:type		headers:  List[Tuple[str, str]]
-"""
-for header in headers:
-self._added_headers.append(header)
+	def add_headers(self, headers: List[Tuple[str, str]]):
+		"""
+		Adds new headers.
 
-def _encode_body(self):
-"""
-Encodes a body.
-"""
-if self.content_type.split("/")[-1] == "json":
-self.body = str(self.json)
+		:param		headers:  The headers
+		:type		headers:  List[Tuple[str, str]]
+		"""
+		for header in headers:
+			self._added_headers.append(header)
 
-try:
-self.body = self.body.encode("UTF-8")
-except AttributeError:
-self.body = str(self.body).encode("UTF-8")
+	def _encode_body(self):
+		"""
+		Encodes a body.
+		"""
+		if self.content_type.split("/")[-1] == "json":
+			self.body = str(self.json)
 
-def __call__(self, environ: dict, start_response: method) -> Iterable:
-"""
-Makes the Response object callable.
+		try:
+			self.body = self.body.encode("UTF-8")
+		except AttributeError:
+			self.body = str(self.body).encode("UTF-8")
 
-:param		environ:		 The environ
-:type		environ:		 dict
-:param		start_response:	 The start response
-:type		start_response:	 method
+	def __call__(self, environ: dict, start_response: method) -> Iterable:
+		"""
+		Makes the Response object callable.
 
-:returns:	response body
-:rtype:		Iterable
-"""
-self._encode_body()
+		:param		environ:		 The environ
+		:type		environ:		 dict
+		:param		start_response:	 The start response
+		:type		start_response:	 method
 
-self._update_headers()
-self._structuring_headers(environ)
+		:returns:	response body
+		:rtype:		Iterable
+		"""
+		self._encode_body()
 
-logger.debug(
-f"[{environ['REQUEST_METHOD']} {self.status_code}] Run response: {self.content_type}"
-)
+		self._update_headers()
+		self._structuring_headers(environ)
 
-start_response(status=self.status_code, headers=self._headerslist)
+		logger.debug(
+			f"[{environ['REQUEST_METHOD']} {self.status_code}] Run response: {self.content_type}"
+		)
 
-return iter([self.body])
+		start_response(status=self.status_code, headers=self._headerslist)
 
-@property
-def json(self) -> dict:
-"""
-Parse request body as JSON.
+		return iter([self.body])
 
-:returns:	json body
-:rtype:		dict
-"""
-if self.body:
-if self.content_type.split("/")[-1] == "json":
-return json.dumps(self.body)
-else:
-return json.dumps(self.body.decode("UTF-8"))
+	@property
+	def json(self) -> dict:
+		"""
+		Parse request body as JSON.
 
-return {}
+		:returns:	json body
+		:rtype:		dict
+		"""
+		if self.body:
+			if self.content_type.split("/")[-1] == "json":
+				return json.dumps(self.body)
+			else:
+				return json.dumps(self.body.decode("UTF-8"))
 
-def __repr__(self):
-"""
-Returns a unambiguous string representation of the object (for debug...).
+		return {}
 
-:returns:	String representation of the object.
-:rtype:		str
-"""
-return f"<{self.__class__.__name__} at 0x{abs(id(self)):x} {self.status_code}>"
+	def __repr__(self):
+		"""
+		Returns a unambiguous string representation of the object (for debug...).
+
+		:returns:	String representation of the object.
+		:rtype:		str
+		"""
+		return f"<{self.__class__.__name__} at 0x{abs(id(self)):x} {self.status_code}>"
+
 ```
 
 Response has the following arguments:

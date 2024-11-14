@@ -162,7 +162,7 @@ Poetry — это инструмент для управления зависи�
 poetry new <имя_проекта>
 cd <имя_проекта>
 poetry shell
-poetry add ruff loguru pysocks fire python-dotenv jinja2 parse gunicorn
+poetry add ruff loguru pysocks fire python-dotenv jinja2 parse gunicorn configparser
 ```
 
 ## Архитектура проекта
@@ -1425,4 +1425,1776 @@ class APIDocUI:
 
 </details>
 
-# 
+# Конфигурация и загрузка настроек
+Нашему приложению нужна будет конфигурация, такие как мета-информация или настройка директорий для работы и других вещей.
+
+Также я решил сделать конфигурацию универсальной - ее можно будет загружать из .ini, переменных окружения или python-файла.
+
+Сам класс настроек будет передоваться в конструктор нашего будущего класса приложения. Выглядит он так:
+
+```python
+@dataclass
+class Settings:
+	"""
+	This class describes settings.
+	"""
+
+	BASE_DIR: str
+	TEMPLATES_DIR: str
+	SECRET_KEY: str
+	VERSION: str = "1.0.0"
+	DESCRIPTION: str = "Echonext webapp"
+	LOCALE: str = "DEFAULT"
+	LOCALE_DIR: str = None
+```
+
+ + BASE_DIR - базовая диреткория проекта
+ + TEMPLATES_DIR - директория html-шаблонов
+ + SECRET_KEY - секретный ключ
+ + VERSION - версия
+ + DESCRIPTION - описание
+ + LOCALE - код локализации
+ + LOCALE_DIR - директория с файлами локализаций.
+
+Для загрузки .ini мы будем использовать configparser, для переменных окружения python-dotenv, а для python-файлов importlib.
+
+<details>
+	<summary>Исходный код config.py</summary>	
+
+```python
+import os
+import importlib
+from pathlib import Path
+from dataclasses import dataclass
+from enum import Enum
+from configparser import ConfigParser
+from dotenv import load_dotenv
+
+
+def dynamic_import(module: str):
+	"""
+	Dynamic import with importlib
+
+	:param		module:	 The module
+	:type		module:	 str
+
+	:returns:	module
+	:rtype:		module
+	"""
+	return importlib.import_module(str(module))
+
+
+@dataclass
+class Settings:
+	"""
+	This class describes settings.
+	"""
+
+	BASE_DIR: str
+	TEMPLATES_DIR: str
+	SECRET_KEY: str
+	VERSION: str = "1.0.0"
+	DESCRIPTION: str = "Echonext webapp"
+	LOCALE: str = "DEFAULT"
+	LOCALE_DIR: str = None
+
+
+class SettingsConfigType(Enum):
+	"""
+	This class describes a settings configuration type.
+	"""
+
+	INI = "ini"
+	DOTENV = "dotenv"
+	PYMODULE = "pymodule"
+
+
+class SettingsLoader:
+	"""
+	This class describes a settings loader.
+	"""
+
+	def __init__(self, config_type: SettingsConfigType, filename: str = None):
+		"""
+		Constructs a new instance.
+
+		:param		config_type:  The configuration type
+		:type		config_type:  SettingsConfigType
+		:param		filename:	  The filename
+		:type		filename:	  str
+		"""
+		self.config_type: SettingsConfigType = config_type
+		self.filename: str = filename
+
+		self.filename: Path = Path(self.filename)
+
+		if not self.filename.exists():
+			raise FileNotFoundError(f'Config file "{self.filename}" don\'t exists.')
+
+	def _load_ini_config(self) -> dict:
+		"""
+		Loads a .ini config file
+
+		:returns:	config dictionary
+		:rtype:		dict
+		"""
+		config = ConfigParser()
+		config.read(self.filename)
+
+		return config["Settings"]
+
+	def _load_env_config(self) -> dict:
+		"""
+		Loads an environment configuration.
+
+		:returns:	config dictionary
+		:rtype:		dict
+		"""
+		load_dotenv(self.filename)
+
+		config = {
+			"BASE_DIR": os.environ.get("PEN_BASE_DIR"),
+			"TEMPLATES_DIR": os.environ.get("PEN_TEMPLATES_DIR"),
+			"SECRET_KEY": os.environ.get("PEN_SECRET_KEY"),
+			"LOCALE": os.environ.get("PEN_LOCALE", "DEFAULT"),
+			"LOCALE_DIR": os.environ.get("PEN_LOCALE_DIR", None),
+			"VERSION": os.environ.get("PEN_VERSION", "1.0.0"),
+			"DESCRIPTION": os.environ.get("PEN_DESCRIPTION", "EchoNext webapp"),
+		}
+
+		return config
+
+	def _load_pymodule_config(self) -> dict:
+		"""
+		Loads a pymodule configuration.
+
+		:returns:	config dictionary
+		:rtype:		dict
+		"""
+		config_module = dynamic_import(str(self.filename).replace(".py", ""))
+
+		return {
+			"BASE_DIR": config_module.BASE_DIR,
+			"TEMPLATES_DIR": config_module.TEMPLATES_DIR,
+			"SECRET_KEY": config_module.SECRET_KEY,
+			"LOCALE": config_module.LOCALE,
+			"LOCALE_DIR": config_module.LOCALE_DIR,
+			"VERSION": config_module.VERSION,
+			"DESCRIPTION": config_module.DESCRIPTION,
+		}
+
+	def get_settings(self) -> Settings:
+		"""
+		Gets the settings.
+
+		:returns:	The settings.
+		:rtype:		Settings
+		"""
+		if self.config_type == SettingsConfigType.INI:
+			self.config = self._load_ini_config()
+		elif self.config_type == SettingsConfigType.DOTENV:
+			self.config = self._load_env_config()
+		elif self.config_type == SettingsConfigType.PYMODULE:
+			self.config = self._load_pymodule_config()
+
+		return Settings(
+			BASE_DIR=self.config.get("BASE_DIR", "."),
+			TEMPLATES_DIR=self.config.get("TEMPLATES_DIR", "templates"),
+			SECRET_KEY=self.config.get("SECRET_KEY", ""),
+			LOCALE=self.config.get("LOCALE", "DEFAULT"),
+			LOCALE_DIR=self.config.get("LOCALE_DIR", None),
+			VERSION=self.config.get("VERSION", "1.0.0"),
+			DESCRIPTION=self.config.get("DESCRIPTION", "EchoNext webapp"),
+		)
+```
+</details>
+
+Примеры загрузки конфига:
+
+### DOTENV
+
+```python
+config_loader = SettingsLoader(SettingsConfigType.DOTENV, 'example_env')
+settings = config_loader.get_settings()
+```
+
+Файл example_env:
+
+```env
+PEN_BASE_DIR=.
+PEN_TEMPLATES_DIR=templates
+PEN_SECRET_KEY=secret-key
+PEN_LOCALE=RU_RU
+PEN_LOCALE_DIR=locales
+PEN_VERSION=1.0.0
+PEN_DESCRIPTION=Example
+```
+
+### INI
+
+```python
+config_loader = SettingsLoader(SettingsConfigType.INI, 'example_ini.ini')
+settings = config_loader.get_settings()
+```
+
+Файл example_ini.ini:
+
+```ini
+[Settings]
+BASE_DIR=.
+TEMPLATES_DIR=templates
+SECRET_KEY=secret-key
+LOCALE=DEFAULT
+VERSION=1.0.0
+DESCRIPTION=Example
+```
+
+### PyModule
+
+```python
+config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'example_module.py')
+settings = config_loader.get_settings()
+```
+
+Файл example_module.py:
+
+```python
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATES_DIR = 'templates'
+SECRET_KEY = 'secret-key'
+VERSION = '1.0.0'
+DESCRIPTION = 'Echonext webapp'
+LOCALE = 'DEFAULT'
+LOCALE_DIR = None
+```
+
+# Рендер html-шаблонов
+Я решил небольшой встроенный движок и интегрировать Jinja2.
+
+Начнем с встроенного. Он будет основан на regex-выражениях. На данный момент я реализовал два:
+
+```python
+FOR_BLOCK_PATTERN = re.compile(
+	r"{% for (?P<variable>[a-zA-Z]+) in (?P<seq>[a-zA-Z]+) %}(?P<content>[\S\s]+)(?={% endfor %}){% endfor %}"
+)
+VARIABLE_PATTERN = re.compile(r"{{ (?P<variable>[a-zA-Z_]+) }}")
+```
+
+Он похож на Jinja2. Для for-цикла нужно использовать конструкцию `{% for ... in ... %}{% endfor %}`, а для вывода переменных `{{ <переменная> }}`.
+
+Директория с шаблонами будет браться из класса настроек.
+
+Для генерации будет создана функция `render_template(request: Request, template_name: str, **kwargs)`. Ей нужен Request, имя шаблона (без директории), а также контекст - то есть kwargs. То есть при вызове `render_template(request, 'index.html', name="Vasya")` в шаблоне можно использовать будет переменную name.
+
+<details>
+	<summary>Встроенный шаблонизатор</summary>
+
+```python
+import os
+import re
+from loguru import logger
+from pyechonext.request import Request
+from pyechonext.utils.exceptions import TemplateNotFileError
+
+FOR_BLOCK_PATTERN = re.compile(
+	r"{% for (?P<variable>[a-zA-Z]+) in (?P<seq>[a-zA-Z]+) %}(?P<content>[\S\s]+)(?={% endfor %}){% endfor %}"
+)
+VARIABLE_PATTERN = re.compile(r"{{ (?P<variable>[a-zA-Z_]+) }}")
+
+
+class TemplateEngine:
+	"""
+	This class describes a built-in template engine.
+	"""
+
+	def __init__(self, base_dir: str, templates_dir: str):
+		"""
+		Constructs a new instance.
+
+		:param		base_dir:		The base dir
+		:type		base_dir:		str
+		:param		templates_dir:	The templates dir
+		:type		templates_dir:	str
+		"""
+		self.templates_dir = os.path.join(base_dir, templates_dir)
+
+	def _get_template_as_string(self, template_name: str) -> str:
+		"""
+		Gets the template as string.
+
+		:param		template_name:		   The template name
+		:type		template_name:		   str
+
+		:returns:	The template as string.
+		:rtype:		str
+
+		:raises		TemplateNotFileError:  Template is not a file
+		"""
+		template_name = os.path.join(self.templates_dir, template_name)
+
+		if not os.path.isfile(template_name):
+			raise TemplateNotFileError(f'Template "{template_name}" is not a file')
+
+		with open(template_name, "r") as file:
+			content = file.read()
+
+		return content
+
+	def _build_block_of_template(self, context: dict, raw_template_block: str) -> str:
+		"""
+		Builds a block of template.
+
+		:param		context:			 The context
+		:type		context:			 dict
+		:param		raw_template_block:	 The raw template block
+		:type		raw_template_block:	 str
+
+		:returns:	The block of template.
+		:rtype:		str
+		"""
+		used_vars = VARIABLE_PATTERN.findall(raw_template_block)
+
+		if used_vars is None:
+			return raw_template_block
+
+		for var in used_vars:
+			var_in_template = "{{ %s }}" % (var)
+			processed_template_block = re.sub(
+				var_in_template, str(context.get(var, "")), raw_template_block
+			)
+
+		return processed_template_block
+
+	def _build_statement_for_block(self, context: dict, raw_template_block: str) -> str:
+		"""
+		Build statement `for` block
+
+		:param		context:			 The context
+		:type		context:			 dict
+		:param		raw_template_block:	 The raw template block
+		:type		raw_template_block:	 str
+
+		:returns:	The statement for block.
+		:rtype:		str
+		"""
+		statement_for_block = FOR_BLOCK_PATTERN.search(raw_template_block)
+
+		if statement_for_block is None:
+			return raw_template_block
+
+		builded_statement_block_for = ""
+
+		for variable in context.get(statement_for_block.group("seq"), []):
+			builded_statement_block_for += self._build_block_of_template(
+				{**context, statement_for_block.group("variable"): variable},
+				statement_for_block.group("content"),
+			)
+
+		processed_template_block = FOR_BLOCK_PATTERN.sub(
+			builded_statement_block_for, raw_template_block
+		)
+
+		return processed_template_block
+
+	def build(self, context: dict, template_name: str) -> str:
+		"""
+		Build template
+
+		:param		context:		The context
+		:type		context:		dict
+		:param		template_name:	The template name
+		:type		template_name:	str
+
+		:returns:	raw template string
+		:rtype:		str
+		"""
+		raw_template = self._get_template_as_string(template_name)
+
+		processed_template = self._build_statement_for_block(context, raw_template)
+
+		return self._build_block_of_template(context, processed_template)
+
+
+def render_template(request: Request, template_name: str, **kwargs) -> str:
+	"""
+	Render template
+
+	:param		request:		 The request
+	:type		request:		 Request
+	:param		template_name:	 The template name
+	:type		template_name:	 str
+	:param		kwargs:			 The keywords arguments
+	:type		kwargs:			 dictionary
+
+	:returns:	raw template string
+	:rtype:		str
+
+	:raises		AssertionError:	 BASE_DIR and TEMPLATES_DIR is empty
+	"""
+	logger.warn(
+		"Built-in template engine is under development and may be unstable or contain bugs"
+	)
+
+	assert request.settings.BASE_DIR
+	assert request.settings.TEMPLATES_DIR
+
+	engine = TemplateEngine(request.settings.BASE_DIR, request.settings.TEMPLATES_DIR)
+
+	context = kwargs
+
+	logger.debug(f"Built-in template engine: render {template_name} ({request.path})")
+
+	return engine.build(context, template_name)
+```
+</details>
+
+Для Jinja2 будет очень похожий код, для того чтобы не было проблем с поддержкой.
+
+<details>
+	<summary>Код интеграции Jinja2</summary>
+
+```python
+from os.path import join, exists, getmtime
+from jinja2 import BaseLoader, TemplateNotFound
+from jinja2 import Environment, select_autoescape
+from loguru import logger
+from pyechonext.request import Request
+
+
+class TemplateLoader(BaseLoader):
+	"""
+	This class describes a jinja2 template loader.
+	"""
+
+	def __init__(self, path: str):
+		"""
+		Constructs a new instance.
+
+		:param		path:  The path
+		:type		path:  str
+		"""
+		self.path = path
+
+	def get_source(self, environment, template):
+		path = join(self.path, template)
+
+		if not exists(path):
+			raise TemplateNotFound(template)
+
+		mtime = getmtime(path)
+
+		with open(path) as f:
+			source = f.read()
+
+		return source, path, lambda: mtime == getmtime(path)
+
+
+class TemplateEngine:
+	"""
+	This class describes a jinja template engine.
+	"""
+
+	def __init__(self, base_dir: str, templates_dir: str):
+		"""
+		Constructs a new instance.
+
+		:param		base_dir:		The base dir
+		:type		base_dir:		str
+		:param		templates_dir:	The templates dir
+		:type		templates_dir:	str
+		"""
+		self.base_dir = base_dir
+		self.templates_dir = join(base_dir, templates_dir)
+		self.env = Environment(
+			loader=TemplateLoader(self.templates_dir), autoescape=select_autoescape()
+		)
+
+	def build(self, template_name: str, **kwargs):
+		template = self.env.get_template(template_name)
+
+		return template.render(**kwargs)
+
+
+def render_template(request: Request, template_name: str, **kwargs) -> str:
+	"""
+	Render template
+
+	:param		request:		 The request
+	:type		request:		 Request
+	:param		template_name:	 The template name
+	:type		template_name:	 str
+	:param		kwargs:			 The keywords arguments
+	:type		kwargs:			 dictionary
+
+	:returns:	raw template string
+	:rtype:		str
+
+	:raises		AssertionError:	 BASE_DIR and TEMPLATES_DIR is empty
+	"""
+	assert request.settings.BASE_DIR
+	assert request.settings.TEMPLATES_DIR
+
+	engine = TemplateEngine(request.settings.BASE_DIR, request.settings.TEMPLATES_DIR)
+
+	logger.debug(f"Jinja2 template engine: render {template_name} ({request.path})")
+
+	return engine.build(template_name, **kwargs)
+```
+</details>
+
+# Ответ-запрос
+
+ > Будь ты в Рыбацкино, или южный Бромс. Если есть реквест, значит есть респонс.
+
+В информатике запрос-ответ или запрос-реплика - это один из основных методов, используемых компьютерами для связи друг с другом в сети, при котором первый компьютер отправляет запрос на некоторые данные, а второй отвечает на запрос. Более конкретно, это шаблон обмена сообщениями, при котором запрашивающий отправляет сообщение с запросом системе-ответчику, которая получает и обрабатывает запрос, в конечном счете возвращая сообщение в ответ. Это аналогично телефонному звонку, при котором вызывающий абонент должен дождаться, пока получатель возьмет трубку, прежде чем что-либо можно будет обсудить.
+
+## Request
+**Request** — это запрос, который содержит данные для взаимодействия между клиентом и API: базовый URL, конечную точку, используемый метод, заголовки и т. д.
+
+Сам класс выглядит так:
+
+```python
+class Request:
+	"""
+	This class describes a request.
+	"""
+
+	def __init__(self, environ: dict, settings: Settings):
+		"""
+		Constructs a new instance.
+
+		:param		environ:  The environ
+		:type		environ:  dict
+		"""
+		self.environ: dict = environ
+		self.settings: Settings = settings
+		self.method: str = self.environ["REQUEST_METHOD"]
+		self.path: str = self.environ["PATH_INFO"]
+		self.GET: dict = self._build_get_params_dict(self.environ["QUERY_STRING"])
+		self.POST: dict = self._build_post_params_dict(self.environ["wsgi.input"].read())
+		self.user_agent: str = self.environ["HTTP_USER_AGENT"]
+		self.extra: dict = {}
+
+		logger.debug(f"New request created: {self.method} {self.path}")
+
+	def __getattr__(self, item: Any) -> Union[Any, None]:
+		"""
+		Magic method for get attrs (from extra)
+
+		:param		item:  The item
+		:type		item:  Any
+
+		:returns:	Item from self.extra or None
+		:rtype:		Union[Any, None]
+		"""
+		return self.extra.get(item, None)
+
+	def _build_get_params_dict(self, raw_params: str):
+		"""
+		Builds a get parameters dictionary.
+
+		:param		raw_params:	 The raw parameters
+		:type		raw_params:	 str
+		"""
+		return parse_qs(raw_params)
+
+	def _build_post_params_dict(self, raw_params: bytes):
+		"""
+		Builds a post parameters dictionary.
+
+		:param		raw_params:	 The raw parameters
+		:type		raw_params:	 bytes
+		"""
+		return parse_qs(raw_params.decode())
+```
+
+Request требует следующие аргументы для создания:
+
+ + environ (словарь) - веб-окружение (генерируется gunicorn)
+ + settings (объект датакласса pyechonext.config.Settings)
+
+Request имеет следующие публичные атрибуты:
+
+ + environ (словарь) - веб-окружение
+ + settings (объект датакласса pyechonext.config.Settings)
+ + method (строка) - http-метод
+ + path (строка) - путь
+ + GET (словарь) - параметры get-запроса
+ + POST (словарь) - параметры post-запроса
+ + user_agent (строка) - User-Agent
+ + extra (словарь) - дополнительные параметры (например для middleware)
+
+Request также имеет следующие методы:
+ 
+ + `__getattr__` - магический метод дескриптора для получения атрибутов (для получения элементов из атрибута extra)
+ + `_build_get_params_dict` - приватный метод для парсинга параметров get-запроса
+ + `_build_post_params_dict` - приватный метод для парсинга параметров post-запроса
+
+## Response
+**Response** — это ответ, который содержит данные, возвращаемые сервером, в том числе контент, код состояния и заголовки.
+
+```python
+import json
+from typing import Dict, Iterable, Union, Any, List, Tuple, Optional
+from socks import method
+from loguru import logger
+from pyechonext.request import Request
+
+
+class Response:
+	"""
+	This dataclass describes a response.
+	"""
+
+	default_content_type: str = "text/html"
+	default_charset: str = "UTF-8"
+	unicode_errors: str = "strict"
+	default_conditional_response: bool = False
+	default_body_encoding: str = "UTF-8"
+
+	def __init__(
+		self,
+		request: Request,
+		use_i18n: bool = False,
+		status_code: Optional[int] = 200,
+		body: Optional[str] = None,
+		headers: Optional[Dict[str, str]] = {},
+		content_type: Optional[str] = None,
+		charset: Optional[str] = None,
+		**kwargs,
+	):
+		"""
+		Constructs a new instance.
+
+		:param		request:	   The request
+		:type		request:	   Request
+		:param		use_i18n:	   The use i 18 n
+		:type		use_i18n:	   bool
+		:param		status_code:   The status code
+		:type		status_code:   int
+		:param		body:		   The body
+		:type		body:		   str
+		:param		headers:	   The headers
+		:type		headers:	   Dict[str, str]
+		:param		content_type:  The content type
+		:type		content_type:  str
+		:param		charset:	   The charset
+		:type		charset:	   str
+		:param		kwargs:		   The keywords arguments
+		:type		kwargs:		   dictionary
+		"""
+		if status_code == 200:
+			self.status_code: str = "200 OK"
+		else:
+			self.status_code: str = str(status_code)
+
+		if content_type is None:
+			self.content_type: str = self.default_content_type
+		else:
+			self.content_type: str = content_type
+
+		if charset is None:
+			self.charset: str = self.default_charset
+		else:
+			self.charset: str = charset
+
+		if body is not None:
+			self.body: str = body
+		else:
+			self.body: str = ""
+
+		self._headerslist: list = headers
+		self._added_headers: list = []
+		self.request: Request = request
+		self.extra: dict = {}
+
+		self.use_i18n: bool = use_i18n
+		self.i18n_kwargs = kwargs
+
+		self._update_headers()
+
+	def __getattr__(self, item: Any) -> Union[Any, None]:
+		"""
+		Magic method for get attrs (from extra)
+
+		:param		item:  The item
+		:type		item:  Any
+
+		:returns:	Item from self.extra or None
+		:rtype:		Union[Any, None]
+		"""
+		return self.extra.get(item, None)
+
+	def _structuring_headers(self, environ):
+		headers = {
+			"Host": environ["HTTP_HOST"],
+			"Accept": environ["HTTP_ACCEPT"],
+			"User-Agent": environ["HTTP_USER_AGENT"],
+		}
+
+		for name, value in headers.items():
+			self._headerslist.append((name, value))
+
+		for header_tuple in self._added_headers:
+			self._headerslist.append(header_tuple)
+
+	def _update_headers(self) -> None:
+		"""
+		Sets the headers by environ.
+
+		:param		environ:  The environ
+		:type		environ:  dict
+		"""
+		self._headerslist = [
+			("Content-Type", f"{self.content_type}; charset={self.charset}"),
+			("Content-Length", str(len(self.body))),
+		]
+
+	def add_headers(self, headers: List[Tuple[str, str]]):
+		"""
+		Adds new headers.
+
+		:param		headers:  The headers
+		:type		headers:  List[Tuple[str, str]]
+		"""
+		for header in headers:
+			self._added_headers.append(header)
+
+	def _encode_body(self):
+		"""
+		Encodes a body.
+		"""
+		if self.content_type.split("/")[-1] == "json":
+			self.body = str(self.json)
+
+		try:
+			self.body = self.body.encode("UTF-8")
+		except AttributeError:
+			self.body = str(self.body).encode("UTF-8")
+
+	def __call__(self, environ: dict, start_response: method) -> Iterable:
+		"""
+		Makes the Response object callable.
+
+		:param		environ:		 The environ
+		:type		environ:		 dict
+		:param		start_response:	 The start response
+		:type		start_response:	 method
+
+		:returns:	response body
+		:rtype:		Iterable
+		"""
+		self._encode_body()
+
+		self._update_headers()
+		self._structuring_headers(environ)
+
+		logger.debug(
+			f"[{environ['REQUEST_METHOD']} {self.status_code}] Run response: {self.content_type}"
+		)
+
+		start_response(status=self.status_code, headers=self._headerslist)
+
+		return iter([self.body])
+
+	@property
+	def json(self) -> dict:
+		"""
+		Parse request body as JSON.
+
+		:returns:	json body
+		:rtype:		dict
+		"""
+		if self.body:
+			if self.content_type.split("/")[-1] == "json":
+				return json.dumps(self.body)
+			else:
+				return json.dumps(self.body.decode("UTF-8"))
+
+		return {}
+
+	def __repr__(self):
+		"""
+		Returns a unambiguous string representation of the object (for debug...).
+
+		:returns:	String representation of the object.
+		:rtype:		str
+		"""
+		return f"<{self.__class__.__name__} at 0x{abs(id(self)):x} {self.status_code}>"
+```
+
+Response имеет следующие аргументы:
+
+ + request (объект класса Request) - запрос
+ + [опционально] status_code (целочисленное значение) - статус-код ответа
+ + [опционально] body (строка) - тело ответа
+ + [опционально] headers (словарь) - заголовки ответа
+ + [опционально] content_type (строка) - тип контента ответа
+ + [опционально] charset (строка) - кодировка ответа
+ + [опционально] use_i18n (логическое значение) - использовать ли i18n (по умолчанию False)
+
+Response имеет следующие атрибуты:
+
+ + status_code (строка) - статус-код (по умолчанию "200 OK")
+ + content_type (строка) - контент-тип (по умолчанию равен значению default_content_type)
+ + charset (строка) - кодировка (по умолчанию равен значению default_charset)
+ + body (строка) - тело овтета (по умолчанию равен пустой строке)
+ + `_headerslist` (список) - приватный список заголовков ответа
+ + `_added_headers` (список) - приватный список добавленных заголовков ответа
+ + request (объект класса Request) - запрос
+ + extra (словарь) - дополнительные параметры
+
+Response имеет следующие методы:
+
+ + `__getattr__` - магический метод дескриптора для получения атрибутов (для получения элементов из атрибута extra)
+ + `_structuring_headers` - приватный метод структуирования заголовков из веб-окружения
+ + `_update_headers` - приватный метод обновления (перезаписывания) списков заголовков
+ + `add_headers` - публичный метод добавления заголовков
+ + `_encode_body` - кодирование тела ответа
+ + `__call__` - магический метод, делает объект Response вызываемым
+ + `json` - свойство класса для получения тела ответа в виде json
+
+# Views (обработчики)
+
+View - это и есть абстракция маршрута сайта (django-like). Он обязательно должен иметь два метода: `get` и `post` (для ответа на get и post запросы). Эти методы должны возвращать:
+
+ + Данные, контент страницы. Это может быть словарь или строка.
+
+ИЛИ:
+
+ + Объект класса Response (pyechonext.response)
+
+View представляет собой объект класса View:
+
+```python
+class View(ABC):
+	"""
+	Page view
+	"""
+
+	@abstractmethod
+	def get(
+		self, request: Request, response: Response, *args, **kwargs
+	) -> Union[Response, Any]:
+		"""
+		Get
+
+		:param		request:   The request
+		:type		request:   Request
+		:param		response:  The response
+		:type		response:  Response
+		:param		args:	   The arguments
+		:type		args:	   list
+		:param		kwargs:	   The keywords arguments
+		:type		kwargs:	   dictionary
+		"""
+		raise NotImplementedError
+
+	@abstractmethod
+	def post(
+		self, request: Request, response: Response, *args, **kwargs
+	) -> Union[Response, Any]:
+		"""
+		Post
+
+		:param		request:   The request
+		:type		request:   Request
+		:param		response:  The response
+		:type		response:  Response
+		:param		args:	   The arguments
+		:type		args:	   list
+		:param		kwargs:	   The keywords arguments
+		:type		kwargs:	   dictionary
+		"""
+		raise NotImplementedError
+```
+
+И давайте я покажу пример View:
+
+```python
+class IndexView(View):
+	def get(
+		self, request: Request, response: Response, **kwargs
+	) -> Union[Response, Any]:
+		"""
+		Get
+
+		:param		request:   The request
+		:type		request:   Request
+		:param		response:  The response
+		:type		response:  Response
+		:param		args:	   The arguments
+		:type		args:	   list
+		:param		kwargs:	   The keywords arguments
+		:type		kwargs:	   dictionary
+		"""
+		return "Welcome to pyEchoNext webapplication!"
+
+	def post(
+		self, request: Request, response: Response, **kwargs
+	) -> Union[Response, Any]:
+		"""
+		Post
+
+		:param		request:   The request
+		:type		request:   Request
+		:param		response:  The response
+		:type		response:  Response
+		:param		args:	   The arguments
+		:type		args:	   list
+		:param		kwargs:	   The keywords arguments
+		:type		kwargs:	   dictionary
+		"""
+		return "Message has accepted!"
+```
+
+# URLS
+Для того чтобы подключать Views к приложению, мы создадим слой абстракции - датакласс URL, который будет содержать в себе путь и сам класс View. Причем View нужно передавать без создания объекта, то есть сам класс.
+
+```python
+from dataclasses import dataclass
+from typing import Type
+from pyechonext.views import View, IndexView
+
+
+@dataclass
+class URL:
+	"""
+	This dataclass describes an url.
+	"""
+
+	url: str
+	view: Type[View]
+
+
+url_patterns = [URL(url="/", view=IndexView)]
+```
+
+url_patterns - встроенные паттерны. Для примера используем ранее созданный IndexView.
+
+# Middleware (промежуточное ПО)
+Итак, для реализации, например, cookie нам нужно будет работать с реквест-респонсом во вребя работы сервера. Для этого мы будем использовать абстракцию промежуточного ПО.
+
+```python
+class BaseMiddleware(ABC):
+	"""
+	This abstract class describes a base middleware.
+	"""
+
+	@abstractmethod
+	def to_request(self, request: Request):
+		"""
+		To request method
+
+		:param		request:  The request
+		:type		request:  Request
+		"""
+		raise NotImplementedError
+
+	@abstractmethod
+	def to_response(self, response: Response):
+		"""
+		To response method
+
+		:param		response:  The response
+		:type		response:  Response
+		"""
+		raise NotImplementedError
+```
+
+Он имеет два абстрактных метода - to_request и to_response.
+
+Давайте реализуем базовый Middleware сессии для добавления cookie:
+
+```python
+class SessionMiddleware(BaseMiddleware):
+	"""
+	This class describes a session (cookie) middleware.
+	"""
+
+	def to_request(self, request: Request):
+		"""
+		Set to request
+
+		:param		request:  The request
+		:type		request:  Request
+		"""
+		cookie = request.environ.get("HTTP_COOKIE", None)
+
+		if not cookie:
+			return
+
+		session_id = parse_qs(cookie)["session_id"][0]
+		logger.debug(
+			f"Set session_id={session_id} for request {request.method} {request.path}"
+		)
+		request.extra["session_id"] = session_id
+
+	def to_response(self, response: Response):
+		"""
+		Set to response
+
+		:param		response:  The response
+		:type		response:  Response
+		"""
+		if not response.request.session_id:
+			session_id = uuid4()
+			logger.debug(
+				f"Set session_id={session_id} for response {response.status_code} {response.request.path}"
+			)
+			response.add_headers(
+				[
+					("Set-Cookie", f"session_id={session_id}"),
+				]
+			)
+
+
+middlewares = [SessionMiddleware] # Список мидлварей
+```
+
+И теперь займемся самим app.py - приложением.
+
+# Утилиты
+Нам нужно создать файл `utils/__init__.py`, в котором будет находиться небольшая вспомогательная функция `_prepare_url`. Она будет обрезать URL от всего лишнего:
+
+```python
+from datetime import datetime
+
+
+def get_current_datetime() -> str:
+	"""
+	Gets the current datetime.
+
+	:returns:	The current datetime.
+	:rtype:		str
+	"""
+	date = datetime.now()
+	return date.strftime("%Y-%m-%d %H:%M:%S")
+
+
+def _prepare_url(url: str) -> str:
+	"""
+	Prepare URL (remove ending /)
+
+	:param		url:  The url
+	:type		url:  str
+
+	:returns:	prepared url
+	:rtype:		str
+	"""
+	try:
+		if url[-1] == "/" and len(url) > 1:
+			return url[:-1]
+	except IndexError:
+		return "/"
+
+	return url
+```
+
+# Приложение
+Основой является класс EchoNext (pyechonext.app).
+
+Давайте создадим его.
+
+Импортируем все нужные модули:
+
+```python
+import inspect
+from enum import Enum
+from typing import Iterable, Callable, List, Type, Tuple, Optional, Union
+from dataclasses import dataclass
+from socks import method
+from parse import parse
+from loguru import logger
+from pyechonext.urls import URL
+from pyechonext.views import View
+from pyechonext.request import Request
+from pyechonext.response import Response
+from pyechonext.utils.exceptions import (
+	RoutePathExistsError,
+	MethodNotAllow,
+	URLNotFound,
+	WebError,
+	TeapotError,
+)
+from pyechonext.utils import _prepare_url
+from pyechonext.config import Settings
+from pyechonext.middleware import BaseMiddleware
+from pyechonext.i18n_l10n.i18n import JSONi18nLoader
+from pyechonext.i18n_l10n.l10n import JSONLocalizationLoader
+```
+
+Создадим датакласс типа приложения:
+
+```python
+class ApplicationType(Enum):
+	"""
+	This enum class describes an application type.
+	"""
+
+	JSON = "application/json"
+	HTML = "text/html"
+	PLAINTEXT = "text/plain"
+	TEAPOT = "server/teapot"
+```
+
+ + JSON - в основном для API
+ + HTML - для полноценного веб-сайта
+ + PLAINTEXT - просто текст
+
+После создадим датакласс HistoryEntry для хранения истории запросов-ответов:
+
+```python
+@dataclass
+class HistoryEntry:
+	request: Request
+	response: Response
+```
+
+Давайте начнем создавать класс приложения:
+
+```python
+class EchoNext:
+	"""
+	This class describes an EchoNext WSGI Application.
+	"""
+
+	__slots__ = (
+		"app_name",
+		"settings",
+		"middlewares",
+		"application_type",
+		"urls",
+		"routes",
+		"i18n_loader",
+		"l10n_loader",
+		"history",
+	)
+```
+
+`__slots__` - это слоты (атрибуты класса перечислены в кортеже). Это механизм, который позволяет оптимизировать использование памяти и ускорить доступ к атрибутам класса. Когда вы создаете объект класса в Python, интерпретатор выделяет память для хранения всех атрибутов этого объекта.
+
+После этого создадим магический метод конструктора класса:
+
+```python
+def __init__(
+		self,
+		app_name: str,
+		settings: Settings,
+		middlewares: List[Type[BaseMiddleware]],
+		urls: Optional[List[URL]] = [],
+		application_type: Optional[ApplicationType] = ApplicationType.JSON,
+	):
+		"""
+		Constructs a new instance.
+
+		:param		app_name:		   The application name
+		:type		app_name:		   str
+		:param		settings:		   The settings
+		:type		settings:		   Settings
+		:param		middlewares:	   The middlewares
+		:type		middlewares:	   List[BaseMiddleware]
+		:param		urls:			   The urls
+		:type		urls:			   List[URL]
+		:param		application_type:  The application type
+		:type		application_type:  Optional[ApplicationType]
+		"""
+		self.app_name = app_name
+		self.settings = settings
+		self.middlewares = middlewares
+		self.application_type = application_type
+		self.routes = {}
+		self.urls = urls
+		self.history: List[HistoryEntry] = []
+		self.i18n_loader = JSONi18nLoader(
+			self.settings.LOCALE, self.settings.LOCALE_DIR
+		)
+		self.l10n_loader = JSONLocalizationLoader(
+			self.settings.LOCALE, self.settings.LOCALE_DIR
+		)
+		logger.debug(f"Application {self.application_type.value}: {self.app_name}")
+
+		if self.application_type == ApplicationType.TEAPOT:
+			raise TeapotError("Where's my coffie?")
+```
+
+Разберем атрибуты:
+
+ + app_name - имя приложения
+ + settings - экземпляр датакласса Settings
+ + middlewares - список миддлварей
+ + application_type - тип приложения
+ + routes - словарь с маршрутами, которые были заданы через декоратор route_page (flask-like путь, рассмотрим позже)
+ + urls - список URLs (для интеграции View)
+ + history - список из HistoryEntry. История запросов-ответов
+ + i18n_loader - загрузчик i18n
+ + l10n_loader - загрузчик l10n
+
+Реализуем следующий метод:
+
+```python
+	def _find_view(self, raw_url: str) -> Union[Type[URL], None]:
+		"""
+		Finds a view by raw url.
+
+		:param		raw_url:  The raw url
+		:type		raw_url:  str
+
+		:returns:	URL dataclass
+		:rtype:		Type[URL]
+		"""
+		url = _prepare_url(raw_url)
+
+		for path in self.urls:
+			if url == _prepare_url(path.url):
+				return path
+
+		return None
+```
+
+Он нужен для нахождения view по сырому URL. Если он найден, возвращаем URL, иначе None.
+
+Создадим метод `_check_request_method`:
+
+```python
+	def _check_request_method(self, view: View, request: Request):
+		"""
+		Check request method for view
+
+		:param		view:			 The view
+		:type		view:			 View
+		:param		request:		 The request
+		:type		request:		 Request
+
+		:raises		MethodNotAllow:	 Method not allow
+		"""
+		if not hasattr(view, request.method.lower()):
+			raise MethodNotAllow(f"Method not allow: {request.method}")
+```
+
+Этот метод просто проверяет, доступен ли метод в View.
+
+```python
+	def _get_view(self, request: Request) -> View:
+		"""
+		Gets the view.
+
+		:param		request:  The request
+		:type		request:  Request
+
+		:returns:	The view.
+		:rtype:		View
+		"""
+		url = request.path
+
+		return self._find_view(url)
+```
+
+Метод выше получает по пути запроса View.
+
+Следующие два метода генерируют запрос и ответ:
+
+```python
+	def _get_request(self, environ: dict) -> Request:
+		"""
+		Gets the request.
+
+		:param		environ:  The environ
+		:type		environ:  dict
+
+		:returns:	The request.
+		:rtype:		Request
+		"""
+		return Request(environ, self.settings)
+
+	def _get_response(self, request: Request) -> Response:
+		"""
+		Gets the response.
+
+		:returns:	The response.
+		:rtype:		Response
+		"""
+		return Response(request, content_type=self.application_type.value)
+```
+
+Теперь реализуем тот самый декоратор route_page:
+
+```python
+	def route_page(self, page_path: str) -> Callable:
+		"""
+		Creating a New Page Route
+
+		:param		page_path:	The page path
+		:type		page_path:	str
+
+		:returns:	wrapper handler
+		:rtype:		Callable
+		"""
+		if page_path in self.routes:
+			raise RoutePathExistsError("Such route already exists.")
+
+		def wrapper(handler):
+			"""
+			Wrapper for handler
+
+			:param		handler:  The handler
+			:type		handler:  callable
+
+			:returns:	handler
+			:rtype:		callable
+			"""
+			self.routes[page_path] = handler
+			return handler
+
+		return wrapper
+```
+
+Теперь создадим два метода для применения миддлварей к реквесту:
+
+```python
+	def _apply_middleware_to_request(self, request: Request):
+		"""
+		Apply middleware to request
+
+		:param		request:  The request
+		:type		request:  Request
+		"""
+		for middleware in self.middlewares:
+			middleware().to_request(request)
+
+	def _apply_middleware_to_response(self, response: Response):
+		"""
+		Apply middleware to response
+
+		:param		response:  The response
+		:type		response:  Response
+		"""
+		for middleware in self.middlewares:
+			middleware().to_response(response)
+```
+
+Реализуем метод дефолтного ответа. То есть мы будем назначать, например, респонсу код 404 если страница не найдена:
+
+```python
+	def _default_response(self, response: Response, error: WebError) -> None:
+		"""
+		Get default response (404)
+
+		:param		response:  The response
+		:type		response:  Response
+		"""
+		response.status_code = str(error.code)
+		response.body = str(error)
+```
+
+Теперь реализуем метод для нахождения хендлера. Кстати, у меня View имеют больший приоритет чем routes:
+
+```python
+	def _find_handler(self, request: Request) -> Tuple[Callable, str]:
+		"""
+		Finds a handler.
+
+		:param		request_path:  The request path
+		:type		request_path:  str
+
+		:returns:	handler function and parsed result
+		:rtype:		Tuple[Callable, str]
+		"""
+		url = _prepare_url(request.path)
+
+		for path, handler in self.routes.items():
+			parse_result = parse(path, url)
+			if parse_result is not None:
+				return handler, parse_result.named
+
+		view = self._get_view(request)
+
+		if view is not None:
+			parse_result = parse(view.url, url)
+
+			if parse_result is not None:
+				return view.view, parse_result.named
+
+		return None, None
+```
+
+Создадим метод свитча локализации "на лету":
+
+```python
+	def switch_locale(self, locale: str, locale_dir: str):
+		"""
+		Switch to another locale i18n
+
+		:param		locale:		 The locale
+		:type		locale:		 str
+		:param		locale_dir:	 The locale dir
+		:type		locale_dir:	 str
+		"""
+		logger.info(f"Switch to another locale: {locale_dir}/{locale}")
+		self.i18n_loader.locale = locale
+		self.i18n_loader.directory = locale_dir
+		self.i18n_loader.translations = self.i18n_loader.load_locale(
+			self.i18n_loader.locale, self.i18n_loader.directory
+		)
+		self.l10n_loader.locale = locale
+		self.l10n_loader.directory = directory
+		self.i18n_loader.locale_settings = self.l10n_loader.load_locale(
+			self.l10n_loader.locale, self.l10n_loader.directory
+		)
+```
+
+Теперь создадим хендер реквеста, который будет все обрабывать, включая нахождение, генерацию ошибок.
+
+```python
+	def _handle_request(self, request: Request) -> Response:
+		"""
+		Handle response from request
+
+		:param		request:  The request
+		:type		request:  Request
+
+		:returns:	Response callable object
+		:rtype:		Response
+		"""
+		logger.debug(f"Handle request: {request.path}")
+		response = self._get_response(request)
+
+		handler, kwargs = self._find_handler(request)
+
+		if handler is not None:
+			if inspect.isclass(handler):
+				handler = getattr(handler(), request.method.lower(), None)
+				if handler is None:
+					raise MethodNotAllow(f"Method not allowed: {request.method}")
+
+			result = handler(request, response, **kwargs)
+
+			if isinstance(result, Response):
+				response = result
+
+				if response.use_i18n:
+					response.body = self.i18n_loader.get_string(
+						response.body, **response.i18n_kwargs
+					)
+			else:
+				response.body = self.i18n_loader.get_string(result)
+
+				if not response.use_i18n:
+					response.body = result
+		else:
+			raise URLNotFound(f'URL "{request.path}" not found.')
+
+		return response
+```
+
+И наконец, метод `__call__`. Он сделает наш класс callable, вызываемым.
+
+```python
+	def __call__(self, environ: dict, start_response: method) -> Iterable:
+		"""
+		Makes the application object callable
+
+		:param		environ:		 The environ
+		:type		environ:		 dict
+		:param		start_response:	 The start response
+		:type		start_response:	 method
+
+		:returns:	response body
+		:rtype:		Iterable
+		"""
+		request = self._get_request(environ)
+		self._apply_middleware_to_request(request)
+		response = self._get_response(request)
+
+		try:
+			response = self._handle_request(request)
+			self._apply_middleware_to_response(response)
+		except URLNotFound as err:
+			logger.error(
+				"URLNotFound error has been raised: set default response (404)"
+			)
+			self._apply_middleware_to_response(response)
+			self._default_response(response, error=err)
+		except MethodNotAllow as err:
+			logger.error(
+				"MethodNotAllow error has been raised: set default response (405)"
+			)
+			self._apply_middleware_to_response(response)
+			self._default_response(response, error=err)
+
+		self.history.append(HistoryEntry(request=request, response=response))
+		return response(environ, start_response)
+```
+
+И да, ошибки обрабатываются и будут уведомлять пользователя сайта в некоторых случаях. Например URLNotFound сгенерирует ошибку 404 и так далее. Это даст возможность также разработчику в коде веб-приложения вызывать веб-ошибки.
+
+И в этом же методе происходит финальная работа.
+
+# Примеры
+Давайте я напишу несколько примеров.
+
+## Простой вебапп
+Генерация документации, и демонстрация регистрации маршрутов разными путями.
+
+```python
+import os
+from pyechonext.utils.exceptions import MethodNotAllow
+from pyechonext.app import ApplicationType, EchoNext
+from pyechonext.views import View
+from pyechonext.urls import URL, IndexView
+from pyechonext.config import SettingsLoader, SettingsConfigType
+from pyechonext.template_engine.jinja import render_template
+from pyechonext.middleware import middlewares
+from pyechonext.docsgen import ProjDocumentation
+
+
+class UsersView(View):
+	def get(self, request, response, **kwargs):
+		return render_template(
+			request,
+			"index.html",
+			user_name="User",
+			session_id=request.session_id,
+			friends=["Bob", "Anna", "John"],
+		)
+
+	def post(self, request, response, **kwargs):
+		raise MethodNotAllow(f"Request {request.path}: method not allow")
+
+
+url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
+config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'example_module.py')
+settings = config_loader.get_settings()
+echonext = EchoNext(
+	__name__,
+	settings,
+	middlewares,
+	urls=url_patterns,
+	application_type=ApplicationType.HTML,
+)
+apidoc = ProjDocumentation(echonext)
+
+
+@echonext.route_page("/book")
+@apidoc.documentate_route('/book', str, {}, ['GET', 'POST'])
+class BooksResource(View):
+	"""
+	This class describes a books resource.
+	"""
+
+	def get(self, request, response, **kwargs):
+		"""
+		get queries
+
+		:param      request:   The request
+		:type       request:   Request
+		:param      response:  The response
+		:type       response:  Response
+		:param      kwargs:    The keywords arguments
+		:type       kwargs:    dictionary
+
+		:returns:   result
+		:rtype:     str
+		"""
+		return f"GET Params: {request.GET}"
+
+	def post(self, request, response, **kwargs):
+		"""
+		post queries
+
+		:param      request:   The request
+		:type       request:   Request
+		:param      response:  The response
+		:type       response:  Response
+		:param      kwargs:    The keywords arguments
+		:type       kwargs:    dictionary
+
+		:returns:   result
+		:rtype:     str
+		"""
+		return f"POST Params: {request.POST}"
+
+
+apidoc.generate_documentation()
+```
+
+Для этого вам нужен файл templates/index.html и файл example_module.py.
+
+example_module.py - это файл настроек:
+
+```python
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATES_DIR = 'templates'
+SECRET_KEY = 'secret-key'
+LOCALE = 'DEFAULT'
+LOCALE_DIR = None
+VERSION = 0.1.0
+DESCRIPTION = 'Example echonext webapp'
+```
+
+## Локализация и docs-api ui
+
+```python
+import os
+from pyechonext.utils.exceptions import MethodNotAllow
+from pyechonext.app import ApplicationType, EchoNext
+from pyechonext.views import View
+from pyechonext.urls import URL, IndexView
+from pyechonext.config import SettingsLoader, SettingsConfigType
+from pyechonext.response import Response
+from pyechonext.template_engine.jinja import render_template
+from pyechonext.middleware import middlewares
+from pyechonext.docsgen import ProjDocumentation
+from pyechonext.apidoc_ui import APIDocumentation, APIDocUI
+
+
+class UsersView(View):
+	def get(self, request, response, **kwargs):
+		return render_template(
+			request,
+			"index.html",
+			user_name="User",
+			session_id=request.session_id,
+			friends=["Bob", "Anna", "John"],
+		)
+
+	def post(self, request, response, **kwargs):
+		raise MethodNotAllow(f"Request {request.path}: method not allow")
+
+
+url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
+config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'el_config.py')
+settings = config_loader.get_settings()
+echonext = EchoNext(
+	__name__,
+	settings,
+	middlewares,
+	urls=url_patterns,
+	application_type=ApplicationType.HTML,
+)
+apidoc = APIDocumentation(echonext)
+projdoc = ProjDocumentation(echonext)
+
+
+@echonext.route_page('/api-docs')
+def api_docs(request, response):
+	ui = APIDocUI(apidoc.generate_spec())
+	return ui.generate_html_page()
+
+
+@echonext.route_page("/book")
+@projdoc.documentate_route('/book', str, {}, ['GET', 'POST'])
+class BooksResource(View):
+	"""
+	This class describes a books resource.
+	"""
+
+	def get(self, request, response, **kwargs):
+		"""
+		get queries
+
+		:param      request:   The request
+		:type       request:   Request
+		:param      response:  The response
+		:type       response:  Response
+		:param      kwargs:    The keywords arguments
+		:type       kwargs:    dictionary
+
+		:returns:   result
+		:rtype:     str
+		"""
+		return echonext.l10n_loader.format_currency(1305.50)
+
+	def post(self, request, response, **kwargs):
+		"""
+		post queries
+
+		:param      request:   The request
+		:type       request:   Request
+		:param      response:  The response
+		:type       response:  Response
+		:param      kwargs:    The keywords arguments
+		:type       kwargs:    dictionary
+
+		:returns:   result
+		:rtype:     str
+		"""
+		return echonext.i18n_loader.get_string('title %{name}', name='Localization Site')
+
+
+projdoc.generate_documentation()
+```
+
+## Пример приложения с БД
+Я буду использовать свою собственную ORM - [ссылка на репозиторий](https://github.com/alexeev-prog/SQLSymphony). Устанавливается он просто: `pip3 install sqlsymphony_orm`.
+
+```python
+import os
+from pyechonext.app import ApplicationType, EchoNext
+from pyechonext.config import Settings
+from sqlsymphony_orm.datatypes.fields import IntegerField, RealField, TextField
+from sqlsymphony_orm.models.session_models import SessionModel
+from sqlsymphony_orm.models.session_models import SQLiteSession
+from pyechonext.middleware import middlewares
+
+
+settings = Settings(
+	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates", SECRET_KEY="secret"
+)
+echonext = EchoNext(
+	__name__, settings, middlewares, application_type=ApplicationType.HTML
+)
+session = SQLiteSession("echonext.db")
+
+
+class User(SessionModel):
+	__tablename__ = "Users"
+
+	id = IntegerField(primary_key=True)
+	name = TextField(null=False)
+	cash = RealField(null=False, default=0.0)
+
+	def __repr__(self):
+		return f"<User {self.pk}>"
+
+
+@echonext.route_page("/")
+def home(request, response):
+	user = User(name="John", cash=100.0)
+	session.add(user)
+	session.commit()
+	return "Hello from the HOME page"
+
+
+@echonext.route_page("/users")
+def about(request, response):
+	users = session.get_all_by_model(User)
+
+	return f"Users: {[f'{user.name}: {user.cash}$' for user in users]}"
+```
+
+---
+
+Таким образом у нас получился почти полноценный фреймворк на Python. Пока ему не хватает:
+
+ + Аутентификация
+ + Вебсокеты
+ + Интеграция celery
+ + Кэширование
+ + Статичные файлы
+
+Если вам понравилась статья, я могу написать вторую часть, где мы реализуем еще больше функционала.
+
+# Заключение
+Это один из моих самых больших и проработанных проектов. Это было сложно, но интересно. Я лучше разобрался в структуре веб-приложений и фреймворков.
+
+Если у вас есть вопросы или предложения, пишите в комментарии, рад буду выслушать.
+
+Репозиторий исходного кода доступен по [ссылке](https://github.com/alexeev-prog/pyEchoNext).
+
+Буду рад, если вы присоединитесь к моему небольшому [телеграм-блогу](https://t.me/hex_warehouse). Анонсы статей, новости из мира IT и полезные материалы для изучения программирования и смежных областей. Не бейте :)
+

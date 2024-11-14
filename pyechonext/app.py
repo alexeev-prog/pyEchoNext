@@ -289,7 +289,7 @@ class EchoNext:
 
 		return response
 
-	def switch_i18n_locale(self, locale: str, locale_dir: str):
+	def switch_locale(self, locale: str, locale_dir: str):
 		"""
 		Switch to another locale i18n
 

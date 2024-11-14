@@ -162,4 +162,79 @@ url_patterns = [URL(url="/", view=<ВАШ View>)]
 Example:
 
 ```python
-class IndexV
+class IndexView(View):
+def get(
+self, request: Request, response: Response, **kwargs
+) -> Union[Response, Any]:
+"""
+Get
+
+:param    request:   The request
+:type   request:   Request
+:param    response:  The response
+:type   response:  Response
+:param    args:    The arguments
+:type   args:    list
+:param    kwargs:    The keywords arguments
+:type   kwargs:    dictionary
+"""
+return "Hello World!"
+
+def post(
+self, request: Request, response: Response, **kwargs
+) -> Union[Response, Any]:
+"""
+Post
+
+:param    request:   The request
+:type   request:   Request
+:param    response:  The response
+:type   response:  Response
+:param    args:    The arguments
+:type   args:    list
+:param    kwargs:    The keywords arguments
+:type   kwargs:    dictionary
+"""
+return "Message has accepted!"
+
+
+url_patterns = [URL(url="/", view=IndexView)]
+```
+
+## Routes
+Routes inspired by flask/fastapi path:
+
+```python
+import os
+from pyechonext.app import ApplicationType, EchoNext
+from pyechonext.config import Settings
+from pyechonext.middleware import middlewares
+
+
+settings = Settings(
+BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+)
+echonext = EchoNext(
+__name__, settings, middlewares, application_type=ApplicationType.HTML
+)
+
+
+@echonext.route_page("/")
+def home(request, response):
+return "Hello from the HOME page"
+
+
+@echonext.route_page("/book")
+class BooksResource(View):
+def get(self, request, response, **kwargs):
+return f"GET Params: {request.GET}"
+
+def post(self, request, response, **kwargs):
+return f"POST Params: {request.POST}"
+```
+
+You can also route Views without passing them to parameters, but by creating a class with a page routing decorator.
+
+---
+
+[Contents](./index.md)
