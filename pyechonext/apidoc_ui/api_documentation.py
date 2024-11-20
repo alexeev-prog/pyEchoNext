@@ -1,9 +1,12 @@
+from pyechonext.app import EchoNext
+
+
 class APIDocumentation:
 	"""
 	This class describes an API documentation.
 	"""
 
-	def __init__(self, app: "EchoNext"):
+	def __init__(self, app: EchoNext):
 		"""
 		Constructs a new instance.
 
@@ -12,7 +15,7 @@ class APIDocumentation:
 		"""
 		self._app = app
 
-	def init_app(self, app: "EchoNext"):
+	def init_app(self, app: EchoNext):
 		"""
 		Initializes the application.
 

@@ -18,9 +18,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301
 USA
 """
 
-from rich.traceback import install
-from pyechonext.logging import setup_logger
+import requests
 
+from rich import print
+from rich.traceback import install
+
+__version__ = "0.5.6"
 install(show_locals=True)
 
-setup_logger()
+
+def check_for_update():
+	"""
+	Check for update in pypi
+	"""
+	try:
+		response = requests.get("https://pypi.org/pypi/pyechonext/json").json()
+
+		latest_version = response["info"]["version"]
+
+		latest_digits = [int(n) for n in latest_version.split(".")]
+		current_digits = [int(n) for n in __version__.split(".")]
+
+		if sum(latest_digits) > sum(current_digits):
+			message = f"New version of library pyEchoNext available: {latest_version}"
+
+			print(
+				f"[red]{'#' * (len(message) + 4)}\n#[/red][bold yellow] {message} [/bold yellow][red]#\n{'#' * (len(message) + 4)}[/red]\n"
+			)
+		elif sum(latest_digits) < sum(current_digits):
+			print(
+				f"[yellow]You use [bold]UNSTABLE[/bold] branch of pyEchoNext. Stable version: {latest_version}, your version: {__version__}[/yellow]\n"
+			)
+	except requests.RequestException:
+		print(
+			f"[dim]Version updates information not available. Your version: {__version__}[/dim]"
+		)
+
+
+check_for_update()

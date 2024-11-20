@@ -66,7 +66,7 @@ class BooksResource(View):
 		:returns:   result
 		:rtype:     str
 		"""
-		return echonext.l10n_loader.format_currency(1305.50)
+		return echonext.i18n_loader.get_string('title %{name}', name=str(request.GET))
 
 	def post(self, request, response, **kwargs):
 		"""
@@ -82,7 +82,7 @@ class BooksResource(View):
 		:returns:   result
 		:rtype:     str
 		"""
-		return echonext.i18n_loader.get_string('title %{name}', name='Localization Site')
+		return echonext.l10n_loader.format_currency(1305.50)
 
 
 projdoc.generate_documentation()

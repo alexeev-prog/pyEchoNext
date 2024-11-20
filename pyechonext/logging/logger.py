@@ -34,7 +34,9 @@ class InterceptHandler(logging.Handler):
 		)
 
 
-def setup_logger(level: Union[str, int] = "DEBUG", ignored: List[str] = "") -> None:
+def setup_logger(
+	filename: str, level: Union[str, int] = "DEBUG", ignored: List[str] = ""
+) -> None:
 	"""
 	Setup logger
 
@@ -50,6 +52,6 @@ def setup_logger(level: Union[str, int] = "DEBUG", ignored: List[str] = "") -> N
 	for ignore in ignored:
 		logger.disable(ignore)
 
-	logger.add("pyechonext.log")
+	logger.add(f"{filename}_app.log")
 
 	logger.info("Logging is successfully configured")

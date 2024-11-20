@@ -116,6 +116,8 @@ def main():
 				print(f"{GREEN}Formatting completed successfully: {root}/{file}{NC}")
 				convert_file(f"{root}/{file}", "4", "tabs")
 
+	os.system("ruff clean")
+
 
 if __name__ == "__main__":
 	main()

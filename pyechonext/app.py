@@ -1,6 +1,6 @@
 import inspect
 from enum import Enum
-from typing import Iterable, Callable, List, Type, Tuple, Optional, Union
+from typing import Iterable, Callable, List, Type, Tuple, Optional, Union, Any
 from dataclasses import dataclass
 from socks import method
 from parse import parse
@@ -21,6 +21,8 @@ from pyechonext.config import Settings
 from pyechonext.middleware import BaseMiddleware
 from pyechonext.i18n_l10n.i18n import JSONi18nLoader
 from pyechonext.i18n_l10n.l10n import JSONLocalizationLoader
+from pyechonext.logging import setup_logger
+from pyechonext.cache import InMemoryCache
 
 
 class ApplicationType(Enum):
@@ -55,6 +57,7 @@ class EchoNext:
 		"i18n_loader",
 		"l10n_loader",
 		"history",
+		"main_cache",
 	)
 
 	def __init__(
@@ -85,6 +88,7 @@ class EchoNext:
 		self.application_type = application_type
 		self.routes = {}
 		self.urls = urls
+		self.main_cache = InMemoryCache(timeout=60 * 10)
 		self.history: List[HistoryEntry] = []
 		self.i18n_loader = JSONi18nLoader(
 			self.settings.LOCALE, self.settings.LOCALE_DIR
@@ -96,6 +100,8 @@ class EchoNext:
 
 		if self.application_type == ApplicationType.TEAPOT:
 			raise TeapotError("Where's my coffie?")
+
+		setup_logger(self.app_name)
 
 	def _find_view(self, raw_url: str) -> Union[Type[URL], None]:
 		"""
@@ -249,6 +255,29 @@ class EchoNext:
 
 		return None, None
 
+	def get_and_save_cache_item(self, key: str, value: Any) -> Any:
+		"""
+		Gets and save cached key.
+
+		:param		key:	The key
+		:type		key:	str
+		:param		value:	The value
+		:type		value:	Any
+
+		:returns:	And save cached key.
+		:rtype:		Any
+		"""
+		item = self.main_cache.get(key)
+
+		if item is None:
+			logger.info(f"Save item to cache: {key}={str(value)[:32]}")
+			self.main_cache.set(key, value)
+			item = self.main_cache.get(key)
+
+		logger.info(f"Get item from cache: {key}: {item}")
+
+		return item
+
 	def _handle_request(self, request: Request) -> Response:
 		"""
 		Handle response from request
@@ -280,12 +309,15 @@ class EchoNext:
 						response.body, **response.i18n_kwargs
 					)
 			else:
-				response.body = self.i18n_loader.get_string(result)
+				string = self.i18n_loader.get_string(result)
+				response.body = self.get_and_save_cache_item(string, string)
 
 				if not response.use_i18n:
-					response.body = result
+					response.body = self.get_and_save_cache_item(result, result)
 		else:
 			raise URLNotFound(f'URL "{request.path}" not found.')
+
+		response = self.get_and_save_cache_item(str(response), response)
 
 		return response
 
@@ -305,7 +337,7 @@ class EchoNext:
 			self.i18n_loader.locale, self.i18n_loader.directory
 		)
 		self.l10n_loader.locale = locale
-		self.l10n_loader.directory = directory
+		self.l10n_loader.directory = locale_dir
 		self.i18n_loader.locale_settings = self.l10n_loader.load_locale(
 			self.l10n_loader.locale, self.l10n_loader.directory
 		)

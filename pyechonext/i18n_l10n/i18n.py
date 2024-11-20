@@ -114,7 +114,7 @@ class JSONi18nLoader(i18nInterface):
 
 		if kwargs:
 			for name, value in kwargs.items():
-				result = result.replace(f'{f"%{{{name}}}"}', value)
+				result = result.replace(f'{f"%{{{name}}}"}', str(value))
 
 		return result.strip()
 

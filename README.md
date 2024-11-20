@@ -3,36 +3,36 @@
 
 <div align="center">  
   <p align="center">
-	EchoNext is a lightweight, fast and scalable web framework for Python
-	<br />
-	<a href="https://alexeev-prog.github.io/pyEchoNext/"><strong>Explore the docs »</strong></a>
-	<br />
-	<br />
-	<a href="#-comparison-with-alternatives">Comparison with Alternatives</a>
-	.
-	<a href="#-why-choose-pyechonext">Why Choose pyEchoNext</a>
-	·
-	<a href="#-key-features">Key Features</a>
-	·
-	<a href="#-getting-started">Getting Started</a>
-	·
-	<a href="#-usage-examples">Basic Usage</a>
-	·
-	<a href="#-specifications">Specification</a>
-	·
-	<a href="https://alexeev-prog.github.io/pyEchoNext/">Documentation</a>
-	·
-	<a href="https://github.com/alexeev-prog/pyEchoNext/blob/main/LICENSE">License</a>
+    EchoNext is a lightweight, fast and scalable web framework for Python
+    <br />
+    <a href="https://alexeev-prog.github.io/pyEchoNext/"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="#-comparison-with-alternatives">Comparison with Alternatives</a>
+    .
+    <a href="#-why-choose-pyechonext">Why Choose pyEchoNext</a>
+    ·
+    <a href="#-key-features">Key Features</a>
+    ·
+    <a href="#-getting-started">Getting Started</a>
+    ·
+    <a href="#-usage-examples">Basic Usage</a>
+    ·
+    <a href="#-specifications">Specification</a>
+    ·
+    <a href="https://alexeev-prog.github.io/pyEchoNext/">Documentation</a>
+    ·
+    <a href="https://github.com/alexeev-prog/pyEchoNext/blob/main/LICENSE">License</a>
   </p>
 </div>
 <br>
 <p align="center">
-	<img src="https://img.shields.io/github/languages/top/alexeev-prog/pyEchoNext?style=for-the-badge">
-	<img src="https://img.shields.io/github/languages/count/alexeev-prog/pyEchoNext?style=for-the-badge">
-	<img src="https://img.shields.io/github/license/alexeev-prog/pyEchoNext?style=for-the-badge">
-	<img src="https://img.shields.io/github/stars/alexeev-prog/pyEchoNext?style=for-the-badge">
-	<img src="https://img.shields.io/github/issues/alexeev-prog/pyEchoNext?style=for-the-badge">
-	<img src="https://img.shields.io/github/last-commit/alexeev-prog/pyEchoNext?style=for-the-badge">
+    <img src="https://img.shields.io/github/languages/top/alexeev-prog/pyEchoNext?style=for-the-badge">
+    <img src="https://img.shields.io/github/languages/count/alexeev-prog/pyEchoNext?style=for-the-badge">
+    <img src="https://img.shields.io/github/license/alexeev-prog/pyEchoNext?style=for-the-badge">
+    <img src="https://img.shields.io/github/stars/alexeev-prog/pyEchoNext?style=for-the-badge">
+    <img src="https://img.shields.io/github/issues/alexeev-prog/pyEchoNext?style=for-the-badge">
+    <img src="https://img.shields.io/github/last-commit/alexeev-prog/pyEchoNext?style=for-the-badge">
 </p>
 
  > EchoNext is a lightweight, fast and scalable web framework for Python
@@ -41,8 +41,16 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last unstable version: 0.5.6 alpha
- > Last stable version: 0.5.5 alpha
+ > Last stable version: 0.5.7 alpha
+
+## Check Other My Projects
+
+ + [SQLSymphony](https://github.com/alexeev-prog/SQLSymphony) - simple and fast ORM in sqlite (and you can add other DBMS)
+ + [Burn-Build](https://github.com/alexeev-prog/burn-build) - simple and fast build system written in python for C/C++ and other projects. With multiprocessing, project creation and caches!
+ + [OptiArch](https://github.com/alexeev-prog/optiarch) - shell script for fast optimization of Arch Linux
+ + [libnumerixpp](https://github.com/alexeev-prog/libnumerixpp) - a Powerful C++ Library for High-Performance Numerical Computing
+ + [pycolor-palette](https://github.com/alexeev-prog/pycolor-palette) - display beautiful log messages, logging, debugging.
+ + [shegang](https://github.com/alexeev-prog/shegang) - powerful command interpreter (shell) for linux written in C
 
 ## 🤔 Why Choose SqlSymphony?
 
@@ -152,17 +160,17 @@ from pyechonext.apidoc_ui import APIDocumentation
 
 
 class UsersView(View):
-	def get(self, request, response, **kwargs):
-		return render_template(
-			request,
-			"index.html",
-			user_name="User",
-			session_id=request.session_id,
-			friends=["Bob", "Anna", "John"],
-		)
+    def get(self, request, response, **kwargs):
+        return render_template(
+            request,
+            "index.html",
+            user_name="User",
+            session_id=request.session_id,
+            friends=["Bob", "Anna", "John"],
+        )
 
-	def post(self, request, response, **kwargs):
-		raise MethodNotAllow(f"Request {request.path}: method not allow")
+    def post(self, request, response, **kwargs):
+        raise MethodNotAllow(f"Request {request.path}: method not allow")
 
 
 url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
@@ -170,11 +178,11 @@ url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
 config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'el_config.py')
 settings = config_loader.get_settings()
 echonext = EchoNext(
-	__name__,
-	settings,
-	middlewares,
-	urls=url_patterns,
-	application_type=ApplicationType.HTML,
+    __name__,
+    settings,
+    middlewares,
+    urls=url_patterns,
+    application_type=ApplicationType.HTML,
 )
 apidoc = APIDocumentation(echonext)
 projdoc = ProjDocumentation(echonext)
@@ -182,47 +190,47 @@ projdoc = ProjDocumentation(echonext)
 
 @echonext.route_page('/api-docs')
 def api_docs(request, response):
-	return Response(request, content_type='application/json', body=apidoc.generate_spec())
+    return Response(request, content_type='application/json', body=apidoc.generate_spec())
 
 
 @echonext.route_page("/book")
 @projdoc.documentate_route('/book', str, {}, ['GET', 'POST'])
 class BooksResource(View):
-	"""
-	This class describes a books resource.
-	"""
+    """
+    This class describes a books resource.
+    """
 
-	def get(self, request, response, **kwargs):
-		"""
-		get queries
+    def get(self, request, response, **kwargs):
+        """
+        get queries
 
-		:param      request:   The request
-		:type       request:   Request
-		:param      response:  The response
-		:type       response:  Response
-		:param      kwargs:    The keywords arguments
-		:type       kwargs:    dictionary
+        :param      request:   The request
+        :type       request:   Request
+        :param      response:  The response
+        :type       response:  Response
+        :param      kwargs:    The keywords arguments
+        :type       kwargs:    dictionary
 
-		:returns:   result
-		:rtype:     str
-		"""
-		return Response(request, body="title %{name}", use_i18n=True, name='Localization Site')
+        :returns:   result
+        :rtype:     str
+        """
+        return Response(request, body="title %{name}", use_i18n=True, name='Localization Site')
 
-	def post(self, request, response, **kwargs):
-		"""
-		post queries
+    def post(self, request, response, **kwargs):
+        """
+        post queries
 
-		:param      request:   The request
-		:type       request:   Request
-		:param      response:  The response
-		:type       response:  Response
-		:param      kwargs:    The keywords arguments
-		:type       kwargs:    dictionary
+        :param      request:   The request
+        :type       request:   Request
+        :param      response:  The response
+        :type       response:  Response
+        :param      kwargs:    The keywords arguments
+        :type       kwargs:    dictionary
 
-		:returns:   result
-		:rtype:     str
-		"""
-		return echonext.locale_loader.get_string('title %{name}', name='Localization Site')
+        :returns:   result
+        :rtype:     str
+        """
+        return echonext.locale_loader.get_string('title %{name}', name='Localization Site')
 
 
 projdoc.generate_documentation()
@@ -257,31 +265,31 @@ from pyechonext.template_engine.jinja import render_template
 
 
 class UsersView(View):
-	def get(self, request, response, **kwargs):
-		return render_template(
-			request, "index.html", user_name="User", friends=["Bob", "Anna", "John"]
-		)
+    def get(self, request, response, **kwargs):
+        return render_template(
+            request, "index.html", user_name="User", friends=["Bob", "Anna", "John"]
+        )
 
-	def post(self, request, response, **kwargs):
-		return Response(body='post users')
+    def post(self, request, response, **kwargs):
+        return Response(body='post users')
 
 
 url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
 settings = Settings(
-	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+    BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
 )
 echonext = EchoNext(
-	__name__, settings, urls=url_patterns, application_type=ApplicationType.HTML
+    __name__, settings, urls=url_patterns, application_type=ApplicationType.HTML
 )
 
 
 @echonext.route_page("/book")
 class BooksResource(View):
-	def get(self, request, response, **kwargs):
-		return f"GET Params: {request.GET}"
+    def get(self, request, response, **kwargs):
+        return f"GET Params: {request.GET}"
 
-	def post(self, request, response, **kwargs):
-		return f"POST Params: {request.POST}"
+    def post(self, request, response, **kwargs):
+        return f"POST Params: {request.POST}"
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -299,36 +307,36 @@ from sqlsymphony_orm.models.session_models import SQLiteSession
 
 
 settings = Settings(
-	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+    BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
 )
 echonext = EchoNext(__name__, settings, application_type=ApplicationType.HTML)
 session = SQLiteSession("echonext.db")
 
 
 class User(SessionModel):
-	__tablename__ = "Users"
+    __tablename__ = "Users"
 
-	id = IntegerField(primary_key=True)
-	name = TextField(null=False)
-	cash = RealField(null=False, default=0.0)
+    id = IntegerField(primary_key=True)
+    name = TextField(null=False)
+    cash = RealField(null=False, default=0.0)
 
-	def __repr__(self):
-		return f"<User {self.pk}>"
+    def __repr__(self):
+        return f"<User {self.pk}>"
 
 
 @echonext.route_page("/")
 def home(request, response):
-	user = User(name="John", cash=100.0)
-	session.add(user)
-	session.commit()
-	return "Hello from the HOME page"
+    user = User(name="John", cash=100.0)
+    session.add(user)
+    session.commit()
+    return "Hello from the HOME page"
 
 
 @echonext.route_page("/users")
 def about(request, response):
-	users = session.get_all_by_model(User)
+    users = session.get_all_by_model(User)
 
-	return f"Users: {[f'{user.name}: {user.cash}$' for user in users]}"
+    return f"Users: {[f'{user.name}: {user.cash}$' for user in users]}"
 
 ```
 
@@ -336,116 +344,214 @@ def about(request, response):
 
 ## 🔧 Specifications
 
+### Security
+A security module created for hash functions and crypto-algorithms.
+
+#### Crypts
+Simple crypto-algorithms.
+
+##### PSPCAlgorithm
+Point Simple Password Crypt Algorithm.
+
+```
+Base: AngryPassword
+Crypted: 00778.87999.74379.363401.558001.558001.96058.06107.711601.87999.13309.07469.50075
+Decrypted: AngryPassword
+
+Base: S0mesd7623tds@&6^@_
+Crypted: 51338.82165.83428.85374.62333.82165.558001.00778.237101.72744.05834.85374.53284.00778.558001.77588.39559.69024.19727
+Decrypted: S0mesd7623tds@&6^@_
+
+Base: PassWord
+Crypted: 00778.87999.74379.99267.558001.558001.96058.06107
+Decrypted: PassWord
+
+Base: Pass
+Crypted: 558001.558001.96058.06107
+Decrypted: Pass
+```
+
+Example:
+
+```python
+from pyechonext.security.crypts import PSPCAlgorithm
+
+
+pspc = PSPCAlgorithm()
+
+passwords = ['AngryPassword', 'S0mesd7623tds@&6^@_', 'PassWord', 'Pass']
+
+for password in passwords:
+    print('Base:', password)
+    print('Crypted:', pspc.crypt(password))
+    print('Decrypted:', pspc.decrypt(pspc.crypt(password)))
+    print()
+```
+
+#### Hashing
+ 
+ + Module: `pyechonext.security.hashing`
+
+##### HashAlgorithm
+Enum class with available hashing algorithms
+
+```python
+class HashAlgorithm(Enum):
+    """
+    This class describes a hash algorithms.
+    """
+
+    SHA256 = auto()
+    SHA512 = auto()
+    MD5 = auto()
+    BLAKE2B = auto()
+    BLAKE2S = auto()
+```
+
+##### PlainHasher
+A simple class for hashing text. Has no 'salting'.
+
+```python
+hasher = PlainHasher(HashAlgorithm.BLAKE2S)
+old_hash = hasher.hash("TEXT")
+new_hash = hasher.hash("TEXT")
+
+if hasher.verify("TEXT", new_hash): # true
+    print('Yes!')
+
+if hasher.verify("TEXT2", old_hash): # false
+    print('Yes!')
+
+# Output: one "Yes!"
+```
+
+##### SaltedHasher
+A simple class for hashing text. Has hash salt.
+
+```python
+hasher = SaltedHasher(HashAlgorithm.BLAKE2S, salt='bob')
+old_hash = hasher.hash("TEXT")
+new_hash = hasher.hash("TEXT")
+
+if hasher.verify("TEXT", new_hash): # true
+    print('Yes!')
+
+if hasher.verify("TEXT2", old_hash): # false
+    print('Yes!')
+
+# Output: one "Yes!"
+```
+
 ### View
 View is an abstract class, with abstract get and post methods (all descendants must create these methods).
 
 ```python
 class View(ABC):
-	"""
-	Page view
-	"""
+    """
+    Page view
+    """
 
-	@abstractmethod
-	def get(self, request: Request, response: Response, *args, **kwargs):
-		"""
-		Get
+    @abstractmethod
+    def get(self, request: Request, response: Response, *args, **kwargs):
+        """
+        Get
 
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		raise NotImplementedError
+        :param      request:   The request
+        :type       request:   Request
+        :param      response:  The response
+        :type       response:  Response
+        :param      args:      The arguments
+        :type       args:      list
+        :param      kwargs:    The keywords arguments
+        :type       kwargs:    dictionary
+        """
+        raise NotImplementedError
 
-	@abstractmethod
-	def post(self, request: Request, response: Response, *args, **kwargs):
-		"""
-		Post
+    @abstractmethod
+    def post(self, request: Request, response: Response, *args, **kwargs):
+        """
+        Post
 
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		raise NotImplementedError
+        :param      request:   The request
+        :type       request:   Request
+        :param      response:  The response
+        :type       response:  Response
+        :param      args:      The arguments
+        :type       args:      list
+        :param      kwargs:    The keywords arguments
+        :type       kwargs:    dictionary
+        """
+        raise NotImplementedError
 ```
 
 Example of view:
 
 ```python
 class IndexView(View):
-	def get(self, request: Request, response: Response, **kwargs):
-		"""
-		Get
+    def get(self, request: Request, response: Response, **kwargs):
+        """
+        Get
 
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		return "Hello World!"
+        :param      request:   The request
+        :type       request:   Request
+        :param      response:  The response
+        :type       response:  Response
+        :param      args:      The arguments
+        :type       args:      list
+        :param      kwargs:    The keywords arguments
+        :type       kwargs:    dictionary
+        """
+        return "Hello World!"
 
-	def post(self, request: Request, response: Response, **kwargs):
-		"""
-		Post
+    def post(self, request: Request, response: Response, **kwargs):
+        """
+        Post
 
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		return "Message has accepted!"
+        :param      request:   The request
+        :type       request:   Request
+        :param      response:  The response
+        :type       response:  Response
+        :param      args:      The arguments
+        :type       args:      list
+        :param      kwargs:    The keywords arguments
+        :type       kwargs:    dictionary
+        """
+        return "Message has accepted!"
 ```
 
 Or you can return response:
 
 ```python
 class IndexView(View):
-	def get(self, request: Request, response: Response, **kwargs):
-		"""
-		Get
+    def get(self, request: Request, response: Response, **kwargs):
+        """
+        Get
 
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		return Response(request, body="Hello World!")
+        :param      request:   The request
+        :type       request:   Request
+        :param      response:  The response
+        :type       response:  Response
+        :param      args:      The arguments
+        :type       args:      list
+        :param      kwargs:    The keywords arguments
+        :type       kwargs:    dictionary
+        """
+        return Response(request, body="Hello World!")
 
-	def post(self, request: Request, response: Response, **kwargs):
-		"""
-		Post
+    def post(self, request: Request, response: Response, **kwargs):
+        """
+        Post
 
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		return Response(request, body="Message has accepted!")
+        :param      request:   The request
+        :type       request:   Request
+        :param      response:  The response
+        :type       response:  Response
+        :param      args:      The arguments
+        :type       args:      list
+        :param      kwargs:    The keywords arguments
+        :type       kwargs:    dictionary
+        """
+        return Response(request, body="Message has accepted!")
 ```
 
 ## 💬 Support
