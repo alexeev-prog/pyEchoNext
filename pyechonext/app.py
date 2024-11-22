@@ -23,6 +23,7 @@ from pyechonext.i18n_l10n.i18n import JSONi18nLoader
 from pyechonext.i18n_l10n.l10n import JSONLocalizationLoader
 from pyechonext.logging import setup_logger
 from pyechonext.cache import InMemoryCache
+from pyechonext.static import StaticFilesManager, StaticFile
 
 
 class ApplicationType(Enum):
@@ -58,6 +59,8 @@ class EchoNext:
 		"l10n_loader",
 		"history",
 		"main_cache",
+		"static_files_manager",
+		"static_files",
 	)
 
 	def __init__(
@@ -67,6 +70,7 @@ class EchoNext:
 		middlewares: List[Type[BaseMiddleware]],
 		urls: Optional[List[URL]] = [],
 		application_type: Optional[ApplicationType] = ApplicationType.JSON,
+		static_files: Optional[List[StaticFile]] = [],
 	):
 		"""
 		Constructs a new instance.
@@ -80,13 +84,18 @@ class EchoNext:
 		:param		urls:			   The urls
 		:type		urls:			   List[URL]
 		:param		application_type:  The application type
-		:type		application_type:  Optional[ApplicationType]
+		:type		application_type:  ApplicationType
+		:param		static_files:	   The static files
+		:type		static_files:	   List[StaticFile]
 		"""
 		self.app_name = app_name
 		self.settings = settings
 		self.middlewares = middlewares
 		self.application_type = application_type
+		self.static_files = static_files
+		self.static_files_manager = StaticFilesManager(self.static_files)
 		self.routes = {}
+
 		self.urls = urls
 		self.main_cache = InMemoryCache(timeout=60 * 10)
 		self.history: List[HistoryEntry] = []
@@ -240,6 +249,9 @@ class EchoNext:
 		"""
 		url = _prepare_url(request.path)
 
+		if self.static_files_manager.serve_static_file(url):
+			return self._serve_static_file, {}
+
 		for path, handler in self.routes.items():
 			parse_result = parse(path, url)
 			if parse_result is not None:
@@ -270,13 +282,36 @@ class EchoNext:
 		item = self.main_cache.get(key)
 
 		if item is None:
-			logger.info(f"Save item to cache: {key}={str(value)[:32]}")
+			logger.info(f"Save item to cache: {key[:16].strip()}")
 			self.main_cache.set(key, value)
 			item = self.main_cache.get(key)
 
-		logger.info(f"Get item from cache: {key}: {item}")
+		logger.info(f"Get item from cache: {key[:16].strip()}")
 
 		return item
+
+	def _serve_static_file(
+		self, request: Request, response: Response, **kwargs
+	) -> Response:
+		"""
+		Serve static files
+
+		:param		request:   The request
+		:type		request:   Request
+		:param		response:  The response
+		:type		response:  Response
+		:param		kwargs:	   The keywords arguments
+		:type		kwargs:	   dictionary
+
+		:returns:	response
+		:rtype:		Response
+		"""
+		print(f"Serve sttic file by path: {request.path}")
+		response.content_type = self.static_files_manager.get_file_type(request.path)
+		response.body = self.static_files_manager.serve_static_file(
+			_prepare_url(request.path)
+		)
+		return response
 
 	def _handle_request(self, request: Request) -> Response:
 		"""
@@ -316,8 +351,6 @@ class EchoNext:
 					response.body = self.get_and_save_cache_item(result, result)
 		else:
 			raise URLNotFound(f'URL "{request.path}" not found.')
-
-		response = self.get_and_save_cache_item(str(response), response)
 
 		return response
 

@@ -7,4 +7,5 @@ LOCALE = 'RU_RU'
 LOCALE_DIR = 'locales'
 VERSION = "0.1.0"
 DESCRIPTION = 'Example echonext webapp'
+STATIC_DIR = 'static'
 

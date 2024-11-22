@@ -9,6 +9,7 @@ from pyechonext.template_engine.jinja import render_template
 from pyechonext.middleware import middlewares
 from pyechonext.docsgen import ProjDocumentation
 from pyechonext.apidoc_ui import APIDocumentation, APIDocUI
+from pyechonext.static import StaticFile
 
 
 class UsersView(View):
@@ -28,12 +29,14 @@ class UsersView(View):
 url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
 config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'el_config.py')
 settings = config_loader.get_settings()
+static_files = [StaticFile(settings, 'styles.css')]
 echonext = EchoNext(
 	__name__,
 	settings,
 	middlewares,
 	urls=url_patterns,
 	application_type=ApplicationType.HTML,
+	static_files=static_files
 )
 apidoc = APIDocumentation(echonext)
 projdoc = ProjDocumentation(echonext)

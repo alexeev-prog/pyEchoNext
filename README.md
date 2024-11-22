@@ -41,7 +41,9 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last stable version: 0.5.7 alpha
+ > Last stable version: 0.5.9 alpha
+
+ > Next Big Update: ASYNC & unicorn support
 
 ## Check Other My Projects
 
@@ -105,13 +107,16 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 ## ⚙️ Functionality
 
- + i18n localization
+ + i18n/l10n localization
  + basic project documentation generator
  + request/response
  + middlewares (with basic session cookie middleware)
  + views and routes
  + settings and config loader
  + built-in template engine and Jinja2
+ + basic security and hashing
+ + static files management
+ + cache response bodies
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -141,9 +146,73 @@ exampleapp/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 💻 Usage Examples
+## 🚀 Run app with BurnBuild
+[burn-build](https://github.com/alexeev-prog/burn-build) - build system written in python for projects in C, C++, python.
 
-### Localization i18n & OpenAPI specification generation & Settings loader from python module
+burn-build is available on [PyPI](https://pypi.org/project/pyburn_build). Simply install the package into your project environment with PIP:
+
+```bash
+pip install pyburn_build
+```
+
+Create project_config.json:
+
+```json
+{
+    "metadata": {
+        "name": "WebApp",
+        "version": "0.1.0",
+        "description": "WebApp app",
+        "language": "python",
+        "use_cmake": false,
+        "cache_file": "cache.json",
+        "features": ["pyechonext"]
+    },
+
+    "compiler": {
+        "name": "python",
+        "base_compiler_flags": []
+    }
+}
+```
+
+And create toolchain_config.json:
+
+```json
+{
+    "prelude_commands": [],
+    "targets": {
+        "target1": {
+            "compiler_options": [],
+            "sources": ["app.py"],
+            "output": "",
+            "objects": [],
+            "compiler": "python3"
+        },
+    },
+    "post_commands": []
+}
+```
+
+And create project:
+
+```bash
+python3 -m pyburn_build create --project-config example_configs/project_config.json --toolchain-config example_configs/toolchain_config.json
+```
+
+And build project:
+
+```bash
+python3 -m pyburn_build build --project-config example_configs/project_config.json --toolchain-config example_configs/toolchain_config.json
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## 💻 Usage Examples
+You can view examples at [examples directory](./examples).
+
+### FullApp with locale, static files, docs generation
+Also see in [examples](./examples/example_locale.py)
 
 ```python
 import os
@@ -156,7 +225,8 @@ from pyechonext.response import Response
 from pyechonext.template_engine.jinja import render_template
 from pyechonext.middleware import middlewares
 from pyechonext.docsgen import ProjDocumentation
-from pyechonext.apidoc_ui import APIDocumentation
+from pyechonext.apidoc_ui import APIDocumentation, APIDocUI
+from pyechonext.static import StaticFile
 
 
 class UsersView(View):
@@ -174,15 +244,16 @@ class UsersView(View):
 
 
 url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
-
 config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'el_config.py')
 settings = config_loader.get_settings()
+static_files = [StaticFile(settings, 'styles.css')]
 echonext = EchoNext(
     __name__,
     settings,
     middlewares,
     urls=url_patterns,
     application_type=ApplicationType.HTML,
+    static_files=static_files
 )
 apidoc = APIDocumentation(echonext)
 projdoc = ProjDocumentation(echonext)
@@ -190,7 +261,8 @@ projdoc = ProjDocumentation(echonext)
 
 @echonext.route_page('/api-docs')
 def api_docs(request, response):
-    return Response(request, content_type='application/json', body=apidoc.generate_spec())
+    ui = APIDocUI(apidoc.generate_spec())
+    return ui.generate_html_page()
 
 
 @echonext.route_page("/book")
@@ -214,7 +286,7 @@ class BooksResource(View):
         :returns:   result
         :rtype:     str
         """
-        return Response(request, body="title %{name}", use_i18n=True, name='Localization Site')
+        return echonext.i18n_loader.get_string('title %{name}', name=str(request.GET))
 
     def post(self, request, response, **kwargs):
         """
@@ -230,13 +302,23 @@ class BooksResource(View):
         :returns:   result
         :rtype:     str
         """
-        return echonext.locale_loader.get_string('title %{name}', name='Localization Site')
+        return echonext.l10n_loader.format_currency(1305.50)
 
 
 projdoc.generate_documentation()
 ```
 
-`el_config.py`:
+Create file `static/styles.css`:
+
+```css
+body {
+    color: #f8f2f2;
+    background: #1f1f1f;
+    font-family: monospace;
+}
+```
+
+Create file `el_config.py`:
 
 ```python
 import os
@@ -248,9 +330,30 @@ LOCALE = 'RU_RU'
 LOCALE_DIR = 'locales'
 VERSION = "0.1.0"
 DESCRIPTION = 'Example echonext webapp'
+STATIC_DIR = 'static'
 ```
 
-### Advanced app with flask-like and django-like routes
+Create file `locales/RU_RU.json`:
+
+```python
+{
+    "i18n": {
+        "title": "pyEchoNext Веб-приложение с локалью",
+        "example one": "пример один"
+    },
+    "l10n": {
+        "date_format": "%Y-%m-%d",
+        "time_format": "%H:%M",
+        "date_time_fromat": "%Y-%m-%d %H:%M",
+        "thousands_separator": ",",
+        "decimal_separator": ".",
+        "currency_symbol": "$",
+        "currency_format": "{symbol}{amount}"
+    }
+}
+```
+
+### App with flask-like and django-like routes
 Django-line classes with get-post methods and routing pages. And with the built-in template engine!
 
 ```python
@@ -554,6 +657,29 @@ class IndexView(View):
         return Response(request, body="Message has accepted!")
 ```
 
+## Documentation 🌍
+Extended documentation and framework specifications are available at the following links:
+
+### English
+
+1. [Index](./docs/en/index.md)
+2. [Web framework design](./docs/en/webframework_design.md)
+3. [Creating a web application](./docs/en/webapp_creation.md)
+4. [Creating routes (routes&views)](./docs/en/routes_and_views.md)
+5. [Request/Response](./docs/en/requests_responses.md)
+6. [Localization i18n/l10n](./docs/en/i18n_locales.md)
+7. [Security](./docs/en/security.md)
+
+### Russian / Русский
+
+1. [Содержание](./docs/ru/index.md)
+2. [Устройство веб-фреймворка](./docs/ru/webframework_design.md)
+3. [Создание веб-приложения](./docs/ru/webapp_creation.md)
+4. [Создание маршрутов (routes&views)](./docs/ru/routes_and_views.md)
+5. [Request/Response](./docs/ru/requests_responses.md)
+6. [Локализация i18n/l10n](./docs/ru/i18n_locales.md)
+7. [Безопасность](./docs/ru/security.md)
+
 ## 💬 Support
 If you encounter any issues or have questions about pyEchoNext, please:
 
@@ -594,27 +720,6 @@ Unlock your potential as a developer with Echonext. Don’t just build applicati
 **Happy Coding!** 💻✨
 
 This README is designed to grab attention from the very first lines. It emphasizes the framework's strengths and makes a compelling case for why developers should choose Echonext for their projects. Feel free to adjust any specific links or images to fit your project!
-
-## Documentation 🌍
-Extended documentation and framework specifications are available at the following links:
-
-### English
-
-1. [Index](./docs/en/index.md)
-2. [Web framework design](./docs/en/webframework_design.md)
-3. [Creating a web application](./docs/en/webapp_creation.md)
-4. [Creating routes (routes&views)](./docs/en/routes_and_views.md)
-5. [Request/Response](./docs/en/requests_responses.md)
-6. [Localization i18n/l10n](./docs/en/i18n_locales.md)
-
-### Russian / Русский
-
-1. [Содержание](./docs/ru/index.md)
-2. [Устройство веб-фреймворка](./docs/ru/webframework_design.md)
-3. [Создание веб-приложения](./docs/ru/webapp_creation.md)
-4. [Создание маршрутов (routes&views)](./docs/ru/routes_and_views.md)
-5. [Request/Response](./docs/ru/requests_responses.md)
-6. [Локализация i18n/l10n](./docs/ru/i18n_locales.md)
 
 ## License
 Distributed under the GNU LGPL 2.1 License. See [LICENSE](https://github.com/alexeev-prog/pyEchoNext/blob/main/LICENSE) for more information.

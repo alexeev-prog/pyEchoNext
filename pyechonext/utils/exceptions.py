@@ -111,6 +111,18 @@ class RoutePathExistsError(pyEchoNextException):
 		return f"RoutePathExistsError has been raised. {self.get_explanation()}"
 
 
+class StaticFileNotFoundError(pyEchoNextException):
+	def __str__(self):
+		"""
+		Returns a string representation of the object.
+
+		:returns:	String representation of the object.
+		:rtype:		str
+		"""
+		logger.error(f"{self.__class__.__name__}: {self.get_explanation()}")
+		return f"StaticFileNotFoundError has been raised. {self.get_explanation()}"
+
+
 class URLNotFound(WebError):
 	code = 404
 

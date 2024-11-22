@@ -33,6 +33,7 @@ class Settings:
 	DESCRIPTION: str = "Echonext webapp"
 	LOCALE: str = "DEFAULT"
 	LOCALE_DIR: str = None
+	STATIC_DIR: str = "static"
 
 
 class SettingsConfigType(Enum):
@@ -96,6 +97,7 @@ class SettingsLoader:
 			"LOCALE_DIR": os.environ.get("PEN_LOCALE_DIR", None),
 			"VERSION": os.environ.get("PEN_VERSION", "1.0.0"),
 			"DESCRIPTION": os.environ.get("PEN_DESCRIPTION", "EchoNext webapp"),
+			"STATIC_DIR": os.environ.get("PEN_STATIC_DIR", "static"),
 		}
 
 		return config
@@ -117,6 +119,7 @@ class SettingsLoader:
 			"LOCALE_DIR": config_module.LOCALE_DIR,
 			"VERSION": config_module.VERSION,
 			"DESCRIPTION": config_module.DESCRIPTION,
+			"STATIC_DIR": config_module.STATIC_DIR,
 		}
 
 	def get_settings(self) -> Settings:
@@ -141,4 +144,5 @@ class SettingsLoader:
 			LOCALE_DIR=self.config.get("LOCALE_DIR", None),
 			VERSION=self.config.get("VERSION", "1.0.0"),
 			DESCRIPTION=self.config.get("DESCRIPTION", "EchoNext webapp"),
+			STATIC_DIR=self.config.get("STATIC_DIR", "static"),
 		)
