@@ -1,7 +1,7 @@
 import time
 from functools import wraps
 from typing import Callable, Type, Any
-from pyechonext.patterns import Singleton
+from pyechonext.utils.patterns import Singleton
 
 
 class PerformanceCacheBase(object):

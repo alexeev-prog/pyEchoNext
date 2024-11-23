@@ -1,3 +1,39 @@
+commit dd7f1d3f45d3bc5137fafe1da2a5ca7cfd39c68b
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Sat Nov 23 19:13:19 2024 +0700
+
+    feat/fix: improve apidoc_ui, add tests, add auditing, performance, slugger, permissions
+
+commit 7d4f639a95b8bb865696e1f3aa2e311fbd9c2171
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Fri Nov 22 19:15:20 2024 +0700
+
+    feat/docs: create static files manageer, improve docs
+
+commit 2f845556d01ef76b460acc268a58ab5fc44b1412
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Wed Nov 20 23:03:23 2024 +0700
+
+    feat/fix: add cache, improve api docs, other small changes
+
+commit 6a338e798919dc868e8de8431a1c4de78c6bb2ba
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Thu Nov 14 21:19:35 2024 +0700
+
+    fix/style/docs: new version, improve docs, fix codestyle
+
+commit afc2300b2707cbe328a3256178a37dd0420dae00
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Wed Nov 13 22:55:27 2024 +0700
+
+    feat/dpcs: create api docs html template generator, fix bugs, improve docs
+
+commit 4c1b03a23940e8221b6fb8643f6553d37ab165a2
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Tue Nov 12 23:43:34 2024 +0700
+
+    docs: improve docs
+
 commit a709254bea3fe0b653a5a9117f7cd8f8989253ac
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Tue Nov 12 23:41:51 2024 +0700

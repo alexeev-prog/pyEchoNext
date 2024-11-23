@@ -41,8 +41,8 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last stable version: 0.5.9 alpha
  > Last unstable version: 0.6.9 alpha
+ > Last stable version: 0.5.9 alpha
 
  > Next Big Update: ASYNC & unicorn support
 
@@ -118,6 +118,9 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
  + basic security and hashing
  + static files management
  + cache response bodies
+ + performance
+ + slugger
+ + permissions
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -211,6 +214,104 @@ python3 -m pyburn_build build --project-config example_configs/project_config.js
 
 ## 💻 Usage Examples
 You can view examples at [examples directory](./examples).
+
+### Performance caching
+
+```python
+import random
+from pyechonext.utils.performance import InMemoryPerformanceCache, SingletonPerformanceCache, performance_cached
+
+memorycache = InMemoryPerformanceCache
+perf = SingletonPerformanceCache(memorycache)
+
+
+@performance_cached(perf)
+def example_function(a: int = 10 ** 6):
+    inside_circle = 0
+
+    for _ in range(a):
+        x = random.uniform(-1, 1)
+        y = random.uniform(-1, 1)
+        if x ** 2 + y ** 2 <= 1:
+            inside_circle += 1
+
+    return (inside_circle / a) * 4
+
+
+if __name__ == '__main__':
+    print('start')
+    print(f'{example_function()} - Caching')
+    print(f'{example_function()} - Cached')
+    print(f'{example_function(10 ** 7)} - Caching new')
+```
+
+### Permissions
+
+```python
+from pyechonext.permissions import (
+    Permission,
+    Role,
+    Resource,
+    AccessControlRule,
+    Policy,
+    AgeRestrictionsABP,
+    User,
+    DefaultPermissionChecker,
+    UserController,
+)
+
+view_users_perm = Permission("view_users")
+edit_users_perm = Permission("edit_users")
+
+admin_role = Role("admin")
+admin_role.add_permission(view_users_perm)
+admin_role.add_permission(edit_users_perm)
+
+user_role = Role("user")
+user_role.add_permission(view_users_perm)
+
+user_resource = Resource("UserResource")
+
+policy = Policy()
+policy.add_rule(AccessControlRule(admin_role, view_users_perm, user_resource, True))
+policy.add_rule(AccessControlRule(admin_role, edit_users_perm, user_resource, True))
+policy.add_rule(AccessControlRule(user_role, view_users_perm, user_resource, True))
+policy.add_rule(AccessControlRule(user_role, edit_users_perm, user_resource, False))
+
+age_policy = AgeRestrictionsABP(conditions={"age": 18}, rules=policy.rules)
+age_policy.add_rule(AccessControlRule(user_role, view_users_perm, user_resource, True))
+
+admin_user = User("admin", attributes={"age": 30})
+admin_user.add_role(admin_role)
+
+young_user = User("john_doe", attributes={"age": 17})
+young_user.add_role(user_role)
+
+permission_checker = DefaultPermissionChecker(policy)
+user_controller = UserController(permission_checker)
+
+
+def main():
+    assert user_controller.view_users(admin_user, user_resource) == (
+        "200 OK",
+        "User edit form",
+    )
+    assert user_controller.edit_users(admin_user, user_resource) == (
+        "200 OK",
+        "User edit form",
+    )
+    assert user_controller.edit_users(young_user, user_resource) == (
+        "403 Forbidden",
+        "You do not have permission to edit users.",
+    )
+
+    assert age_policy.evaluate(young_user, user_resource, view_users_perm) == False
+    assert age_policy.evaluate(admin_user, user_resource, view_users_perm) == True
+
+
+if __name__ == "__main__":
+    main()
+```
 
 ### FullApp with locale, static files, docs generation
 Also see in [examples](./examples/example_locale.py)
