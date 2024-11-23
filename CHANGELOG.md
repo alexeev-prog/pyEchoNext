@@ -1,3 +1,9 @@
+commit b508da83b02db558deab7c7c4bca59fa3545a046
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Sat Nov 23 19:35:45 2024 +0700
+
+    docs: improve docs
+
 commit dd7f1d3f45d3bc5137fafe1da2a5ca7cfd39c68b
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Sat Nov 23 19:13:19 2024 +0700
