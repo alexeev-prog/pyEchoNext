@@ -105,12 +105,13 @@ class EchoNext:
 		self.l10n_loader = JSONLocalizationLoader(
 			self.settings.LOCALE, self.settings.LOCALE_DIR
 		)
-		logger.debug(f"Application {self.application_type.value}: {self.app_name}")
 
 		if self.application_type == ApplicationType.TEAPOT:
 			raise TeapotError("Where's my coffie?")
 
 		setup_logger(self.app_name)
+
+		logger.debug(f"Application {self.application_type.value}: {self.app_name}")
 
 	def _find_view(self, raw_url: str) -> Union[Type[URL], None]:
 		"""
@@ -282,11 +283,11 @@ class EchoNext:
 		item = self.main_cache.get(key)
 
 		if item is None:
-			logger.info(f"Save item to cache: {key[:16].strip()}")
+			logger.info(f"Save item to cache: '{key[:16].strip()}...'")
 			self.main_cache.set(key, value)
 			item = self.main_cache.get(key)
 
-		logger.info(f"Get item from cache: {key[:16].strip()}")
+		logger.info(f"Get item from cache: '{key[:16].strip()}...'")
 
 		return item
 

@@ -7,7 +7,6 @@ from pyechonext.config import SettingsLoader, SettingsConfigType
 from pyechonext.response import Response
 from pyechonext.template_engine.jinja import render_template
 from pyechonext.middleware import middlewares
-from pyechonext.docsgen import ProjDocumentation
 from pyechonext.apidoc_ui import APIDocumentation, APIDocUI
 from pyechonext.static import StaticFile
 
@@ -39,7 +38,6 @@ echonext = EchoNext(
 	static_files=static_files
 )
 apidoc = APIDocumentation(echonext)
-projdoc = ProjDocumentation(echonext)
 
 
 @echonext.route_page('/api-docs')
@@ -49,7 +47,6 @@ def api_docs(request, response):
 
 
 @echonext.route_page("/book")
-@projdoc.documentate_route('/book', str, {}, ['GET', 'POST'])
 class BooksResource(View):
 	"""
 	This class describes a books resource.
@@ -86,6 +83,3 @@ class BooksResource(View):
 		:rtype:     str
 		"""
 		return echonext.l10n_loader.format_currency(1305.50)
-
-
-projdoc.generate_documentation()

@@ -1,3 +1,6 @@
+import json
+
+
 class APIDocUI:
 	"""
 	This class describes an api document ui.
@@ -19,6 +22,7 @@ class APIDocUI:
 		summary_post: str,
 		get_responses: dict,
 		post_responses: dict,
+		value: dict,
 	) -> str:
 		"""
 		generate section
@@ -45,19 +49,21 @@ class APIDocUI:
 			<span class="collapse-icon">➡️</span>
 		</div>
 		<div class="section-content">
+			<pre><code class="language-json">{json.dumps(value, indent=2)}</code></pre>
 			<div class="method">
 				<strong>GET</strong>
-				<p>{summary_get}</p>
+				<p class='summary'>{summary_get}</p>
+				
 				<div class="responses">
-					{"".join([f"<div class='response-item'>{key}: {value["description"]}.</div>" for key, value in get_responses.items()])}
+					{"".join([f"<div class='response-item'><span class='span-key'>{key}</span>: {value["description"]}.</div>" for key, value in get_responses.items()])}
 				</div>
 			</div>
 			<div class="method">
 				<strong>POST</strong>
-				<p>{summary_post}</p>
+				<p class='summary'>{summary_post}</p>
 				<div class="responses">
 					<div class="responses">
-					{"".join([f"<div class='response-item'>{key}: {value["description"]}.</div>" for key, value in post_responses.items()])}
+					{"".join([f"<div class='response-item'><span class='span-key'>{key}</span>: {value["description"]}.</div>" for key, value in post_responses.items()])}
 				</div>
 				</div>
 			</div>
@@ -81,22 +87,54 @@ class APIDocUI:
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>API Documentation</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
 	<style>
+
 		body {
 			font-family: Arial, sans-serif;
 			margin: 0;
 			padding: 0;
-			background-color: #f9f9f9;
+			background-color: #f3f3f3;
 			color: #333;
+			display: block;
+  overflow-x: auto;
+		}
+		.span-key {
+			font-size: 15px;
+			color: #007bff;
 		}
 		h1, h2, h3 {
 			margin: 0;
 			padding: 10px 0;
 		}
+		pre {
+		
+			margin-bottom: 10px;
+  padding: 5px;
+			font-family: monospace;
+			margin: 10px;
+			padding: 10px;
+			white-space: pre-wrap;		 /* Since CSS 2.1 */
+			white-space: -moz-pre-wrap;	 /* Mozilla, since 1999 */
+			white-space: -pre-wrap;		 /* Opera 4-6 */
+			white-space: -o-pre-wrap;	 /* Opera 7 */
+			word-wrap: break-word;		 /* Internet Explorer 5.5+ */
+		}
+		code{
+		border-radius: 5px;
+}
+		.summary {
+			border-radius: 4px;
+			box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+			color: #222222;
+			padding: 10px;
+			border-left: 2px solid #007bff;
+		}
 		.container {
 			max-width: 800px;
 			margin: 40px auto;
 			padding: 20px;
+			border: 1px solid #007bff3;
 			background: #fff;
 			border-radius: 8px;
 			box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
@@ -113,11 +151,10 @@ class APIDocUI:
 		}
 		.section {
 			border-radius: 5px;
-			overflow: hidden;
-			margin-bottom: 20px;
 			transition: box-shadow 0.3s ease;
 		}
 		.section-header {
+			margin-bottom: 10px;
 			padding: 15px;
 			background: #007bff;
 			color: white;
@@ -133,6 +170,7 @@ class APIDocUI:
 			display: none;
 			overflow: hidden;
 			background-color: #f1f1f1;
+			margin-bottom: 10px;
 		}
 		.method {
 			border-bottom: 1px solid #ddd;
@@ -152,14 +190,103 @@ class APIDocUI:
 		}
 		.collapse-icon {
 			transition: transform 0.3s;
-		}
-		.collapse-icon.collapsed {
 			transform: rotate(90deg);
 		}
-		.section:hover {
-			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+		.collapse-icon.collapsed {
+			transform: rotate(0deg);
 		}
+		pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em
+}
+code.hljs {
+  padding: 3px 5px
+}
+/*
+
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+
+base:	 #fafafa
+mono-1:	 #383a42
+mono-2:	 #686b77
+mono-3:	 #a0a1a7
+hue-1:	 #0184bb
+hue-2:	 #4078f2
+hue-3:	 #a626a4
+hue-4:	 #50a14f
+hue-5:	 #e45649
+hue-5-2: #c91243
+hue-6:	 #986801
+hue-6-2: #c18401
+
+*/
+.hljs {
+  color: #383a42;
+  background: #fafafa
+}
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic
+}
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #a626a4
+}
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e45649
+}
+.hljs-literal {
+  color: #0184bb
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string {
+  color: #50a14f
+}
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #986801
+}
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #4078f2
+}
+.hljs-built_in,
+.hljs-title.class_,
+.hljs-class .hljs-title {
+  color: #c18401
+}
+.hljs-emphasis {
+  font-style: italic
+}
+.hljs-strong {
+  font-weight: bold
+}
+.hljs-link {
+  text-decoration: underline
+}
 	</style>
+	
 </head>
 <body>
 
@@ -176,6 +303,19 @@ class APIDocUI:
 
 	{{sections}}
 
+	<br>
+	<hr>
+	<br>
+
+	<h2>Full specification</h2>
+	<pre><code class="language-json">{{spec}}</code></pre>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+
 <script>
 	document.querySelectorAll('.section-header').forEach(header => {
 		header.addEventListener('click', () => {
@@ -191,6 +331,12 @@ class APIDocUI:
 			}
 		});
 	});
+
+	document.addEventListener('DOMContentLoaded', (event) => {
+		document.querySelectorAll('pre code').forEach((el) => {
+			hljs.highlightElement(el);
+		});
+	});
 </script>
 
 </body>
@@ -199,6 +345,7 @@ class APIDocUI:
 
 		content = {
 			"{{openapi-version}}": self.specification["openapi"],
+			"{{spec}}": json.dumps(self.specification, indent=2),
 			"{{info_title}}": self.specification["info"]["title"],
 			"{{info_version}}": self.specification["info"]["version"],
 			"{{info_description}}": self.specification["info"]["description"],
@@ -210,6 +357,7 @@ class APIDocUI:
 						value["post"]["summary"],
 						value["get"]["responses"],
 						value["post"]["responses"],
+						value,
 					)
 					for path, value in self.specification["paths"].items()
 				]

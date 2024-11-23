@@ -1,8 +1,11 @@
 import os
 import importlib
+import json
+from enum import Enum
+import yaml
+import toml
 from pathlib import Path
 from dataclasses import dataclass
-from enum import Enum
 from configparser import ConfigParser
 from dotenv import load_dotenv
 
@@ -44,6 +47,9 @@ class SettingsConfigType(Enum):
 	INI = "ini"
 	DOTENV = "dotenv"
 	PYMODULE = "pymodule"
+	TOML = "toml"
+	YAML = "yaml"
+	JSON = "json"
 
 
 class SettingsLoader:
@@ -67,6 +73,42 @@ class SettingsLoader:
 
 		if not self.filename.exists():
 			raise FileNotFoundError(f'Config file "{self.filename}" don\'t exists.')
+
+	def _load_yaml_config(self) -> dict:
+		"""
+		Loads a data from YAML configuration.
+
+		:returns:	configuration dictionary
+		:rtype:		dict
+		"""
+		with open(self.filename, "r") as fh:
+			data = yaml.load(fh, Loader=yaml.FullLoader)
+
+		return data
+
+	def _load_toml_config(self) -> dict:
+		"""
+		Loads a toml configuration.
+
+		:returns:	configuration dictionary
+		:rtype:		dict
+		"""
+		with open(self.filename, "r") as fh:
+			data = toml.loads(fh)
+
+		return data
+
+	def _load_json_config(self) -> dict:
+		"""
+		Loads a json configuration.
+
+		:returns:	configuration dictionary
+		:rtype:		dict
+		"""
+		with open(self.filename, "r") as fh:
+			data = json.load(fh)
+
+		return data
 
 	def _load_ini_config(self) -> dict:
 		"""
@@ -135,6 +177,12 @@ class SettingsLoader:
 			self.config = self._load_env_config()
 		elif self.config_type == SettingsConfigType.PYMODULE:
 			self.config = self._load_pymodule_config()
+		elif self.config_type == SettingsConfigType.TOML:
+			self.config = self._load_toml_config()
+		elif self.config_type == SettingsConfigType.YAML:
+			self.config = self._load_yaml_config()
+		elif self.config_type == SettingsConfigType.JSON:
+			self.config = self._load_json_config()
 
 		return Settings(
 			BASE_DIR=self.config.get("BASE_DIR", "."),
