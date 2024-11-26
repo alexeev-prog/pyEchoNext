@@ -41,8 +41,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last unstable version: 0.6.9 alpha
- > Last stable version: 0.5.9 alpha
+ > Last stable version: 0.6.9 alpha
 
  > Next Big Update: ASYNC & unicorn support
 
@@ -771,6 +770,7 @@ Extended documentation and framework specifications are available at the followi
 5. [Request/Response](./docs/en/requests_responses.md)
 6. [Localization i18n/l10n](./docs/en/i18n_locales.md)
 7. [Security](./docs/en/security.md)
+8. [Permissions & rights](./docs/en/permissions.md)
 
 ### Russian / Русский
 
@@ -781,6 +781,7 @@ Extended documentation and framework specifications are available at the followi
 5. [Request/Response](./docs/ru/requests_responses.md)
 6. [Локализация i18n/l10n](./docs/ru/i18n_locales.md)
 7. [Безопасность](./docs/ru/security.md)
+8. [Разрешения и права](./docs/ru/permissions.md)
 
 ## 💬 Support
 If you encounter any issues or have questions about pyEchoNext, please:

@@ -307,7 +307,7 @@ class EchoNext:
 		:returns:	response
 		:rtype:		Response
 		"""
-		print(f"Serve sttic file by path: {request.path}")
+		print(f"Serve static file by path: {request.path}")
 		response.content_type = self.static_files_manager.get_file_type(request.path)
 		response.body = self.static_files_manager.serve_static_file(
 			_prepare_url(request.path)
