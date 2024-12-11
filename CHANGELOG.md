@@ -1,3 +1,27 @@
+commit 678e5e81154731bdc839fd2d40532f0d0366dff6
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Wed Dec 11 19:38:13 2024 +0700
+
+    update README
+
+commit 2ddfecfb921eea9023a74b34716d1fb812b4faa7
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Wed Dec 11 19:26:24 2024 +0700
+
+    tests/fix: improve test coverage, fix bugs
+
+commit e4b7362fdf68c645337e06226a3d59fa698c5185
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Wed Dec 11 16:00:34 2024 +0700
+
+    style: fix code-style
+
+commit 60902f4b17df357050ad0171a525365eab92c451
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Tue Nov 26 19:25:29 2024 +0700
+
+    docs: create `permissions` page
+
 commit 67ffad744371c275a3ed28809861063b606cf52f
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Sat Nov 23 19:36:20 2024 +0700
