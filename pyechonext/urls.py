@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Type
-from pyechonext.views import View, IndexView
+
+from pyechonext.views import IndexView, View
 
 
 @dataclass

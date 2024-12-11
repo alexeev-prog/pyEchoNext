@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
-from uuid import uuid4
 from urllib.parse import parse_qs
+from uuid import uuid4
+
 from loguru import logger
-from pyechonext.response import Response
+
 from pyechonext.request import Request
+from pyechonext.response import Response
 
 
 class BaseMiddleware(ABC):

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Set, List, Dict, Tuple, Any
+from typing import Any, Dict, List, Set, Tuple
 
 
 class AbstractPermission(ABC):

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # Python program to format python code
 import os
-import sys
 import subprocess
+import sys
 
 # Define color codes for output
 RED = "\033[31m"
@@ -96,6 +96,10 @@ def main():
 	# header files) and apply the clang formatting
 	# Please note "-style" is for standard style options
 	# and "-i" is in-place editing
+
+	# os.system("pylint pyechonext --clear-cache-post-run y")
+	os.system("isort .")
+	os.system("black .")
 
 	if len(sys.argv) > 1:
 		print(f"{BOLD}Format {sys.argv[1]}{NC}")

@@ -1,7 +1,8 @@
 import os
 from abc import ABC
 from enum import Enum
-from typing import List, Dict, Any
+from typing import Any, Dict, List
+
 from loguru import logger
 
 from pyechonext.utils import get_current_datetime

@@ -1,5 +1,6 @@
-from typing import Union, Any
 from abc import ABC, abstractmethod
+from typing import Any, Union
+
 from pyechonext.request import Request
 from pyechonext.response import Response
 

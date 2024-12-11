@@ -1,29 +1,31 @@
 import inspect
-from enum import Enum
-from typing import Iterable, Callable, List, Type, Tuple, Optional, Union, Any
 from dataclasses import dataclass
-from socks import method
-from parse import parse
+from enum import Enum
+from typing import Any, Callable, Iterable, List, Optional, Tuple, Type, Union
+
 from loguru import logger
-from pyechonext.urls import URL
-from pyechonext.views import View
-from pyechonext.request import Request
-from pyechonext.response import Response
-from pyechonext.utils.exceptions import (
-	RoutePathExistsError,
-	MethodNotAllow,
-	URLNotFound,
-	WebError,
-	TeapotError,
-)
-from pyechonext.utils import _prepare_url
+from parse import parse
+from socks import method
+
+from pyechonext.cache import InMemoryCache
 from pyechonext.config import Settings
-from pyechonext.middleware import BaseMiddleware
 from pyechonext.i18n_l10n.i18n import JSONi18nLoader
 from pyechonext.i18n_l10n.l10n import JSONLocalizationLoader
 from pyechonext.logging import setup_logger
-from pyechonext.cache import InMemoryCache
-from pyechonext.static import StaticFilesManager, StaticFile
+from pyechonext.middleware import BaseMiddleware
+from pyechonext.request import Request
+from pyechonext.response import Response
+from pyechonext.static import StaticFile, StaticFilesManager
+from pyechonext.urls import URL
+from pyechonext.utils import _prepare_url
+from pyechonext.utils.exceptions import (
+	MethodNotAllow,
+	RoutePathExistsError,
+	TeapotError,
+	URLNotFound,
+	WebError,
+)
+from pyechonext.views import View
 
 
 class ApplicationType(Enum):

@@ -1,9 +1,9 @@
 import hashlib
 from abc import ABC, abstractmethod
+from collections import Counter
 from enum import Enum, auto
 from hmac import compare_digest
 from typing import Union
-from collections import Counter
 
 
 def distribute(items, num_containers, hash_function=hash):

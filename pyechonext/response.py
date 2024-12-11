@@ -1,7 +1,9 @@
 import json
-from typing import Dict, Iterable, Union, Any, List, Tuple, Optional
-from socks import method
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
+
 from loguru import logger
+from socks import method
+
 from pyechonext.request import Request
 
 

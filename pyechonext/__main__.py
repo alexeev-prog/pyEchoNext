@@ -1,7 +1,7 @@
 import os
+
 import fire
 from rich import print
-
 
 MAIN_APP_TEMPLATE = '''
 import os

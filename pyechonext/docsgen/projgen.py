@@ -1,12 +1,13 @@
-from typing import Callable, Any
+from typing import Any, Callable
+
 from pyechonext.app import EchoNext
 from pyechonext.docsgen.document import (
-	InitiationSection,
 	DocumentFolder,
+	DocumentSection,
+	InitiationSection,
 	ProjectManager,
 	ProjectTemplate,
 	RoutesSubsection,
-	DocumentSection,
 )
 
 

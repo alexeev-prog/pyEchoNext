@@ -1,6 +1,7 @@
 import time
 from functools import wraps
-from typing import Callable, Type, Any
+from typing import Any, Callable, Type
+
 from pyechonext.utils.patterns import Singleton
 
 
