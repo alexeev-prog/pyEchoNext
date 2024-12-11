@@ -11,7 +11,7 @@ class Request:
 	This class describes a request.
 	"""
 
-	def __init__(self, environ: dict, settings: Settings):
+	def __init__(self, environ: dict = {}, settings: Settings = None):
 		"""
 		Constructs a new instance.
 
@@ -20,13 +20,13 @@ class Request:
 		"""
 		self.environ: dict = environ
 		self.settings: Settings = settings
-		self.method: str = self.environ["REQUEST_METHOD"]
-		self.path: str = self.environ["PATH_INFO"]
-		self.GET: dict = self._build_get_params_dict(self.environ["QUERY_STRING"])
+		self.method: str = self.environ.get("REQUEST_METHOD")
+		self.path: str = self.environ.get("PATH_INFO")
+		self.GET: dict = self._build_get_params_dict(self.environ.get("QUERY_STRING"))
 		self.POST: dict = self._build_post_params_dict(
-			self.environ["wsgi.input"].read()
+			self.environ.get("wsgi.input").read()
 		)
-		self.user_agent: str = self.environ["HTTP_USER_AGENT"]
+		self.user_agent: str = self.environ.get("HTTP_USER_AGENT")
 		self.extra: dict = {}
 
 		logger.debug(f"New request created: {self.method} {self.path}")

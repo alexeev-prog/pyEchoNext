@@ -10,8 +10,8 @@ class APIDocUI:
 		"""
 		Constructs a new instance.
 
-		:param		specification:	The specification
-		:type		specification:	dict
+		:param		  specification:	The specification
+		:type		 specification:	   dict
 		"""
 		self.specification = specification
 
@@ -27,19 +27,19 @@ class APIDocUI:
 		"""
 		generate section
 
-		:param		route:			 The route
-		:type		route:			 str
-		:param		summary_get:	 The summary get
-		:type		summary_get:	 str
-		:param		summary_post:	 The summary post
-		:type		summary_post:	 str
-		:param		get_responses:	 The get responses
-		:type		get_responses:	 dict
-		:param		post_responses:	 The post responses
-		:type		post_responses:	 dict
+		:param		  route:			 The route
+		:type		 route:				str
+		:param		  summary_get:	   The summary get
+		:type		 summary_get:	  str
+		:param		  summary_post:		The summary post
+		:type		 summary_post:	   str
+		:param		  get_responses:	 The get responses
+		:type		 get_responses:		dict
+		:param		  post_responses:	  The post responses
+		:type		 post_responses:	 dict
 
-		:returns:	template section
-		:rtype:		str
+		:returns:	 template section
+		:rtype:		   str
 		"""
 
 		template = f"""
@@ -77,8 +77,8 @@ class APIDocUI:
 		"""
 		Generate html page template
 
-		:returns:	template
-		:rtype:		str
+		:returns:	 template
+		:rtype:		   str
 		"""
 		template = """
 <!DOCTYPE html>
@@ -114,11 +114,11 @@ class APIDocUI:
 			font-family: monospace;
 			margin: 10px;
 			padding: 10px;
-			white-space: pre-wrap;		 /* Since CSS 2.1 */
-			white-space: -moz-pre-wrap;	 /* Mozilla, since 1999 */
-			white-space: -pre-wrap;		 /* Opera 4-6 */
-			white-space: -o-pre-wrap;	 /* Opera 7 */
-			word-wrap: break-word;		 /* Internet Explorer 5.5+ */
+			white-space: pre-wrap;		   /* Since CSS 2.1 */
+			white-space: -moz-pre-wrap;		/* Mozilla, since 1999 */
+			white-space: -pre-wrap;			/* Opera 4-6 */
+			white-space: -o-pre-wrap;	  /* Opera 7 */
+			word-wrap: break-word;		   /* Internet Explorer 5.5+ */
 		}
 		code{
 		border-radius: 5px;
@@ -208,17 +208,17 @@ code.hljs {
 Atom One Light by Daniel Gamage
 Original One Light Syntax theme from https://github.com/atom/one-light-syntax
 
-base:	 #fafafa
-mono-1:	 #383a42
-mono-2:	 #686b77
-mono-3:	 #a0a1a7
-hue-1:	 #0184bb
-hue-2:	 #4078f2
-hue-3:	 #a626a4
-hue-4:	 #50a14f
-hue-5:	 #e45649
+base:	  #fafafa
+mono-1:		#383a42
+mono-2:		#686b77
+mono-3:		#a0a1a7
+hue-1:	   #0184bb
+hue-2:	   #4078f2
+hue-3:	   #a626a4
+hue-4:	   #50a14f
+hue-5:	   #e45649
 hue-5-2: #c91243
-hue-6:	 #986801
+hue-6:	   #986801
 hue-6-2: #c18401
 
 */

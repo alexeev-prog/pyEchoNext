@@ -9,8 +9,7 @@ from socks import method
 
 from pyechonext.cache import InMemoryCache
 from pyechonext.config import Settings
-from pyechonext.i18n_l10n.i18n import JSONi18nLoader
-from pyechonext.i18n_l10n.l10n import JSONLocalizationLoader
+from pyechonext.i18n_l10n import JSONi18nLoader, JSONLocalizationLoader
 from pyechonext.logging import setup_logger
 from pyechonext.middleware import BaseMiddleware
 from pyechonext.request import Request

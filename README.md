@@ -39,9 +39,13 @@
 
 Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the sluggishness of traditional web frameworks? Want a solution that keeps pace with your ambitious apps? Look no further. EchoNext is your agile companion in the world of web development!
 
+<p align="center">
+    <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/logo.jpg" width='600px' height='600px'>
+</p>
+
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last stable version: 0.6.10 alpha
+ > Last stable version: 0.6.11 alpha
 
  > Next Big Update: ASYNC & unicorn support
 
@@ -757,6 +761,13 @@ class IndexView(View):
         """
         return Response(request, body="Message has accepted!")
 ```
+
+## Tests coverage
+To test the web framework, PyTest with the pytest-cov plugin is used. You can look at the tests in [tests directory](./tests)
+
+| Statements | Miss       | Coverage |
+|------------|------------|----------|
+| 1327       | 997        | 28%      |
 
 ## Documentation 🌍
 Extended documentation and framework specifications are available at the following links:

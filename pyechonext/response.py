@@ -20,14 +20,14 @@ class Response:
 
 	def __init__(
 		self,
-		request: Request,
+		request: Request = None,
 		use_i18n: bool = False,
 		status_code: Optional[int] = 200,
 		body: Optional[str] = None,
 		headers: Optional[Dict[str, str]] = {},
 		content_type: Optional[str] = None,
 		charset: Optional[str] = None,
-		**kwargs,
+		i18n_params: Optional[dict] = {},
 	):
 		"""
 		Constructs a new instance.
@@ -75,7 +75,7 @@ class Response:
 		self.extra: dict = {}
 
 		self.use_i18n: bool = use_i18n
-		self.i18n_kwargs = kwargs
+		self.i18n_kwargs = i18n_params
 
 		self._update_headers()
 
@@ -172,10 +172,10 @@ class Response:
 		:rtype:		dict
 		"""
 		if self.body:
-			if self.content_type.split("/")[-1] == "json":
-				return json.dumps(self.body)
+			if self.content_type == "application/json":
+				return json.loads(self.body)
 			else:
-				return json.dumps(self.body.decode("UTF-8"))
+				return json.dumps(self.body)
 
 		return {}
 

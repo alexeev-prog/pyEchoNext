@@ -52,7 +52,7 @@ class JSONi18nLoader(i18nInterface):
 		"description": "This web application is an example of the pyEchonext web framework.",
 	}
 
-	def __init__(self, locale: str, directory: str):
+	def __init__(self, locale: str = "DEFAULT", directory: str = None):
 		"""
 		Constructs a new instance.
 
@@ -135,7 +135,7 @@ class LanguageManager:
 		"""
 		self.loader = loader
 
-	def translate(self, key: str) -> str:
+	def translate(self, key: str, **kwargs) -> str:
 		"""
 		Translate
 
@@ -145,4 +145,4 @@ class LanguageManager:
 		:returns:	translated string
 		:rtype:		str
 		"""
-		return self.loader.get_string(key)
+		return self.loader.get_string(key, **kwargs)

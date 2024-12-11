@@ -108,8 +108,8 @@ class JSONLocalizationLoader(LocalizationInterface):
 
 	def __init__(
 		self,
-		locale: str,
-		directory: str,
+		locale: str = 'DEFAULT',
+		directory: str = None,
 		custom_settings: Optional[Dict[str, Any]] = None,
 	):
 		"""
@@ -177,7 +177,7 @@ class JSONLocalizationLoader(LocalizationInterface):
 			else date_format
 		)
 
-		formatted_date = date_time_fromat.strftime(date_time_fromat)
+		formatted_date = date.strftime(date_time_fromat)
 
 		return formatted_date
 

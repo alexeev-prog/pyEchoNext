@@ -14,7 +14,7 @@ class StaticFile:
 	This class describes a static file.
 	"""
 
-	def __init__(self, settings: Settings, filename: str):
+	def __init__(self, settings: Settings = None, filename: str = None):
 		"""
 		Constructs a new instance.
 
