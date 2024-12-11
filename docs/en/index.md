@@ -8,6 +8,7 @@
 4. [Request/Response](./requests_responses.md)
 5. [i18n](./i18n_locales.md)
 6. [Security](./security.md)
+7. [MVC](./mvc.md)
 
 ## Additional materials
 
