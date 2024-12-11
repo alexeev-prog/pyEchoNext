@@ -45,7 +45,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last stable version: 0.6.11 alpha
+ > Last stable version: 0.6.12 alpha
 
  > Next Big Update: ASYNC & unicorn support
 

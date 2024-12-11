@@ -25,6 +25,7 @@ from pyechonext.utils.exceptions import (
 	WebError,
 )
 from pyechonext.views import View
+from pyechonext.mvc.routes import Router
 
 
 class ApplicationType(Enum):
@@ -55,7 +56,7 @@ class EchoNext:
 		"middlewares",
 		"application_type",
 		"urls",
-		"routes",
+		"router",
 		"i18n_loader",
 		"l10n_loader",
 		"history",
@@ -95,9 +96,8 @@ class EchoNext:
 		self.application_type = application_type
 		self.static_files = static_files
 		self.static_files_manager = StaticFilesManager(self.static_files)
-		self.routes = {}
-
 		self.urls = urls
+		self.router = Router(self.urls)
 		self.main_cache = InMemoryCache(timeout=60 * 10)
 		self.history: List[HistoryEntry] = []
 		self.i18n_loader = JSONi18nLoader(
@@ -114,24 +114,6 @@ class EchoNext:
 
 		logger.debug(f"Application {self.application_type.value}: {self.app_name}")
 
-	def _find_view(self, raw_url: str) -> Union[Type[URL], None]:
-		"""
-		Finds a view by raw url.
-
-		:param		raw_url:  The raw url
-		:type		raw_url:  str
-
-		:returns:	URL dataclass
-		:rtype:		Type[URL]
-		"""
-		url = _prepare_url(raw_url)
-
-		for path in self.urls:
-			if url == _prepare_url(path.url):
-				return path
-
-		return None
-
 	def _check_request_method(self, view: View, request: Request):
 		"""
 		Check request method for view
@@ -145,20 +127,6 @@ class EchoNext:
 		"""
 		if not hasattr(view, request.method.lower()):
 			raise MethodNotAllow(f"Method not allow: {request.method}")
-
-	def _get_view(self, request: Request) -> View:
-		"""
-		Gets the view.
-
-		:param		request:  The request
-		:type		request:  Request
-
-		:returns:	The view.
-		:rtype:		View
-		"""
-		url = request.path
-
-		return self._find_view(url)
 
 	def _get_request(self, environ: dict) -> Request:
 		"""
@@ -191,9 +159,6 @@ class EchoNext:
 		:returns:	wrapper handler
 		:rtype:		Callable
 		"""
-		if page_path in self.routes:
-			raise RoutePathExistsError("Such route already exists.")
-
 		def wrapper(handler):
 			"""
 			Wrapper for handler
@@ -204,7 +169,7 @@ class EchoNext:
 			:returns:	handler
 			:rtype:		callable
 			"""
-			self.routes[page_path] = handler
+			self.router.add_page_route(page_path, handler)
 			return handler
 
 		return wrapper
@@ -216,7 +181,7 @@ class EchoNext:
 		:param		request:  The request
 		:type		request:  Request
 		"""
-		for middleware in self.middlewares:
+		for middleware in self.middlewares[::-1]:
 			middleware().to_request(request)
 
 	def _apply_middleware_to_response(self, response: Response):
@@ -226,7 +191,7 @@ class EchoNext:
 		:param		response:  The response
 		:type		response:  Response
 		"""
-		for middleware in self.middlewares:
+		for middleware in self.middlewares[::-1]:
 			middleware().to_response(response)
 
 	def _default_response(self, response: Response, error: WebError) -> None:
@@ -254,20 +219,7 @@ class EchoNext:
 		if self.static_files_manager.serve_static_file(url):
 			return self._serve_static_file, {}
 
-		for path, handler in self.routes.items():
-			parse_result = parse(path, url)
-			if parse_result is not None:
-				return handler, parse_result.named
-
-		view = self._get_view(request)
-
-		if view is not None:
-			parse_result = parse(view.url, url)
-
-			if parse_result is not None:
-				return view.view, parse_result.named
-
-		return None, None
+		return self.router.resolve(request)
 
 	def get_and_save_cache_item(self, key: str, value: Any) -> Any:
 		"""
