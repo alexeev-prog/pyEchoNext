@@ -58,7 +58,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
  + [pycolor-palette](https://github.com/alexeev-prog/pycolor-palette) - display beautiful log messages, logging, debugging.
  + [shegang](https://github.com/alexeev-prog/shegang) - powerful command interpreter (shell) for linux written in C
 
-## 🤔 Why Choose SqlSymphony?
+## 🤔 Why Choose pyEchoNext?
 
 - **🔥 Featherweight Performance**: No bloat, just speed! Our framework is designed to optimize performance, making it a breeze to create and scale your applications without the overhead.
   
