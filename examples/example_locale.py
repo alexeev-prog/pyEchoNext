@@ -4,16 +4,16 @@ from pyechonext.apidoc_ui import APIDocUI, APIDocumentation
 from pyechonext.app import ApplicationType, EchoNext
 from pyechonext.config import SettingsConfigType, SettingsLoader
 from pyechonext.middleware import middlewares
+from pyechonext.mvc.controllers import PageController
 from pyechonext.response import Response
 from pyechonext.static import StaticFile
 from pyechonext.template_engine.jinja import render_template
-from pyechonext.urls import URL, IndexView
+from pyechonext.urls import URL
 from pyechonext.utils.exceptions import MethodNotAllow
-from pyechonext.views import View
 
 
-class UsersView(View):
-    def get(self, request, response, **kwargs):
+class UsersView(PageController):
+    def get(self, request, response, *args, **kwargs):
         return render_template(
             request,
             "index.html",
@@ -22,11 +22,11 @@ class UsersView(View):
             friends=["Bob", "Anna", "John"],
         )
 
-    def post(self, request, response, **kwargs):
+    def post(self, request, response, *args, **kwargs):
         raise MethodNotAllow(f"Request {request.path}: method not allow")
 
 
-url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
+url_patterns = [URL(path="/users", controller=UsersView)]
 config_loader = SettingsLoader(SettingsConfigType.PYMODULE, "el_config.py")
 settings = config_loader.get_settings()
 static_files = [StaticFile(settings, "styles.css")]
@@ -48,7 +48,7 @@ def api_docs(request, response):
 
 
 @echonext.route_page("/book")
-class BooksResource(View):
+class BooksResource(PageController):
     """
     This class describes a books resource.
     """
