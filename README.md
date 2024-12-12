@@ -40,7 +40,7 @@
 Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the sluggishness of traditional web frameworks? Want a solution that keeps pace with your ambitious apps? Look no further. EchoNext is your agile companion in the world of web development!
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/logo.jpg" width='400px' height='400px'>
+    <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/logo.jpg">
 </p>
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
