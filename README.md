@@ -244,22 +244,19 @@ if __name__ == "__main__":
 Also see in [examples](./examples/example_locale.py)
 
 ```python
-import os
-from pyechonext.utils.exceptions import MethodNotAllow
+from pyechonext.apidoc_ui import APIDocUI, APIDocumentation
 from pyechonext.app import ApplicationType, EchoNext
-from pyechonext.views import View
-from pyechonext.urls import URL, IndexView
-from pyechonext.config import SettingsLoader, SettingsConfigType
-from pyechonext.response import Response
-from pyechonext.template_engine.jinja import render_template
+from pyechonext.config import SettingsConfigType, SettingsLoader
 from pyechonext.middleware import middlewares
-from pyechonext.docsgen import ProjDocumentation
-from pyechonext.apidoc_ui import APIDocumentation, APIDocUI
+from pyechonext.mvc.controllers import PageController
 from pyechonext.static import StaticFile
+from pyechonext.template_engine.jinja import render_template
+from pyechonext.urls import URL
+from pyechonext.utils.exceptions import MethodNotAllow
 
 
-class UsersView(View):
-    def get(self, request, response, **kwargs):
+class UsersView(PageController):
+    def get(self, request, response, *args, **kwargs):
         return render_template(
             request,
             "index.html",
@@ -268,35 +265,33 @@ class UsersView(View):
             friends=["Bob", "Anna", "John"],
         )
 
-    def post(self, request, response, **kwargs):
+    def post(self, request, response, *args, **kwargs):
         raise MethodNotAllow(f"Request {request.path}: method not allow")
 
 
-url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
-config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'el_config.py')
+url_patterns = [URL(path="/users", controller=UsersView)]
+config_loader = SettingsLoader(SettingsConfigType.PYMODULE, "el_config.py")
 settings = config_loader.get_settings()
-static_files = [StaticFile(settings, 'styles.css')]
+static_files = [StaticFile(settings, "styles.css")]
 echonext = EchoNext(
     __name__,
     settings,
     middlewares,
     urls=url_patterns,
     application_type=ApplicationType.HTML,
-    static_files=static_files
+    static_files=static_files,
 )
 apidoc = APIDocumentation(echonext)
-projdoc = ProjDocumentation(echonext)
 
 
-@echonext.route_page('/api-docs')
+@echonext.route_page("/api-docs")
 def api_docs(request, response):
     ui = APIDocUI(apidoc.generate_spec())
     return ui.generate_html_page()
 
 
 @echonext.route_page("/book")
-@projdoc.documentate_route('/book', str, {}, ['GET', 'POST'])
-class BooksResource(View):
+class BooksResource(PageController):
     """
     This class describes a books resource.
     """
@@ -315,7 +310,7 @@ class BooksResource(View):
         :returns:   result
         :rtype:     str
         """
-        return echonext.i18n_loader.get_string('title %{name}', name=str(request.GET))
+        return echonext.i18n_loader.get_string("title %{name}", name=str(request.GET))
 
     def post(self, request, response, **kwargs):
         """
@@ -333,8 +328,6 @@ class BooksResource(View):
         """
         return echonext.l10n_loader.format_currency(1305.50)
 
-
-projdoc.generate_documentation()
 ```
 
 Create file `static/styles.css`:
@@ -380,96 +373,6 @@ Create file `locales/RU_RU.json`:
         "currency_format": "{symbol}{amount}"
     }
 }
-```
-
-### App with flask-like and django-like routes
-Django-line classes with get-post methods and routing pages. And with the built-in template engine!
-
-```python
-import os
-from pyechonext.app import ApplicationType, EchoNext
-from pyechonext.views import View
-from pyechonext.urls import URL, IndexView
-from pyechonext.config import Settings
-from pyechonext.template_engine.builtin import render_template # built-in (alpha)
-# OR
-from pyechonext.template_engine.jinja import render_template
-
-
-class UsersView(View):
-    def get(self, request, response, **kwargs):
-        return render_template(
-            request, "index.html", user_name="User", friends=["Bob", "Anna", "John"]
-        )
-
-    def post(self, request, response, **kwargs):
-        return Response(body='post users')
-
-
-url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
-settings = Settings(
-    BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
-)
-echonext = EchoNext(
-    __name__, settings, urls=url_patterns, application_type=ApplicationType.HTML
-)
-
-
-@echonext.route_page("/book")
-class BooksResource(View):
-    def get(self, request, response, **kwargs):
-        return f"GET Params: {request.GET}"
-
-    def post(self, request, response, **kwargs):
-        return f"POST Params: {request.POST}"
-```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-### Simple app with database
-In this example we are using SQLSymphony ORM (our other project, a fast and simple ORM for python)
-
-```python
-import os
-from pyechonext.app import ApplicationType, EchoNext
-from pyechonext.config import Settings
-from sqlsymphony_orm.datatypes.fields import IntegerField, RealField, TextField
-from sqlsymphony_orm.models.session_models import SessionModel
-from sqlsymphony_orm.models.session_models import SQLiteSession
-
-
-settings = Settings(
-    BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
-)
-echonext = EchoNext(__name__, settings, application_type=ApplicationType.HTML)
-session = SQLiteSession("echonext.db")
-
-
-class User(SessionModel):
-    __tablename__ = "Users"
-
-    id = IntegerField(primary_key=True)
-    name = TextField(null=False)
-    cash = RealField(null=False, default=0.0)
-
-    def __repr__(self):
-        return f"<User {self.pk}>"
-
-
-@echonext.route_page("/")
-def home(request, response):
-    user = User(name="John", cash=100.0)
-    session.add(user)
-    session.commit()
-    return "Hello from the HOME page"
-
-
-@echonext.route_page("/users")
-def about(request, response):
-    users = session.get_all_by_model(User)
-
-    return f"Users: {[f'{user.name}: {user.cash}$' for user in users]}"
-
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -747,7 +650,8 @@ Our future goals for pyEchoNext include:
 - 📚 Improve middlewares
 - 🚀 Add async support
 - ✅ Improve logging
-- 🌍 Add auth
+- 🌍 Add authentication, JWT tokens
+- 💻 Depedency Injection
 - 🌐 More stability and scalablity
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
