@@ -6,6 +6,7 @@ from loguru import logger
 
 from pyechonext.request import Request
 from pyechonext.response import Response
+from pyechonext.utils.exceptions import WebError, pyEchoNextException
 
 
 class BaseMiddleware(ABC):
@@ -32,6 +33,27 @@ class BaseMiddleware(ABC):
 		:type		response:  Response
 		"""
 		raise NotImplementedError
+
+	def process_exception(self, exception: Exception):
+		"""
+		Process exception
+
+		:param		exception:	The exception
+		:type		exception:	Exception
+		"""
+		raise exception
+
+	def process_exception(self, exception: Exception):
+		"""
+		Process exception
+
+		:param		exception:	The exception
+		:type		exception:	Exception
+		"""
+		if not isinstance(exception, pyEchoNextException) or not isinstance(
+			exception, WebError
+		):
+			raise exception
 
 
 class SessionMiddleware(BaseMiddleware):

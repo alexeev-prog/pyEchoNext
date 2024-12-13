@@ -10,6 +10,8 @@ import toml
 import yaml
 from dotenv import load_dotenv
 
+from pyechonext.security.crypts import PSPCAlgorithm
+
 
 def dynamic_import(module: str):
 	"""
@@ -32,7 +34,7 @@ class Settings:
 
 	BASE_DIR: str
 	TEMPLATES_DIR: str
-	SECRET_KEY: str
+	SECRET_KEY: str = PSPCAlgorithm().crypt("SECRET-KEY")
 	VERSION: str = "1.0.0"
 	DESCRIPTION: str = "Echonext webapp"
 	LOCALE: str = "DEFAULT"

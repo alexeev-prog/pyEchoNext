@@ -1,28 +1,37 @@
 from abc import ABC, abstractmethod
-from typing import Union, Any, Optional
-from pyechonext.response import Response
-from pyechonext.request import Request
-from pyechonext.i18n_l10n import JSONi18nLoader
+
+from pyechonext.mvc.models import PageModel
 
 
 class BaseView(ABC):
+	"""
+	Base visualization of the data that model contains.
+	"""
+
 	@abstractmethod
-	def render(self, request: Request, response: Response, *args, **kwargs):
+	def render(self, model: PageModel):
+		"""
+		Render data
+
+		:param		model:	The model
+		:type		model:	PageModel
+		"""
 		raise NotImplementedError
 
 
-class i18nView(BaseView):
-	def render(self, data: str, i18n_loader: JSONi18nLoader, **kwargs):
-		return i18n_loader.get_string(data, **kwargs)
-
-
 class PageView(BaseView):
-	def render(self, data: Union[Response, Any], *args, **kwargs):
-		if self.use_i18n:
-			data = self.i18n_loader.get_string(data)
+	"""
+	Page visualization of the data that model contains.
+	"""
 
-		if isinstance(data, Response):
-			return data
-		else:
-			response = Response(body=str(data), *args, **kwargs)
-			return response
+	def render(self, model: PageModel) -> str:
+		"""
+		Renders the given model.
+
+		:param		model:	The model
+		:type		model:	PageModel
+
+		:returns:	model response body content
+		:rtype:		str
+		"""
+		return str(model.response.body)
