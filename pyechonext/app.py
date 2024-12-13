@@ -89,20 +89,22 @@ class EchoNext:
 		:param		static_files:	   The static files
 		:type		static_files:	   List[StaticFile]
 		"""
-		self.app_name = app_name
-		self.settings = settings
-		self.middlewares = middlewares
-		self.application_type = application_type
-		self.static_files = static_files
-		self.static_files_manager = StaticFilesManager(self.static_files)
-		self.urls = urls
-		self.router = Router(self.urls)
-		self.main_cache = InMemoryCache(timeout=60 * 10)
+		self.app_name: str = app_name
+		self.settings: Settings = settings
+		self.middlewares: List[Type[BaseMiddleware]] = middlewares
+		self.application_type: ApplicationType = application_type
+		self.static_files: List[StaticFile] = static_files
+		self.static_files_manager: StaticFilesManager = StaticFilesManager(
+			self.static_files
+		)
+		self.urls: List[URL] = urls
+		self.router: Router = Router(self.urls)
+		self.main_cache: InMemoryCache = InMemoryCache(timeout=60 * 10)
 		self.history: List[HistoryEntry] = []
-		self.i18n_loader = JSONi18nLoader(
+		self.i18n_loader: JSONi18nLoader = JSONi18nLoader(
 			self.settings.LOCALE, self.settings.LOCALE_DIR
 		)
-		self.l10n_loader = JSONLocalizationLoader(
+		self.l10n_loader: JSONLocalizationLoader = JSONLocalizationLoader(
 			self.settings.LOCALE, self.settings.LOCALE_DIR
 		)
 

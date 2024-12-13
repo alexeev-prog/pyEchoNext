@@ -6,7 +6,7 @@
 
 В pyEchoNext есть два метода создания маршрутов веб-страниц:
 
- + Django-like: создание наследника класса View, помещение его в датакласс URL и передача в виде аргумента urls в объект класса главного приложения EchoNext
+ + Django-like: создание наследника класса PageController, помещение его в датакласс URL и передача в виде аргумента urls в объект класса главного приложения EchoNext
  + Flask-like: создание функций с декоратором EchoNext.route_page.
 
 Пример flask-like:
@@ -58,89 +58,184 @@ def about(request, response):
 
 ```python
 import os
-from pyechonext.utils.exceptions import MethodNotAllow
+
 from pyechonext.app import ApplicationType, EchoNext
-from pyechonext.views import View
-from pyechonext.urls import URL, IndexView
 from pyechonext.config import Settings
-from pyechonext.template_engine.jinja import render_template
 from pyechonext.middleware import middlewares
+from pyechonext.mvc.controllers import PageController
+from pyechonext.urls import URL
 
 
-class UsersView(View):
+class UsersPageController(PageController):
   def get(self, request, response, **kwargs):
-    return render_template(
-      request, "index.html", user_name="User", session_id=request.session_id, friends=["Bob", "Anna", "John"]
-    )
+    return "users get"
 
   def post(self, request, response, **kwargs):
-    raise MethodNotAllow(f'Request {request.path}: method not allow')
+    return "users post"
 
 
-url_patterns = [URL(url="/", view=IndexView), URL(url="/users", view=UsersView)]
+url_patterns = [URL(path="/users", controller=UsersPageController)]
 settings = Settings(
   BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
 )
 echonext = EchoNext(
-  __name__, settings, middlewares, urls=url_patterns, application_type=ApplicationType.HTML
+  __name__,
+  settings,
+  middlewares,
+  urls=url_patterns,
+  application_type=ApplicationType.HTML,
 )
 
 
 @echonext.route_page("/book")
-class BooksResource(View):
+class BooksResource(PageController):
   def get(self, request, response, **kwargs):
-    return f"GET Params: {request.GET}"
+    return f"Books Page: {request.GET}"
 
   def post(self, request, response, **kwargs):
-    return f"POST Params: {request.POST}"
+    return "Endpoint to create a book"
+
 ```
 
 Оба метода можно смешивать, но мы рекомендуем использовать только один в одном веб-приложении.
 
-## Views
-Views - "вьюхи", специальный класс для отображения страниц сайта. Вдохновлен стилем Django.
+## PageController
+PageController - "контроллеры", специальный класс для отображения страниц сайта. Вдохновлен стилем Django. Но в отличии от него, соответствуют паттерну MVC:
+
+MVC - Model-View-Controller, архитектурный паттерн, который разделяет приложение на три логических компонента: модель, View (представление) и контроллер.
+
+Основная идея паттерна MVC в том, что у каждого раздела кода есть своя цель. Часть кода содержит данные приложения, друга отвечает за то, каким видит его пользователь, последняя управлеяет его работой.
+
+ + Код модели **Model** хранит данные и связанную с ними логику, а также закрепляет структуру приложения. То есть программист по шаблону будет определять основные компоненты приложения.
+ + Код внешнего вида приложения, **View**, состоит из функций, которые отвечают за интерфейс и способы взаимодействия пользователя с ним. Представления создают на основе данных, собранных из модели.
+ + Код контроллера, **Controller**, связывает модель и представление. Он получает на вход пользовательский ввод, интепретирует его и информирует о необходимых изменениях. Например, отправляет команды для обновления состояния, таких как сохранение документа.
 
 ```python
-class View(ABC):
+
+class BaseController(ABC):
   """
-  Page view
+  Controls the data flow into a base object and updates the view whenever data changes.
   """
 
   @abstractmethod
-  def get(
-    self, request: Request, response: Response, *args, **kwargs
-  ) -> Union[Response, Any]:
+  def get(self, request: Request, response: Response, *args, **kwargs):
     """
-    Get
+    Get method
 
-    :param    request:   The request
-    :type   request:   Request
-    :param    response:  The response
-    :type   response:  Response
-    :param    args:    The arguments
-    :type   args:    list
-    :param    kwargs:    The keywords arguments
-    :type   kwargs:    dictionary
+    :param    request:        The request
+    :type   request:        Request
+    :param    response:       The response
+    :type   response:       Response
+    :param    args:         The arguments
+    :type   args:         list
+    :param    kwargs:         The keywords arguments
+    :type   kwargs:         dictionary
+
+    :raises   NotImplementedError:  abstract method
     """
-    raise NotImplementedError
+    raise NotImplementedError()
 
   @abstractmethod
-  def post(
-    self, request: Request, response: Response, *args, **kwargs
-  ) -> Union[Response, Any]:
+  def post(self, request: Request, response: Response, *args, **kwargs):
     """
-    Post
+    Post method
 
-    :param    request:   The request
-    :type   request:   Request
-    :param    response:  The response
-    :type   response:  Response
-    :param    args:    The arguments
-    :type   args:    list
-    :param    kwargs:    The keywords arguments
-    :type   kwargs:    dictionary
+    :param    request:        The request
+    :type   request:        Request
+    :param    response:       The response
+    :type   response:       Response
+    :param    args:         The arguments
+    :type   args:         list
+    :param    kwargs:         The keywords arguments
+    :type   kwargs:         dictionary
+
+    :raises   NotImplementedError:  abstract method
     """
-    raise NotImplementedError
+    raise NotImplementedError()
+
+
+class PageController(BaseController):
+  """
+  Controls the data flow into a page object and updates the view whenever data changes.
+  """
+
+  def _create_model(
+    self, request: Request, data: Union[Response, Any], app: "EchoNext"
+  ) -> PageModel:
+    """
+    Creates a model.
+
+    :param    request:  The request
+    :type   request:  Request
+    :param    data:   The data
+    :type   data:   Union[Response, Any]
+    :param    app:    The application
+    :type   app:    EchoNext
+
+    :returns: The page model.
+    :rtype:   PageModel
+    """
+    model = PageModel(request)
+    model.response = model.get_response(data, app)
+
+    return model
+
+  def get_rendered_view(
+    self, request: Request, data: Union[Response, Any], app: "EchoNext"
+  ) -> str:
+    """
+    Gets the rendered view.
+
+    :param    request:  The request
+    :type   request:  Request
+    :param    data:   The data
+    :type   data:   Union[Response, Any]
+    :param    app:    The application
+    :type   app:    EchoNext
+
+    :returns: The rendered view.
+    :rtype:   str
+    """
+    model = self._create_model(request, data, app)
+
+    view = PageView()
+
+    return view.render(model)
+
+  def get(self, request: Request, response: Response, *args, **kwargs):
+    """
+    Get Method
+
+    :param    request:     The request
+    :type   request:     Request
+    :param    response:    The response
+    :type   response:    Response
+    :param    args:      The arguments
+    :type   args:      list
+    :param    kwargs:      The keywords arguments
+    :type   kwargs:      dictionary
+
+    :raises   MethodNotAllow:  get method not allowed
+    """
+    raise MethodNotAllow("Method Not Allow: GET")
+
+  def post(self, request: Request, response: Response, *args, **kwargs):
+    """
+    Post Method
+
+    :param    request:     The request
+    :type   request:     Request
+    :param    response:    The response
+    :type   response:    Response
+    :param    args:      The arguments
+    :type   args:      list
+    :param    kwargs:      The keywords arguments
+    :type   kwargs:      dictionary
+
+    :raises   MethodNotAllow:  post method not allowed
+    """
+    raise MethodNotAllow("Method Not Allow: Post")
+
 ```
 
 Для передачи их в приложение EchoNext требуется объединять Views в URL:
@@ -152,53 +247,11 @@ class URL:
   This dataclass describes an url.
   """
 
-  url: str
-  view: Type[View]
+  path: str
+  controller: Type[PageController]
 
 
-url_patterns = [URL(url="/", view=<ВАШ View>)]
-```
-
-Пример:
-
-```python
-class IndexView(View):
-  def get(
-    self, request: Request, response: Response, **kwargs
-  ) -> Union[Response, Any]:
-    """
-    Get
-
-    :param    request:   The request
-    :type   request:   Request
-    :param    response:  The response
-    :type   response:  Response
-    :param    args:    The arguments
-    :type   args:    list
-    :param    kwargs:    The keywords arguments
-    :type   kwargs:    dictionary
-    """
-    return "Hello World!"
-
-  def post(
-    self, request: Request, response: Response, **kwargs
-  ) -> Union[Response, Any]:
-    """
-    Post
-
-    :param    request:   The request
-    :type   request:   Request
-    :param    response:  The response
-    :type   response:  Response
-    :param    args:    The arguments
-    :type   args:    list
-    :param    kwargs:    The keywords arguments
-    :type   kwargs:    dictionary
-    """
-    return "Message has accepted!"
-
-
-url_patterns = [URL(url="/", view=IndexView)]
+url_patterns = [URL(url="/", view=<ВАШ КОНТРОЛЛЕР>)]
 ```
 
 ## Routes
@@ -209,6 +262,7 @@ import os
 from pyechonext.app import ApplicationType, EchoNext
 from pyechonext.config import Settings
 from pyechonext.middleware import middlewares
+from pyechonext.mvc.controllers import PageController
 
 
 settings = Settings(
@@ -225,7 +279,7 @@ def home(request, response):
 
 
 @echonext.route_page("/book")
-class BooksResource(View):
+class BooksResource(PageController):
   def get(self, request, response, **kwargs):
     return f"GET Params: {request.GET}"
 
@@ -233,7 +287,7 @@ class BooksResource(View):
     return f"POST Params: {request.POST}"
 ```
 
-Вы можете также и маршрутизировать View без передачи их в параметры, а создавая класс с декоратором роутинга страницы.
+Вы можете также и маршрутизировать PageController без передачи их в параметры, а создавая класс с декоратором роутинга страницы.
 
 ---
 

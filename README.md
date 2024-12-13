@@ -45,7 +45,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last stable version: 0.7.11 alpha
+ > Last stable version: 0.7.12 alpha
 
  > Next Big Update: ASYNC & unicorn support
 
@@ -136,82 +136,6 @@ pip install pyechonext
 ```
 
 Once installed, you can start using the library in your Python projects. Check out the [documentation](https://alexeev-prog.github.io/pyEchoNext) for detailed usage examples and API reference.
-
-You can create example app architecture:
-
-```bash
-python3 -m pyechonext --name exampleapp
-
-# Generated arhitecture:
-exampleapp/
-├── exampleapp.py
-├── templates
-└── views
-    ├── __init__.py
-    └── main.py
-```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## 🚀 Run app with BurnBuild
-[burn-build](https://github.com/alexeev-prog/burn-build) - build system written in python for projects in C, C++, python.
-
-burn-build is available on [PyPI](https://pypi.org/project/pyburn_build). Simply install the package into your project environment with PIP:
-
-```bash
-pip install pyburn_build
-```
-
-Create project_config.json:
-
-```json
-{
-    "metadata": {
-        "name": "WebApp",
-        "version": "0.1.0",
-        "description": "WebApp app",
-        "language": "python",
-        "use_cmake": false,
-        "cache_file": "cache.json",
-        "features": ["pyechonext"]
-    },
-
-    "compiler": {
-        "name": "python",
-        "base_compiler_flags": []
-    }
-}
-```
-
-And create toolchain_config.json:
-
-```json
-{
-    "prelude_commands": [],
-    "targets": {
-        "target1": {
-            "compiler_options": [],
-            "sources": ["app.py"],
-            "output": "",
-            "objects": [],
-            "compiler": "python3"
-        },
-    },
-    "post_commands": []
-}
-```
-
-And create project:
-
-```bash
-python3 -m pyburn_build create --project-config example_configs/project_config.json --toolchain-config example_configs/toolchain_config.json
-```
-
-And build project:
-
-```bash
-python3 -m pyburn_build build --project-config example_configs/project_config.json --toolchain-config example_configs/toolchain_config.json
-```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

@@ -34,14 +34,8 @@ class BaseMiddleware(ABC):
 		"""
 		raise NotImplementedError
 
-	def process_exception(self, exception: Exception):
-		"""
-		Process exception
-
-		:param		exception:	The exception
-		:type		exception:	Exception
-		"""
-		raise exception
+	def process_template(self, *args, **kwargs):
+		raise NotImplementedError
 
 	def process_exception(self, exception: Exception):
 		"""

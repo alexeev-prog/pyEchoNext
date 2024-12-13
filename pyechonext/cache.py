@@ -29,7 +29,7 @@ class InMemoryCache:
 		:type		timeout:  int
 		"""
 		self._cache: Dict[str, CacheEntry] = {}
-		self._timeout = timeout
+		self._timeout: int = timeout
 
 	def set(self, key: str, value: Any, **kwargs):
 		"""

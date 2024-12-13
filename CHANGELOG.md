@@ -1,3 +1,15 @@
+commit 12ae4e91a5891f5aa7beee9d6724593fa0efa1ba
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Fri Dec 13 18:45:53 2024 +0700
+
+    fix/docs: update docs, fix bugs
+
+commit d99ff7e25958c6a28c1a117d3a8dea2c19126c32
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Fri Dec 13 18:25:59 2024 +0700
+
+    release
+
 commit 0102a3fa3a974cd9674c91929b661ac136674fd1
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Fri Dec 13 18:24:40 2024 +0700

@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any, Dict, Union
 from urllib.parse import parse_qs
 
 from loguru import logger
@@ -18,16 +18,18 @@ class Request:
 		:param		environ:  The environ
 		:type		environ:  dict
 		"""
-		self.environ: dict = environ
+		self.environ: Dict[str, Any] = environ
 		self.settings: Settings = settings
 		self.method: str = self.environ.get("REQUEST_METHOD")
 		self.path: str = self.environ.get("PATH_INFO")
-		self.GET: dict = self._build_get_params_dict(self.environ.get("QUERY_STRING"))
-		self.POST: dict = self._build_post_params_dict(
+		self.GET: Dict[Any, Any] = self._build_get_params_dict(
+			self.environ.get("QUERY_STRING")
+		)
+		self.POST: Dict[Any, Any] = self._build_post_params_dict(
 			self.environ.get("wsgi.input").read()
 		)
 		self.user_agent: str = self.environ.get("HTTP_USER_AGENT")
-		self.extra: dict = {}
+		self.extra: Dict[Any, Any] = {}
 
 		logger.debug(f"New request created: {self.method} {self.path}")
 
