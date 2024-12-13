@@ -28,7 +28,7 @@ class Settings:
 
 	BASE_DIR: str
 	TEMPLATES_DIR: str
-	SECRET_KEY: str
+	SECRET_KEY: str = PSPCAlgorithm().crypt("SECRET-KEY") # алгоритм создания секретного ключа, при каждом запуске новый
 	VERSION: str = '1.0.0'
 	DESCRIPTION: str = 'Echonext webapp'
 	LOCALE: str = "DEFAULT"
@@ -170,6 +170,21 @@ class BaseMiddleware(ABC):
 		:type       response:  Response
 		"""
 		raise NotImplementedError
+
+	def process_template(self, *args, **kwargs):
+		raise NotImplementedError
+
+	def process_exception(self, exception: Exception):
+		"""
+		Process exception
+
+		:param		exception:	The exception
+		:type		exception:	Exception
+		"""
+		if not isinstance(exception, pyEchoNextException) or not isinstance(
+			exception, WebError
+		):
+			raise exception
 ```
 
 Для создания своего Middleware вам нужно создать новый класс на основе этого класса и обязательно реализовать методы to_request и to_response. В pyEchoNext существует базовый Middleware для создания сессий:
@@ -224,11 +239,11 @@ middlewares = [
 ```python
 @dataclass
 class URL:
-	url: str
-	view: Type[View]
+	path: str
+	controller: Type[PageController]
 ```
 
-View - это и есть абстракция маршрута сайта (django-like). Он обязательно должен иметь два метода: `get` и `post` (для ответа на get и post запросы). Эти методы должны возвращать:
+PageController - это и есть абстракция маршрута сайта (django-like). Он обязательно должен иметь два метода: `get` и `post` (для ответа на get и post запросы). Эти методы должны возвращать:
 
  + Данные, контент страницы. Это может быть словарь или строка.
 
@@ -236,116 +251,7 @@ View - это и есть абстракция маршрута сайта (djan
 
  + Объект класса Response (pyechonext.response)
 
-View представляет собой объект класса View (pyechonext.views):
-
-```python
-class View(ABC):
-	"""
-	Page view
-	"""
-
-	@abstractmethod
-	def get(self, request: Request, response: Response, *args, **kwargs) -> Union[Response, Any]:
-		"""
-		Get
-
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		raise NotImplementedError
-
-	@abstractmethod
-	def post(self, request: Request, response: Response, *args, **kwargs) -> Union[Response, Any]:
-		"""
-		Post
-
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		raise NotImplementedError
-```
-
-Для примера, в pyechonext.views есть IndexView, пример реализации View.
-
-```python
-class IndexView(View):
-	def get(self, request: Request, response: Response, **kwargs) -> Union[Response, Any]:
-		"""
-		Get
-
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		return "Hello World!"
-
-	def post(self, request: Request, response: Response, **kwargs) -> Union[Response, Any]:
-		"""
-		Post
-
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		return "Message has accepted!"
-```
-
-Эта реализация возвращает строку. Но также можно возвратить Response:
-
-```python
-class IndexView(View):
-	def get(self, request: Request, response: Response, **kwargs) -> Union[Response, Any]:
-		"""
-		Get
-
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		return Response(request, body='Hello World!')
-
-	def post(self, request: Request, response: Response, **kwargs) -> Union[Response, Any]:
-		"""
-		Post
-
-		:param		request:   The request
-		:type		request:   Request
-		:param		response:  The response
-		:type		response:  Response
-		:param		args:	   The arguments
-		:type		args:	   list
-		:param		kwargs:	   The keywords arguments
-		:type		kwargs:	   dictionary
-		"""
-		return Response(request, body='Message has accepted!')
-```
+Для того,чтобы подробно узнать об этом, прочитайте [Маршруты и отображения](./routes_and_views.md)
 
 Можно комбинировать эти два способа. По их использованию есть следующие рекомендации:
 

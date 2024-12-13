@@ -69,13 +69,13 @@ class Response:
 		else:
 			self.body: str = ""
 
-		self._headerslist: list = headers
-		self._added_headers: list = []
+		self._headerslist: List[Any] = headers
+		self._added_headers: List[Any] = []
 		self.request: Request = request
-		self.extra: dict = {}
+		self.extra: Dict[Any, Any] = {}
 
 		self.use_i18n: bool = use_i18n
-		self.i18n_kwargs = i18n_params
+		self.i18n_kwargs: Dict[Any, Any] = i18n_params
 
 		self._update_headers()
 

@@ -118,7 +118,7 @@ class Response:
 		headers: Optional[Dict[str, str]] = {},
 		content_type: Optional[str] = None,
 		charset: Optional[str] = None,
-		**kwargs,
+		i18n_params: Optional[dict] = {},
 	):
 		"""
 		Constructs a new instance.
@@ -166,7 +166,7 @@ class Response:
 		self.extra: dict = {}
 
 		self.use_i18n: bool = use_i18n
-		self.i18n_kwargs = kwargs
+		self.i18n_kwargs = i18n_params
 
 		self._update_headers()
 

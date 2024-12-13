@@ -23,9 +23,9 @@ class StaticFile:
 		:param		filename:  The filename
 		:type		filename:  str
 		"""
-		self.settings = settings
-		self.filename = f"/{settings.STATIC_DIR}/{filename}".replace("//", "/")
-		self.abs_filename = Path(
+		self.settings: Settings = settings
+		self.filename: str = f"/{settings.STATIC_DIR}/{filename}".replace("//", "/")
+		self.abs_filename: Path = Path(
 			os.path.join(self.settings.BASE_DIR, self.settings.STATIC_DIR, filename)
 		)
 

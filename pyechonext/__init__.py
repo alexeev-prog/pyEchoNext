@@ -22,7 +22,7 @@ import requests
 from rich import print
 from rich.traceback import install
 
-__version__ = "0.7.11"
+__version__ = "0.7.12"
 install(show_locals=True)
 
 
