@@ -1,3 +1,33 @@
+commit 2abdb912370639ee319af0acd2516713d3ec5ecb
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Fri Dec 13 18:21:46 2024 +0700
+
+    tests/fix/feat: add tests, fix bugs, add controller
+
+commit b5a52ed7b94b125c299ff6a3fce9a555f06803c6
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Thu Dec 12 23:45:13 2024 +0700
+
+    feat: add controller
+
+commit d20a72c908d55f172385fa75ee34f19c6eedba4a
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Wed Dec 11 23:53:47 2024 +0700
+
+    docs/feat: add models and views in MVC
+
+commit 96a5c13976700a10f51b9be4696357cce7813ddc
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Wed Dec 11 21:25:53 2024 +0700
+
+    feat: start adding MVC Architecture
+
+commit 58a9a065e43459bb7f406bf7d0665dd73c7a7922
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Wed Dec 11 19:38:41 2024 +0700
+
+    Update Changelog
+
 commit 678e5e81154731bdc839fd2d40532f0d0366dff6
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Wed Dec 11 19:38:13 2024 +0700
