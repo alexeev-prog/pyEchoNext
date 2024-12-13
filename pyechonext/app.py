@@ -4,7 +4,9 @@ from enum import Enum
 from typing import Any, Callable, Iterable, List, Optional, Tuple, Type
 
 from loguru import logger
+from requests import Session as RequestsSession
 from socks import method
+from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
 
 from pyechonext.cache import InMemoryCache
 from pyechonext.config import Settings
@@ -115,6 +117,11 @@ class EchoNext:
 
 		logger.debug(f"Application {self.application_type.value}: {self.app_name}")
 
+	def test_session(self, host: str = "echonext"):
+		session = RequestsSession()
+		session.mount(prefix=f"http://{host}", adapter=RequestsWSGIAdapter(self))
+		return session
+
 	def _get_request(self, environ: dict) -> Request:
 		"""
 		Gets the request.
@@ -135,6 +142,20 @@ class EchoNext:
 		:rtype:		Response
 		"""
 		return Response(request, content_type=self.application_type.value)
+
+	def add_route(self, page_path: str, handler: Callable):
+		"""
+		Adds a route.
+
+		:param		page_path:	The page path
+		:type		page_path:	str
+		:param		handler:	The handler
+		:type		handler:	Callable
+		"""
+		if inspect.isclass(handler):
+			self.router.add_url(URL(path=page_path, controller=handler))
+		else:
+			self.router.add_page_route(page_path, handler)
 
 	def route_page(self, page_path: str) -> Callable:
 		"""
@@ -314,6 +335,8 @@ class EchoNext:
 
 			if isinstance(result, Response):
 				result = result.body
+			elif result is None:
+				return response
 
 			if route.route_type == RoutesTypes.URL_BASED:
 				view = route.handler.get_rendered_view(request, result, self)

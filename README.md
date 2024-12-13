@@ -594,7 +594,7 @@ To test the web framework, PyTest with the pytest-cov plugin is used. You can lo
 
 | Statements | Miss       | Coverage |
 |------------|------------|----------|
-| 1327       | 936        | 34%      |
+| 1548       | 721        | 53%      |
 
 ## Documentation 🌍
 Extended documentation and framework specifications are available at the following links:

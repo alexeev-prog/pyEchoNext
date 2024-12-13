@@ -93,9 +93,9 @@ class Response:
 
 	def _structuring_headers(self, environ):
 		headers = {
-			"Host": environ["HTTP_HOST"],
-			"Accept": environ["HTTP_ACCEPT"],
-			"User-Agent": environ["HTTP_USER_AGENT"],
+			"Host": environ.get("HTTP_HOST"),
+			"Accept": environ.get("HTTP_ACCEPT"),
+			"User-Agent": environ.get("HTTP_USER_AGENT"),
 		}
 
 		for name, value in headers.items():
@@ -156,7 +156,7 @@ class Response:
 		self._structuring_headers(environ)
 
 		logger.debug(
-			f"[{environ['REQUEST_METHOD']} {self.status_code}] Run response: {self.content_type}"
+			f"[{environ.get('REQUEST_METHOD')} {self.status_code}] Run response: {self.content_type}"
 		)
 
 		start_response(status=self.status_code, headers=self._headerslist)
@@ -173,10 +173,9 @@ class Response:
 		"""
 		if self.body:
 			if self.content_type == "application/json":
-				return json.loads(json.dumps(self.body))
-				# return self.body
-			else:
 				return json.loads(self.body)
+			else:
+				return json.loads(json.dumps(self.body))
 
 		return {}
 
