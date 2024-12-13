@@ -42,9 +42,11 @@ class APIDocumentation:
 		}
 
 		for url in self._app.urls:
-			spec["paths"][url.url] = {
+			spec["paths"][url.path] = {
 				"get": {
-					"summary": str(f"{url.view.__doc__}. {url.view.get.__doc__}")
+					"summary": str(
+						f"{url.controller.__doc__}. {url.controller.get.__doc__}"
+					)
 					.replace("\n", "<br>")
 					.strip(),
 					"responses": {
@@ -53,7 +55,9 @@ class APIDocumentation:
 					},
 				},
 				"post": {
-					"summary": str(f"{url.view.__doc__}. {url.view.post.__doc__}")
+					"summary": str(
+						f"{url.controller.__doc__}. {url.controller.post.__doc__}"
+					)
 					.replace("\n", "<br>")
 					.strip(),
 					"responses": {
@@ -63,7 +67,7 @@ class APIDocumentation:
 				},
 			}
 
-		for path, handler in self._app.routes.items():
+		for path, handler in self._app.router.routes.items():
 			spec["paths"][path] = {
 				"get": {
 					"summary": str(handler.__doc__)

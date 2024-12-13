@@ -65,7 +65,7 @@ class ProjDocumentation:
 		section = InitiationSection(
 			f"Project {self.app_name}",
 			f"Project Documentation for {self.app_name}",
-			{"Routes": ", ".join(self.app.routes.keys())},
+			{"Routes": ", ".join(self.app.router.routes.keys())},
 		)
 		return section
 

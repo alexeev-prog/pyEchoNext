@@ -1,6 +1,6 @@
-import json
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
+import orjson as json
 from loguru import logger
 from socks import method
 
@@ -173,9 +173,10 @@ class Response:
 		"""
 		if self.body:
 			if self.content_type == "application/json":
-				return json.loads(self.body)
+				return json.loads(json.dumps(self.body))
+				# return self.body
 			else:
-				return json.dumps(self.body)
+				return json.loads(self.body)
 
 		return {}
 

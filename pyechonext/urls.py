@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Type
 
-from pyechonext.views import IndexView, View
+from pyechonext.mvc.controllers import PageController
 
 
 @dataclass
@@ -10,8 +10,8 @@ class URL:
 	This dataclass describes an url.
 	"""
 
-	url: str
-	view: Type[View]
+	path: str
+	controller: Type[PageController]
 
 
-url_patterns = [URL(url="/", view=IndexView)]
+url_patterns = []

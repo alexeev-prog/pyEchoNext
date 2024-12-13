@@ -45,7 +45,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last stable version: 0.6.11 alpha
+ > Last stable version: 0.7.11 alpha
 
  > Next Big Update: ASYNC & unicorn support
 
@@ -767,7 +767,7 @@ To test the web framework, PyTest with the pytest-cov plugin is used. You can lo
 
 | Statements | Miss       | Coverage |
 |------------|------------|----------|
-| 1327       | 997        | 28%      |
+| 1327       | 936        | 34%      |
 
 ## Documentation 🌍
 Extended documentation and framework specifications are available at the following links:

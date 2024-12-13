@@ -1,10 +1,9 @@
 import inspect
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Callable, Iterable, List, Optional, Tuple, Type, Union
+from typing import Any, Callable, Iterable, List, Optional, Tuple, Type
 
 from loguru import logger
-from parse import parse
 from socks import method
 
 from pyechonext.cache import InMemoryCache
@@ -12,6 +11,8 @@ from pyechonext.config import Settings
 from pyechonext.i18n_l10n import JSONi18nLoader, JSONLocalizationLoader
 from pyechonext.logging import setup_logger
 from pyechonext.middleware import BaseMiddleware
+from pyechonext.mvc.controllers import PageController
+from pyechonext.mvc.routes import Router, RoutesTypes
 from pyechonext.request import Request
 from pyechonext.response import Response
 from pyechonext.static import StaticFile, StaticFilesManager
@@ -19,12 +20,11 @@ from pyechonext.urls import URL
 from pyechonext.utils import _prepare_url
 from pyechonext.utils.exceptions import (
 	MethodNotAllow,
-	RoutePathExistsError,
 	TeapotError,
 	URLNotFound,
 	WebError,
 )
-from pyechonext.views import View
+from pyechonext.utils.stack import LIFOStack
 
 
 class ApplicationType(Enum):
@@ -55,7 +55,7 @@ class EchoNext:
 		"middlewares",
 		"application_type",
 		"urls",
-		"routes",
+		"router",
 		"i18n_loader",
 		"l10n_loader",
 		"history",
@@ -95,9 +95,8 @@ class EchoNext:
 		self.application_type = application_type
 		self.static_files = static_files
 		self.static_files_manager = StaticFilesManager(self.static_files)
-		self.routes = {}
-
 		self.urls = urls
+		self.router = Router(self.urls)
 		self.main_cache = InMemoryCache(timeout=60 * 10)
 		self.history: List[HistoryEntry] = []
 		self.i18n_loader = JSONi18nLoader(
@@ -113,52 +112,6 @@ class EchoNext:
 		setup_logger(self.app_name)
 
 		logger.debug(f"Application {self.application_type.value}: {self.app_name}")
-
-	def _find_view(self, raw_url: str) -> Union[Type[URL], None]:
-		"""
-		Finds a view by raw url.
-
-		:param		raw_url:  The raw url
-		:type		raw_url:  str
-
-		:returns:	URL dataclass
-		:rtype:		Type[URL]
-		"""
-		url = _prepare_url(raw_url)
-
-		for path in self.urls:
-			if url == _prepare_url(path.url):
-				return path
-
-		return None
-
-	def _check_request_method(self, view: View, request: Request):
-		"""
-		Check request method for view
-
-		:param		view:			 The view
-		:type		view:			 View
-		:param		request:		 The request
-		:type		request:		 Request
-
-		:raises		MethodNotAllow:	 Method not allow
-		"""
-		if not hasattr(view, request.method.lower()):
-			raise MethodNotAllow(f"Method not allow: {request.method}")
-
-	def _get_view(self, request: Request) -> View:
-		"""
-		Gets the view.
-
-		:param		request:  The request
-		:type		request:  Request
-
-		:returns:	The view.
-		:rtype:		View
-		"""
-		url = request.path
-
-		return self._find_view(url)
 
 	def _get_request(self, environ: dict) -> Request:
 		"""
@@ -191,8 +144,6 @@ class EchoNext:
 		:returns:	wrapper handler
 		:rtype:		Callable
 		"""
-		if page_path in self.routes:
-			raise RoutePathExistsError("Such route already exists.")
 
 		def wrapper(handler):
 			"""
@@ -204,7 +155,11 @@ class EchoNext:
 			:returns:	handler
 			:rtype:		callable
 			"""
-			self.routes[page_path] = handler
+			if inspect.isclass(handler):
+				self.router.add_url(URL(path=page_path, controller=handler))
+			else:
+				self.router.add_page_route(page_path, handler)
+
 			return handler
 
 		return wrapper
@@ -216,8 +171,15 @@ class EchoNext:
 		:param		request:  The request
 		:type		request:  Request
 		"""
-		for middleware in self.middlewares:
+		stack = LIFOStack()
+
+		stack.push(*self.middlewares)
+
+		for middleware in stack.items:
 			middleware().to_request(request)
+
+		while not stack.is_empty():
+			stack.pop()
 
 	def _apply_middleware_to_response(self, response: Response):
 		"""
@@ -226,8 +188,26 @@ class EchoNext:
 		:param		response:  The response
 		:type		response:  Response
 		"""
-		for middleware in self.middlewares:
+		stack = LIFOStack()
+
+		stack.push(*self.middlewares)
+
+		for middleware in stack.items:
 			middleware().to_response(response)
+
+		while not stack.is_empty():
+			stack.pop()
+
+	def _process_exceptions_from_middlewares(self, exception: Exception):
+		stack = LIFOStack()
+
+		stack.push(*self.middlewares)
+
+		for middleware in stack.items:
+			middleware().process_exception(exception)
+
+		while not stack.is_empty():
+			stack.pop()
 
 	def _default_response(self, response: Response, error: WebError) -> None:
 		"""
@@ -252,22 +232,9 @@ class EchoNext:
 		url = _prepare_url(request.path)
 
 		if self.static_files_manager.serve_static_file(url):
-			return self._serve_static_file, {}
+			return self.router.generate_page_route(url, self._serve_static_file), {}
 
-		for path, handler in self.routes.items():
-			parse_result = parse(path, url)
-			if parse_result is not None:
-				return handler, parse_result.named
-
-		view = self._get_view(request)
-
-		if view is not None:
-			parse_result = parse(view.url, url)
-
-			if parse_result is not None:
-				return view.view, parse_result.named
-
-		return None, None
+		return self.router.resolve(request)
 
 	def get_and_save_cache_item(self, key: str, value: Any) -> Any:
 		"""
@@ -328,29 +295,30 @@ class EchoNext:
 		logger.debug(f"Handle request: {request.path}")
 		response = self._get_response(request)
 
-		handler, kwargs = self._find_handler(request)
+		route, kwargs = self._find_handler(request)
+
+		handler = route.handler
 
 		if handler is not None:
-			if inspect.isclass(handler):
-				handler = getattr(handler(), request.method.lower(), None)
+			if isinstance(handler, PageController) or inspect.isclass(handler):
+				handler = getattr(handler, request.method.lower(), None)
+
 				if handler is None:
-					raise MethodNotAllow(f"Method not allowed: {request.method}")
+					raise MethodNotAllow(
+						f'Method "{request.method.lower()}" don\'t allowed: {request.path}'
+					)
 
 			result = handler(request, response, **kwargs)
 
 			if isinstance(result, Response):
-				response = result
+				result = result.body
 
-				if response.use_i18n:
-					response.body = self.i18n_loader.get_string(
-						response.body, **response.i18n_kwargs
-					)
+			if route.route_type == RoutesTypes.URL_BASED:
+				view = route.handler.get_rendered_view(request, result, self)
+				response.body = view
 			else:
 				string = self.i18n_loader.get_string(result)
 				response.body = self.get_and_save_cache_item(string, string)
-
-				if not response.use_i18n:
-					response.body = self.get_and_save_cache_item(result, result)
 		else:
 			raise URLNotFound(f'URL "{request.path}" not found.')
 
@@ -408,6 +376,8 @@ class EchoNext:
 			)
 			self._apply_middleware_to_response(response)
 			self._default_response(response, error=err)
+		except Exception as ex:
+			self._process_exceptions_from_middlewares(ex)
 
 		self.history.append(HistoryEntry(request=request, response=response))
 		return response(environ, start_response)

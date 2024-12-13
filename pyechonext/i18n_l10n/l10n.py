@@ -108,7 +108,7 @@ class JSONLocalizationLoader(LocalizationInterface):
 
 	def __init__(
 		self,
-		locale: str = 'DEFAULT',
+		locale: str = "DEFAULT",
 		directory: str = None,
 		custom_settings: Optional[Dict[str, Any]] = None,
 	):
