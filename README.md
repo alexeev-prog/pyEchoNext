@@ -40,7 +40,7 @@
 Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the sluggishness of traditional web frameworks? Want a solution that keeps pace with your ambitious apps? Look no further. EchoNext is your agile companion in the world of web development!
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/logo.jpg" width='600px' height='600px'>
+    <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/logo.jpg">
 </p>
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
@@ -85,7 +85,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 | Asynchronous Capabilities | COMING SOON         | ❌           | ✔️           | ❌            | ✔️           |
 | Performance               | 🔥 High             | 🐢 Moderate  | 🚀 Very High | 🐢 Moderate   | 🚀 Very High |
 | Framework Weight          | ✔️                  | ✔️           | ✔️           | ❌ Heavy      | ✔️           |
-| Ecosystem                 | 🛠️ Modular          | 🎨 Flexible  | 🎨 Modular   | ⚙️ Monolithic | ⚙️ Modular   |
+| Ecosystem                 | 🛠️ Flexible         | 🎨 Flexible  | 🎨 Modular   | ⚙️ Monolithic | ⚙️ Modular   |
 | Ease of Use               | ✔️                  | ✔️           | ✔️           | ❌            | ✔️           |
 | Configurability           | ✔️                  | ✔️           | ✔️           | ✔️            | ✔️           |
 | Documentation Quality     | 📚 Excellent        | 📚 Good      | 📚 Excellent | 📚 Very Good  | 📚 Good      |
@@ -94,7 +94,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 | Community Size            | 📢 Growing          | 📢 Large     | 📢 Growing   | 📢 Large      | 📢 Emerging  |
 | Built-in Template Engine  | ✔️ Jinja2 & builtin | ✔️ Jinja2    | ✔️ Jinja2    | ✔️ Django     | ✔️ Jinja2    |
 | Task Queue Integration    | ❌                  | ✔️ Celery    | ✔️ Celery    | ✔️ Celery     | ✔️ Celery    |
-| Static File Serving       | 🌍 Manual           | 🌍 Manual    | 🚀 Built-in  | 🚀 Built-in   | 🚀 Built-in  |
+| Static File Serving       | 🚀 Built-in         | 🌍 Manual    | 🚀 Built-in  | 🚀 Built-in   | 🚀 Built-in  |
 | Analytics Integration     | ✔️ Easy             | 🛠️ Manual    | ✔️ Easy      | ❌            | ✔️ Easy      |
 
 📈 Note: Echonext excels in performance while staying lightweight, making it a top-notch choice for your next project!
