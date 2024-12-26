@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyechonext"
-version = "0.7.12"
+version = "0.7.13"
 description = "EchoNext is a lightweight, fast and scalable web framework for Python"
 authors = ["alexeev-prog <alexeev.dev@mail.ru>"]
 license = "LGPL-2.1"
@@ -8,25 +8,26 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.9,<4.0"
-rich = "^13.8.3"
+rich = "^13.8"
 loguru = "^0.7.0"
-gunicorn = "^22.0.0"
-pysocks = "^1.7.1"
-parse = "^1.20.2"
-celery = "^5.0.0"
-jinja2 = "^3.1.0"
-python-dotenv = "^1.0.1"
-toml = "^0.10.2"
-pyyaml = "^6.0.2"
-requests = "^2.32.3"
-orjson = "^3.10.12"
-requests-wsgi-adapter = "^0.4.1"
+gunicorn = "^22.0"
+pysocks = "^1.7"
+parse = "^1.20"
+celery = "^5.0"
+jinja2 = "^3.1"
+python-dotenv = "^1.0"
+toml = "^0.10"
+pyyaml = "^6.0"
+requests = "^2.32"
+orjson = "^3.10"
+requests-wsgi-adapter = "^0.4"
+echonextdi = "0.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.0"
-ruff = ">=0.6.9"
+ruff = ">=0.6"
 black = "^24.10.0"
-pylint = "^3.3.2"
+pylint = "^3.3"
 pytest-cov = "^6.0.0"
 
 [build-system]

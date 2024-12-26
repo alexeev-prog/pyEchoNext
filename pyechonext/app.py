@@ -329,7 +329,7 @@ class EchoNext:
 
 		return handler
 
-	def _filling_response(self, route: Route, response: Response, handler: Callable):
+	def _filling_response(self, route: Route, response: Response, request: Request, result: Any, handler: Callable):
 		"""
 		Filling response
 
@@ -376,7 +376,7 @@ class EchoNext:
 			elif result is None:
 				return response
 
-			self._filling_response(route, response, handler)
+			self._filling_response(route, response, request, result, handler)
 		else:
 			raise URLNotFound(f'URL "{request.path}" not found.')
 

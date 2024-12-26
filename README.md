@@ -45,7 +45,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last stable version: 0.7.12 alpha
+ > Last stable version: 0.7.13 alpha
 
  > Next Big Update: ASYNC & unicorn support
 
@@ -139,8 +139,94 @@ Once installed, you can start using the library in your Python projects. Check o
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## ⚙️ Depends Injection
+pyEchoNext is universal, and you are free to use any Dependency-Injection framework. But we recommend using the specially developed [echonextdi](https://github.com/alexeev-prog/echonext_di). It is simple and fast to use.
+
+ > echonext_di goes in echonext dependencies
+
+```python
+from echonextdi.containers.container import Container
+from echonextdi.depends import Depends
+from echonextdi.providers.callable_provider import CallableProvider
+
+
+def sqrt(a: int, b: int = 2):
+    return a**b
+
+
+class SQRT_Dependency:
+    def __init__(self, sqrt):
+        self.sqrt = sqrt
+
+
+container = Container()
+container.register("sqrt", CallableProvider(sqrt))
+
+
+def calculate(number: int, depend: Depends = Depends(container, SQRT_Dependency)):
+    print(f"{number} ^2 = {depend().sqrt(2)}")
+
+
+calculate(4) # Output: 16
+```
+
 ## 💻 Usage Examples
 You can view examples at [examples directory](./examples).
+
+### Basic With Depends Injection
+
+```python
+import os
+
+from pyechonext.app import ApplicationType, EchoNext
+from pyechonext.config import Settings
+from pyechonext.middleware import middlewares
+from pyechonext.mvc.controllers import PageController
+from pyechonext.urls import URL
+
+from echonextdi.containers.container import Container
+from echonextdi.depends import Depends
+from echonextdi.providers.callable_provider import CallableProvider
+
+
+class IndexController(PageController):
+    def get(self, request, response, **kwargs):
+        return "Hello"
+
+    def post(self, request, response, **kwargs):
+        return "Hello"
+
+
+def say_hello(name: str, phrase: str = 'Hello'):
+    return f'{phrase} {name}'
+
+
+class Hello_Dependency:
+    def __init__(self, say_hello):
+        self.say_hello = say_hello
+
+
+container = Container()
+container.register("say_hello", CallableProvider(say_hello))
+
+url_patterns = [URL(path="/", controller=IndexController)]
+settings = Settings(
+    BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+)
+echonext = EchoNext(
+    __name__,
+    settings,
+    middlewares,
+    urls=url_patterns,
+    application_type=ApplicationType.HTML,
+)
+
+
+@echonext.route_page("/hello/{name}")
+def hello(request, response, name: str = "World", depend: Depends = Depends(container, Hello_Dependency)):
+    response.body = depend().say_hello(name)
+
+```
 
 ### Performance caching
 
@@ -594,7 +680,7 @@ To test the web framework, PyTest with the pytest-cov plugin is used. You can lo
 
 | Statements | Miss       | Coverage |
 |------------|------------|----------|
-| 1548       | 721        | 53%      |
+| 1553       | 720        | 54%      |
 
 ## Documentation 🌍
 Extended documentation and framework specifications are available at the following links:
