@@ -165,3 +165,4 @@ ignored/
 *.db
 *.log
 translatedocs.py
+*/*.log

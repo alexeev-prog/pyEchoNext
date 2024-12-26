@@ -4,7 +4,9 @@ from enum import Enum
 from typing import Any, Callable, Iterable, List, Optional, Tuple, Type
 
 from loguru import logger
+from requests import Session as RequestsSession
 from socks import method
+from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
 
 from pyechonext.cache import InMemoryCache
 from pyechonext.config import Settings
@@ -12,7 +14,7 @@ from pyechonext.i18n_l10n import JSONi18nLoader, JSONLocalizationLoader
 from pyechonext.logging import setup_logger
 from pyechonext.middleware import BaseMiddleware
 from pyechonext.mvc.controllers import PageController
-from pyechonext.mvc.routes import Router, RoutesTypes
+from pyechonext.mvc.routes import Router, RoutesTypes, Route
 from pyechonext.request import Request
 from pyechonext.response import Response
 from pyechonext.static import StaticFile, StaticFilesManager
@@ -115,6 +117,11 @@ class EchoNext:
 
 		logger.debug(f"Application {self.application_type.value}: {self.app_name}")
 
+	def test_session(self, host: str = "echonext"):
+		session = RequestsSession()
+		session.mount(prefix=f"http://{host}", adapter=RequestsWSGIAdapter(self))
+		return session
+
 	def _get_request(self, environ: dict) -> Request:
 		"""
 		Gets the request.
@@ -135,6 +142,20 @@ class EchoNext:
 		:rtype:		Response
 		"""
 		return Response(request, content_type=self.application_type.value)
+
+	def add_route(self, page_path: str, handler: Callable):
+		"""
+		Adds a route.
+
+		:param		page_path:	The page path
+		:type		page_path:	str
+		:param		handler:	The handler
+		:type		handler:	Callable
+		"""
+		if inspect.isclass(handler):
+			self.router.add_url(URL(path=page_path, controller=handler))
+		else:
+			self.router.add_page_route(page_path, handler)
 
 	def route_page(self, page_path: str) -> Callable:
 		"""
@@ -284,15 +305,59 @@ class EchoNext:
 		)
 		return response
 
+	def _check_handler(self, request: Request, handler: Callable) -> Callable:
+		"""
+		Check and return handler
+		
+		:param      request:         The request
+		:type       request:         Request
+		:param      handler:         The handler
+		:type       handler:         Callable
+		
+		:returns:   handler
+		:rtype:     Callable
+		
+		:raises     MethodNotAllow:  request method not allowed
+		"""
+		if isinstance(handler, PageController) or inspect.isclass(handler):
+			handler = getattr(handler, request.method.lower(), None)
+
+			if handler is None:
+				raise MethodNotAllow(
+					f'Method "{request.method.lower()}" don\'t allowed: {request.path}'
+				)
+
+		return handler
+
+	def _filling_response(self, route: Route, response: Response, request: Request, result: Any, handler: Callable):
+		"""
+		Filling response
+
+		:param      route:     The route
+		:type       route:     Route
+		:param      response:  The response
+		:type       response:  Response
+		:param      handler:   The handler
+		:type       handler:   Callable
+		"""
+		if route.route_type == RoutesTypes.URL_BASED:
+			view = route.handler.get_rendered_view(request, result, self)
+			response.body = view
+		else:
+			string = self.i18n_loader.get_string(result)
+			response.body = self.get_and_save_cache_item(string, string)
+
 	def _handle_request(self, request: Request) -> Response:
 		"""
 		Handle response from request
-
-		:param		request:  The request
-		:type		request:  Request
-
-		:returns:	Response callable object
-		:rtype:		Response
+		
+		:param      request:      The request
+		:type       request:      Request
+		
+		:returns:   Response callable object
+		:rtype:     Response
+		
+		:raises     URLNotFound:  404 Error
 		"""
 		logger.debug(f"Handle request: {request.path}")
 		response = self._get_response(request)
@@ -302,25 +367,16 @@ class EchoNext:
 		handler = route.handler
 
 		if handler is not None:
-			if isinstance(handler, PageController) or inspect.isclass(handler):
-				handler = getattr(handler, request.method.lower(), None)
-
-				if handler is None:
-					raise MethodNotAllow(
-						f'Method "{request.method.lower()}" don\'t allowed: {request.path}'
-					)
+			handler = self._check_handler(request, handler)
 
 			result = handler(request, response, **kwargs)
 
 			if isinstance(result, Response):
 				result = result.body
+			elif result is None:
+				return response
 
-			if route.route_type == RoutesTypes.URL_BASED:
-				view = route.handler.get_rendered_view(request, result, self)
-				response.body = view
-			else:
-				string = self.i18n_loader.get_string(result)
-				response.body = self.get_and_save_cache_item(string, string)
+			self._filling_response(route, response, request, result, handler)
 		else:
 			raise URLNotFound(f'URL "{request.path}" not found.')
 

@@ -122,6 +122,9 @@ class Router:
 		:param		url:  The url
 		:type		url:  URL
 		"""
+		if url.path in self.routes:
+			raise RoutePathExistsError(f'Route "{url.path}" already exists.')
+
 		self.routes[url.path] = _create_url_route(url)
 
 	def resolve(

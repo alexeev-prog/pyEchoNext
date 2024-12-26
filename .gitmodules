@@ -1,0 +1,3 @@
+[submodule "echonext_di"]
+	path = echonext_di
+	url = git@github.com:alexeev-prog/echonext_di.git
