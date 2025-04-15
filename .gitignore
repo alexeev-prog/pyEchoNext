@@ -166,3 +166,4 @@ ignored/
 *.log
 translatedocs.py
 */*.log
+flake.lock

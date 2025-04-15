@@ -7,7 +7,7 @@ license = "LGPL-2.1"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4.0"
+python = ">=3.11,<4.0"
 rich = "^13.8"
 loguru = "^0.7.0"
 gunicorn = "^22.0"
@@ -21,11 +21,9 @@ pyyaml = "^6.0"
 requests = "^2.32"
 orjson = "^3.10"
 requests-wsgi-adapter = "^0.4"
-echonextdi = "0.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.0"
-ruff = ">=0.6"
 black = "^24.10.0"
 pylint = "^3.3"
 pytest-cov = "^6.0.0"
