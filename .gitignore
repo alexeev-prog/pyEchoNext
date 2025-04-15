@@ -167,3 +167,5 @@ ignored/
 translatedocs.py
 */*.log
 flake.lock
+
+*.lock
