@@ -1,8 +1,72 @@
+commit 3416eefc8bd188c44cfb70799b5111fd9d58793b
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Wed Apr 16 04:27:58 2025 +0700
+
+    add flake.nix
+
+commit c95c1ebcbca3c4f7ea66d7f6f0c98d8f5ca837ae
+Merge: 2feab4d 6aeb432
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Thu Dec 26 23:56:44 2024 +0700
+
+    Merge branch 'dev'
+
+commit 6aeb43228875b6f1c44ec75d621026e434d48061
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Thu Dec 26 23:55:23 2024 +0700
+
+    feat/fix/tests: improve tests, add depends injection
+
+commit 532e2c77423350d0257d936fe541cba731ccdeb1
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Thu Dec 26 00:18:19 2024 +0700
+
+    create submodule for DI
+
+commit 8a99f6b25a566dad93233e82eef95bcc0c9325a5
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Sat Dec 14 01:39:12 2024 +0700
+
+    tests/fix: fix response json property and add tests
+
+commit 2feab4ded12b124bf12b6e74046a94033af79682
+Merge: 503c81a e34b070
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Sat Dec 14 00:35:49 2024 +0700
+
+    Merge branch 'dev'
+
+commit e34b0708aae91f818bafdc46167ccaa1e98cbd51
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Sat Dec 14 00:35:30 2024 +0700
+
+    update
+
+commit 503c81a8774666d1f802808d465a12f507f4c635
+Merge: 7234b1d 6ad262d
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Fri Dec 13 18:49:02 2024 +0700
+
+    Merge branch 'dev'
+
+commit 6ad262d0381c0f0c3184d9473146b0a8aaba9974
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Fri Dec 13 18:48:49 2024 +0700
+
+    update changelog
+
 commit 12ae4e91a5891f5aa7beee9d6724593fa0efa1ba
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Fri Dec 13 18:45:53 2024 +0700
 
     fix/docs: update docs, fix bugs
+
+commit 7234b1d0bd93a0f6d2ee205bbd5ea55ead66d54f
+Merge: 4e2d6b1 d99ff7e
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Fri Dec 13 18:26:14 2024 +0700
+
+    Merge branch 'dev'
 
 commit d99ff7e25958c6a28c1a117d3a8dea2c19126c32
 Author: alexeev-prog <alexeev.dev@mail.ru>
@@ -10,11 +74,25 @@ Date:   Fri Dec 13 18:25:59 2024 +0700
 
     release
 
+commit 4e2d6b19ccc34f4e1b208a3d28698bc7ed0cc50f
+Merge: c78071d 0102a3f
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Fri Dec 13 18:25:01 2024 +0700
+
+    Merge branch 'dev'
+
 commit 0102a3fa3a974cd9674c91929b661ac136674fd1
 Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Fri Dec 13 18:24:40 2024 +0700
 
     docs: improve docs
+
+commit c78071d438ac7038b7f848831a2be004a76b3975
+Merge: 1559feb 2abdb91
+Author: alexeev-prog <alexeev.dev@mail.ru>
+Date:   Fri Dec 13 18:22:47 2024 +0700
+
+    Merge branch 'dev'
 
 commit 2abdb912370639ee319af0acd2516713d3ec5ecb
 Author: alexeev-prog <alexeev.dev@mail.ru>
@@ -27,6 +105,24 @@ Author: alexeev-prog <alexeev.dev@mail.ru>
 Date:   Thu Dec 12 23:45:13 2024 +0700
 
     feat: add controller
+
+commit 1559feb7eb46407b7db81ef244fbcc9013ebe1d5
+Author: Alexeev Bronislav <tehnodropstore@gmail.com>
+Date:   Thu Dec 12 07:41:09 2024 +0700
+
+    Update README.md
+
+commit 77cea7b50c53824348d46c299668073905c70993
+Author: Alexeev Bronislav <tehnodropstore@gmail.com>
+Date:   Thu Dec 12 07:39:24 2024 +0700
+
+    Update README.md
+
+commit 3cfa4475fa201d18894748c2f4b5a30ace5aa5a1
+Author: Alexeev Bronislav <tehnodropstore@gmail.com>
+Date:   Thu Dec 12 07:38:41 2024 +0700
+
+    Update README.md
 
 commit d20a72c908d55f172385fa75ee34f19c6eedba4a
 Author: alexeev-prog <alexeev.dev@mail.ru>
