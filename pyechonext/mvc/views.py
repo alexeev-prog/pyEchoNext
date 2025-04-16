@@ -4,34 +4,34 @@ from pyechonext.mvc.models import PageModel
 
 
 class BaseView(ABC):
-	"""
-	Base visualization of the data that model contains.
-	"""
+    """
+    Base visualization of the data that model contains.
+    """
 
-	@abstractmethod
-	def render(self, model: PageModel):
-		"""
-		Render data
+    @abstractmethod
+    def render(self, model: PageModel):
+        """
+        Render data
 
-		:param		model:	The model
-		:type		model:	PageModel
-		"""
-		raise NotImplementedError
+        :param		model:	The model
+        :type		model:	PageModel
+        """
+        raise NotImplementedError
 
 
 class PageView(BaseView):
-	"""
-	Page visualization of the data that model contains.
-	"""
+    """
+    Page visualization of the data that model contains.
+    """
 
-	def render(self, model: PageModel) -> str:
-		"""
-		Renders the given model.
+    def render(self, model: PageModel) -> str:
+        """
+        Renders the given model.
 
-		:param		model:	The model
-		:type		model:	PageModel
+        :param		model:	The model
+        :type		model:	PageModel
 
-		:returns:	model response body content
-		:rtype:		str
-		"""
-		return str(model.response.body)
+        :returns:	model response body content
+        :rtype:		str
+        """
+        return str(model.response.body)

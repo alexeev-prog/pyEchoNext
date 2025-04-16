@@ -12,20 +12,20 @@ from echonextdi.providers.callable_provider import CallableProvider
 
 
 class IndexController(PageController):
-	def get(self, request, response, **kwargs):
-		return "Hello"
+    def get(self, request, response, **kwargs):
+        return "Hello"
 
-	def post(self, request, response, **kwargs):
-		return "Hello"
+    def post(self, request, response, **kwargs):
+        return "Hello"
 
 
-def say_hello(name: str, phrase: str = 'Hello'):
-	return f'{phrase} {name}'
+def say_hello(name: str, phrase: str = "Hello"):
+    return f"{phrase} {name}"
 
 
 class Hello_Dependency:
-	def __init__(self, say_hello):
-		self.say_hello = say_hello
+    def __init__(self, say_hello):
+        self.say_hello = say_hello
 
 
 container = Container()
@@ -33,17 +33,22 @@ container.register("say_hello", CallableProvider(say_hello))
 
 url_patterns = [URL(path="/", controller=IndexController)]
 settings = Settings(
-	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+    BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
 )
 echonext = EchoNext(
-	__name__,
-	settings,
-	middlewares,
-	urls=url_patterns,
-	application_type=ApplicationType.HTML,
+    __name__,
+    settings,
+    middlewares,
+    urls=url_patterns,
+    application_type=ApplicationType.HTML,
 )
 
 
 @echonext.route_page("/hello/{name}")
-def hello(request, response, name: str = "World", depend: Depends = Depends(container, Hello_Dependency)):
-	response.body = depend().say_hello(name)
+def hello(
+    request,
+    response,
+    name: str = "World",
+    depend: Depends = Depends(container, Hello_Dependency),
+):
+    response.body = depend().say_hello(name)
