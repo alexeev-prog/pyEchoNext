@@ -1,3 +1,45 @@
+commit 50f426692c0d5c3167b7871e508bc9ff96cb192b
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Apr 18 00:13:53 2025 +0700
+
+    fix docs
+
+commit 4d66d1d1a4108affc0fc408835bb7d2f2aed113b
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Apr 18 00:09:13 2025 +0700
+
+    fix code style and move docs to sphinx
+
+commit c2243b0cc15ed272bf0030e204fa71b9d9d32434
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Thu Apr 17 00:49:51 2025 +0700
+
+    fix/style: fix api docs gen, improve code style
+
+commit 4935e8340847e89a02cb9bc7536a3e1390711ce2
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Wed Apr 16 04:33:41 2025 +0700
+
+    update readme
+
+commit 0a3c3797ac78d7f9002a8fbd691bd8df455d99c1
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Wed Apr 16 04:32:40 2025 +0700
+
+    update .gitignore
+
+commit b068b9d01bed51a8d285fcc52e84b589f5bc94a9
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Wed Apr 16 04:30:19 2025 +0700
+
+    remove flake.lock
+
+commit b7f63e273354e5667d8098d95c54e98e7512feb6
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Wed Apr 16 04:29:58 2025 +0700
+
+    update changelog
+
 commit 3416eefc8bd188c44cfb70799b5111fd9d58793b
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Wed Apr 16 04:27:58 2025 +0700

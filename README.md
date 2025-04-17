@@ -686,6 +686,10 @@ To test the web framework, PyTest with the pytest-cov plugin is used. You can lo
 | 1553       | 720        | 54%      |
 
 ## Documentation 🌍
+The main documentation is [here](https://alexeev-prog.github.io/pyEchoNext/).
+
+ > At the moment documentation move from doxygen to sphinx
+
 Extended documentation and framework specifications are available at the following links:
 
 ### English
