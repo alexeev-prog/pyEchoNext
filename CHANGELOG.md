@@ -1,3 +1,33 @@
+commit 897f32e93e999830aa002f18549f5dc44665fafe
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Apr 18 01:02:52 2025 +0700
+
+    improve docs
+
+commit 904c8108c03f7844a8daec1e020182e36d88455e
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Apr 18 00:58:09 2025 +0700
+
+    improve docs
+
+commit 6b0520e5743e629cbc4de5234842510c89265950
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Apr 18 00:55:31 2025 +0700
+
+    improve docs
+
+commit 74604fc7a4e15582ca391b2e324a1b2a30bfee35
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Apr 18 00:49:55 2025 +0700
+
+    improve docs
+
+commit c52edbd6cdf2ad55ae823d875867549d33c39d00
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Apr 18 00:40:27 2025 +0700
+
+    improve docs
+
 commit d3003e397ead86916f0db636b22d7971e5af5ab5
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Fri Apr 18 00:30:23 2025 +0700

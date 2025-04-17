@@ -32,9 +32,6 @@ pyEchoNext documentation
       <p align="center">
 
    EchoNext is a lightweight, fast and scalable web framework for Python
-   Explore the docs » Comparison with Alternatives . Why Choose
-   pyEchoNext · Key Features · Getting Started · Basic Usage ·
-   Specification · Documentation · License
 
    .. raw:: html
 
