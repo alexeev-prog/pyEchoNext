@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../pyechonext'))
 
 project = 'pyEchoNext'
 author = 'name'
@@ -19,5 +19,6 @@ extensions = [
 html_theme = 'furo'  # тема оформления
 html_static_path = ['_static']  # папка со статическими файлами (например, CSS)
 todo_include_todos = True  # показывать TODO в готовой документации
+auto_doc_default_options = {'autosummary': True}
 
 autodoc_mock_imports = []  # модули для мокирования
