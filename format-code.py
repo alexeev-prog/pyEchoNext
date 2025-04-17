@@ -13,12 +13,12 @@ BOLD = "\033[1m"  # No Color
 
 # File Extension filter. You can add new extension
 py_extensions = (".py",)
-IGNORED_DIRS = ["dist", ".git", "docs", "ignored"]
+IGNORED_DIRS = ["dist", ".git", "docs", "ignored", "venv", "resources"]
 
 RUFF = "ruff"
 SPACETABS = "./space-tabs.sh"
 
-print(f'libnumerixpp code-formatter: {RUFF}; Extensions: {" ".join(py_extensions)}')
+print(f"api code-formatter: {RUFF}; Extensions: {' '.join(py_extensions)}")
 
 
 def print_usage():

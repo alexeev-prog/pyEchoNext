@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyechonext"
-version = "0.7.13"
+version = "0.7.14"
 description = "EchoNext is a lightweight, fast and scalable web framework for Python"
 authors = ["alexeev-prog <alexeev.dev@mail.ru>"]
 license = "LGPL-2.1"
@@ -27,7 +27,11 @@ pytest = "^8.3.0"
 black = "^24.10.0"
 pylint = "^3.3"
 pytest-cov = "^6.0.0"
+furo = "^2024.8.6"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[virtualenvs]
+in-project = true

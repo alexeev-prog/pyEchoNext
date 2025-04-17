@@ -1,18 +1,18 @@
 from dataclasses import dataclass
-from typing import Type, Optional
+from typing import Optional, Type
 
 from pyechonext.mvc.controllers import PageController
 
 
 @dataclass
 class URL:
-    """
-    This dataclass describes an url.
-    """
+	"""
+	This dataclass describes an url.
+	"""
 
-    path: str
-    controller: Type[PageController]
-    summary: Optional[str] = None
+	path: str
+	controller: Type[PageController]
+	summary: Optional[str] = None
 
 
 url_patterns = []

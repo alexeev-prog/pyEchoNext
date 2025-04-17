@@ -4,47 +4,47 @@ from pyechonext.response import Response
 
 
 class APIDocUI:
-    """
-    This class describes an api document ui.
-    """
+	"""
+	This class describes an api document ui.
+	"""
 
-    def __init__(self, specification: dict):
-        """
-        Constructs a new instance.
+	def __init__(self, specification: dict):
+		"""
+		Constructs a new instance.
 
-        :param			specification:	  The specification
-        :type		  specification:	   dict
-        """
-        self.specification = specification
+		:param			specification:	  The specification
+		:type		  specification:	   dict
+		"""
+		self.specification = specification
 
-    def generate_section(
-        self,
-        route: str,
-        summary_get: str,
-        summary_post: str,
-        get_responses: dict,
-        post_responses: dict,
-        value: dict,
-    ) -> str:
-        """
-        generate section
+	def generate_section(
+		self,
+		route: str,
+		summary_get: str,
+		summary_post: str,
+		get_responses: dict,
+		post_responses: dict,
+		value: dict,
+	) -> str:
+		"""
+		generate section
 
-        :param			route:			   The route
-        :type		  route:				str
-        :param			summary_get:	   The summary get
-        :type		  summary_get:		str
-        :param			summary_post:		 The summary post
-        :type		  summary_post:		  str
-        :param			get_responses:	   The get responses
-        :type		  get_responses:		dict
-        :param			post_responses:		 The post responses
-        :type		  post_responses:	  dict
+		:param			route:			   The route
+		:type		  route:				str
+		:param			summary_get:	   The summary get
+		:type		  summary_get:		str
+		:param			summary_post:		 The summary post
+		:type		  summary_post:		  str
+		:param			get_responses:	   The get responses
+		:type		  get_responses:		dict
+		:param			post_responses:		 The post responses
+		:type		  post_responses:	  dict
 
-        :returns:	  template section
-        :rtype:			  str
-        """
+		:returns:	  template section
+		:rtype:			  str
+		"""
 
-        template = f"""
+		template = f"""
 <div class="section">
 		<div class="section-header">
 			<span>{route}</span>
@@ -57,7 +57,7 @@ class APIDocUI:
 				<p class='summary'>{summary_get}</p>
 				
 				<div class="responses">
-					{"".join([f"<div class='response-item'><span class='span-key'>{key}</span>: {value["description"]}.</div>" for key, value in get_responses.items()])}
+					{"".join([f"<div class='response-item'><span class='span-key'>{key}</span>: {value['description']}.</div>" for key, value in get_responses.items()])}
 				</div>
 			</div>
 			<div class="method">
@@ -65,7 +65,7 @@ class APIDocUI:
 				<p class='summary'>{summary_post}</p>
 				<div class="responses">
 					<div class="responses">
-					{"".join([f"<div class='response-item'><span class='span-key'>{key}</span>: {value["description"]}.</div>" for key, value in post_responses.items()])}
+					{"".join([f"<div class='response-item'><span class='span-key'>{key}</span>: {value['description']}.</div>" for key, value in post_responses.items()])}
 				</div>
 				</div>
 			</div>
@@ -73,16 +73,16 @@ class APIDocUI:
 	</div>
 				   """
 
-        return template
+		return template
 
-    def generate_html_page(self) -> str:
-        """
-        Generate html page template
+	def generate_html_page(self) -> str:
+		"""
+		Generate html page template
 
-        :returns:	  template
-        :rtype:			  str
-        """
-        template = """
+		:returns:	  template
+		:rtype:			  str
+		"""
+		template = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -345,28 +345,28 @@ hue-6-2: #c18401
 </html>
 				   """
 
-        content = {
-            "{{openapi-version}}": self.specification["openapi"],
-            "{{spec}}": json.dumps(self.specification, indent=2),
-            "{{info_title}}": self.specification["info"]["title"],
-            "{{info_version}}": self.specification["info"]["version"],
-            "{{info_description}}": self.specification["info"]["description"],
-            "{{sections}}": "\n".join(
-                [
-                    self.generate_section(
-                        path,
-                        value["get"]["summary"],
-                        value["post"]["summary"],
-                        value["get"]["responses"],
-                        value["post"]["responses"],
-                        value,
-                    )
-                    for path, value in self.specification["paths"].items()
-                ]
-            ),
-        }
+		content = {
+			"{{openapi-version}}": self.specification["openapi"],
+			"{{spec}}": json.dumps(self.specification, indent=2),
+			"{{info_title}}": self.specification["info"]["title"],
+			"{{info_version}}": self.specification["info"]["version"],
+			"{{info_description}}": self.specification["info"]["description"],
+			"{{sections}}": "\n".join(
+				[
+					self.generate_section(
+						path,
+						value["get"]["summary"],
+						value["post"]["summary"],
+						value["get"]["responses"],
+						value["post"]["responses"],
+						value,
+					)
+					for path, value in self.specification["paths"].items()
+				]
+			),
+		}
 
-        for key, value in content.items():
-            template = template.replace(key, value)
+		for key, value in content.items():
+			template = template.replace(key, value)
 
-        return Response(body=template)
+		return Response(body=template)
