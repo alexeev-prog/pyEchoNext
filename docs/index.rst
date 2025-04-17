@@ -10,7 +10,15 @@ pyEchoNext documentation
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
+      
+   pyechonext
+   pyechonext.apidoc_ui
+   pyechonext.auth
+   pyechonext.docsgen
+   pyechonext.i18n_l10n
+   pyechonext.logging
+   pyechonext.template_engine
+   pyechonext.utils
 
 ------------------
 
