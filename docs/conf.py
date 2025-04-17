@@ -1,23 +1,3 @@
-# project = "pyechonext"
-# author = "Alexeev Bronislav"
-# version = "0.1"
-# release = "0.1.0"
-
-# extensions = [
-# 	"sphinx.ext.autodoc",
-# 	"sphinx.ext.viewcode",
-# 	"sphinx.ext.napoleon",
-# 	"sphinx.ext.coverage",
-# 	"sphinx.ext.ifconfig",
-# 	"sphinx.ext.graphviz",
-# ]
-
-# html_theme = "sphinx_rtd_theme"
-# html_static_path = ["_static"]
-# todo_include_todos = True
-
-# autodock_mock_imports = []
-
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
@@ -40,4 +20,4 @@ html_theme = 'furo'  # тема оформления
 html_static_path = ['_static']  # папка со статическими файлами (например, CSS)
 todo_include_todos = True  # показывать TODO в готовой документации
 
-# autodoc_mock_imports = ["тяжеловесные_модули"]  # модули для мокирования
+autodoc_mock_imports = []  # модули для мокирования
