@@ -1,0 +1,1376 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Web frameworks design" href="webframework_design.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
+        <title>pyEchoNext 0.7 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=f2e8749c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #282828;
+  --color-code-foreground: #dddddd;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="#"><div class="brand">pyEchoNext 0.7 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+  
+  
+  <span class="sidebar-brand-text">pyEchoNext 0.7 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Article Docs:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="webframework_design.html">Web frameworks design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="webapp_creation.html">Creating a web application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="routes_and_views.html">Creating routes (routes&amp;views)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="requests_responses.html">Request/Response</a></li>
+<li class="toctree-l1"><a class="reference internal" href="i18n_locales.html">i18n, l10n - localization and internationalization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mvc.html">MVC Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="permissions.html">Permissions and Rights</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Source code docs:</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pyechonext.html">pyechonext package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of pyechonext package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.apidoc_ui.html">pyechonext.apidoc_ui package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.auth.html">pyechonext.auth package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.docsgen.html">pyechonext.docsgen package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.i18n_l10n.html">pyechonext.i18n_l10n package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.logging.html">pyechonext.logging package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.template_engine.html">pyechonext.template_engine package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.utils.html">pyechonext.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.apidoc_ui.html">pyechonext.apidoc_ui package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.auth.html">pyechonext.auth package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.docsgen.html">pyechonext.docsgen package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.i18n_l10n.html">pyechonext.i18n_l10n package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.logging.html">pyechonext.logging package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.template_engine.html">pyechonext.template_engine package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.utils.html">pyechonext.utils package</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/index.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="pyechonext-documentation">
+<h1>pyEchoNext documentation<a class="headerlink" href="#pyechonext-documentation" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Article Docs:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="webframework_design.html">Web frameworks design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="webframework_design.html#web-server-design-in-python">Web server design in Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webframework_design.html#wsgi">WSGI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webframework_design.html#integer-pyechonext">Integer pyEchoNext</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="webapp_creation.html">Creating a web application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="webapp_creation.html#settings">Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webapp_creation.html#middlewares">Middlewares</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webapp_creation.html#urls">URLS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="webapp_creation.html#application-type">application_type</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="routes_and_views.html">Creating routes (routes&amp;views)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="routes_and_views.html#urls">URLs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="routes_and_views.html#routes">Routes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="requests_responses.html">Request/Response</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="requests_responses.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requests_responses.html#request">Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="requests_responses.html#response">Response</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="i18n_locales.html">i18n, l10n - localization and internationalization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="i18n_locales.html#creating-localizations">Creating localizations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="security.html#hashing">Hashing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mvc.html">MVC Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mvc.html#controllers">Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvc.html#models">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvc.html#views">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvc.html#simple-example">Simple Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="permissions.html">Permissions and Rights</a></li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Source code docs:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.html">pyechonext package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#pyechonext-app-module">pyechonext.app module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#module-pyechonext.cache">pyechonext.cache module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#pyechonext-config-module">pyechonext.config module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#pyechonext-middleware-module">pyechonext.middleware module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#module-pyechonext.permissions">pyechonext.permissions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#pyechonext-request-module">pyechonext.request module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#pyechonext-response-module">pyechonext.response module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#pyechonext-static-module">pyechonext.static module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#pyechonext-urls-module">pyechonext.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.html#module-pyechonext">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.apidoc_ui.html">pyechonext.apidoc_ui package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.apidoc_ui.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.apidoc_ui.html#pyechonext-apidoc-ui-api-documentation-module">pyechonext.apidoc_ui.api_documentation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.apidoc_ui.html#pyechonext-apidoc-ui-ui-module">pyechonext.apidoc_ui.ui module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.apidoc_ui.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.auth.html">pyechonext.auth package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.auth.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.auth.html#module-pyechonext.auth.base">pyechonext.auth.base module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.auth.html#module-pyechonext.auth.jwt_auth">pyechonext.auth.jwt_auth module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.auth.html#module-pyechonext.auth">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.docsgen.html">pyechonext.docsgen package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.docsgen.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.docsgen.html#pyechonext-docsgen-document-module">pyechonext.docsgen.document module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.docsgen.html#pyechonext-docsgen-projgen-module">pyechonext.docsgen.projgen module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.docsgen.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.i18n_l10n.html">pyechonext.i18n_l10n package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.i18n_l10n.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.i18n_l10n.html#pyechonext-i18n-l10n-i18n-module">pyechonext.i18n_l10n.i18n module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.i18n_l10n.html#pyechonext-i18n-l10n-l10n-module">pyechonext.i18n_l10n.l10n module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.i18n_l10n.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.logging.html">pyechonext.logging package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.logging.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.logging.html#pyechonext-logging-logger-module">pyechonext.logging.logger module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.logging.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.template_engine.html">pyechonext.template_engine package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.template_engine.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.template_engine.html#pyechonext-template-engine-builtin-module">pyechonext.template_engine.builtin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.template_engine.html#pyechonext-template-engine-jinja-module">pyechonext.template_engine.jinja module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.template_engine.html#module-pyechonext.template_engine">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pyechonext.utils.html">pyechonext.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.utils.html#pyechonext-utils-exceptions-module">pyechonext.utils.exceptions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.utils.html#module-pyechonext.utils.patterns">pyechonext.utils.patterns module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.utils.html#module-pyechonext.utils.performance">pyechonext.utils.performance module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.utils.html#module-pyechonext.utils.slugger">pyechonext.utils.slugger module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.utils.html#module-pyechonext.utils.stack">pyechonext.utils.stack module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyechonext.utils.html#module-pyechonext.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<hr class="docutils" />
+<section id="echonext-the-future-of-web">
+<h1>🌟 <strong>EchoNext: The Future of Web</strong> 🚀<a class="headerlink" href="#echonext-the-future-of-web" title="Link to this heading">¶</a></h1>
+<div class="docutils container">
+<p align="center"><p>EchoNext is a lightweight, fast and scalable web framework for Python</p>
+</p></div>
+<p align="center"></p><blockquote>
+<div><p>EchoNext is a lightweight, fast and scalable web framework for Python</p>
+</div></blockquote>
+<p>Welcome to <strong>EchoNext</strong>, where innovation meets simplicity! Are you
+tired of the sluggishness of traditional web frameworks? Want a solution
+that keeps pace with your ambitious apps? Look no further. EchoNext is
+your agile companion in the world of web development!</p>
+<p align="center"></p><p><strong>Imagine</strong> a lightweight framework that empowers you to create modern
+web applications with lightning speed and flexibility. With EchoNext,
+you’re not just coding; you’re building a masterpiece!</p>
+<blockquote>
+<div><p>Last stable version: 0.7.13 alpha</p>
+</div></blockquote>
+<blockquote>
+<div><p>Next Big Update: ASYNC &amp; unicorn support</p>
+</div></blockquote>
+<section id="check-other-my-projects">
+<h2>Check Other My Projects<a class="headerlink" href="#check-other-my-projects" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/alexeev-prog/SQLSymphony">SQLSymphony</a> -
+simple and fast ORM in sqlite (and you can add other DBMS)</p></li>
+<li><p><a class="reference external" href="https://github.com/alexeev-prog/burn-build">Burn-Build</a> - simple
+and fast build system written in python for C/C++ and other projects.
+With multiprocessing, project creation and caches!</p></li>
+<li><p><a class="reference external" href="https://github.com/alexeev-prog/optiarch">OptiArch</a> - shell
+script for fast optimization of Arch Linux</p></li>
+<li><p><a class="reference external" href="https://github.com/alexeev-prog/libnumerixpp">libnumerixpp</a> - a
+Powerful C++ Library for High-Performance Numerical Computing</p></li>
+<li><p><a class="reference external" href="https://github.com/alexeev-prog/pycolor-palette">pycolor-palette</a>
+- display beautiful log messages, logging, debugging.</p></li>
+<li><p><a class="reference external" href="https://github.com/alexeev-prog/shegang">shegang</a> - powerful
+command interpreter (shell) for linux written in C</p></li>
+</ul>
+</section>
+<section id="why-choose-pyechonext">
+<h2>🤔 Why Choose pyEchoNext?<a class="headerlink" href="#why-choose-pyechonext" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>🔥 Featherweight Performance</strong>: No bloat, just speed! Our framework
+is designed to optimize performance, making it a breeze to create and
+scale your applications without the overhead.</p></li>
+<li><p><strong>💼 Unmatched Scalability</strong>: Handle thousands of connections
+effortlessly! Echonext is built for performance in high-demand
+environments, making it the perfect choice for startups or enterprise
+applications.</p></li>
+<li><p><strong>🔧 Customizable Architecture</strong>: Tailor your framework to suit your
+unique needs. Whether it’s middleware, routing, or authentication,
+make it yours with minimal effort!</p></li>
+<li><p><strong>🌍 Cross-Platform Compatibility</strong>: Echonext works beautifully on
+any OS. Whether you’re developing on Windows, macOS, or Linux, you’re
+covered!</p></li>
+<li><p><strong>💡 User-Friendly Design</strong>: Our intuitive API and comprehensive
+documentation make it easy for beginners and pros alike. Dive in and
+start coding right away!</p></li>
+<li><p><strong>📦 Plug-and-Play Components</strong>: Easily integrate with third-party
+libraries to enhance your application. Don’t reinvent the
+wheel—leverage existing solutions!</p></li>
+<li><p><strong>🔒 Built-in Authentication</strong>: Simplify your user authentication
+process with our built-in, easy-to-implement features.</p></li>
+<li><p><strong>📊 Automatic API Documentation</strong>: Create RESTful endpoints that are
+not just powerful but also well-documented, saving you time and
+effort.</p></li>
+</ul>
+<p align="right"><p>(back to top)</p>
+</p></section>
+<section id="comparison-with-alternatives">
+<h2>🌟 Comparison with Alternatives<a class="headerlink" href="#comparison-with-alternatives" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p><strong>p
+yEchoNext</strong></p></th>
+<th class="head"><p>Flask</p></th>
+<th class="head"><p>F
+astAPI</p></th>
+<th class="head"><p>Django</p></th>
+<th class="head"><p>Sta
+rlette</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Asynchronous
+Capabilities</p></td>
+<td><p>COMING SOON</p></td>
+<td><p>❌</p></td>
+<td><p>✔️</p></td>
+<td><p>❌</p></td>
+<td><p>✔️</p></td>
+</tr>
+<tr class="row-odd"><td><p>Performance</p></td>
+<td><p>🔥 High</p></td>
+<td><p>🐢
+Mo
+derate</p></td>
+<td><p>🚀
+Very
+High</p></td>
+<td><p>🐢
+M
+oderate</p></td>
+<td><p>🚀
+Very
+High</p></td>
+</tr>
+<tr class="row-even"><td><p>Framework
+Weight</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>❌
+Heavy</p></td>
+<td><p>✔️</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ecosystem</p></td>
+<td><p>🛠️ Flexible</p></td>
+<td><p>🎨
+Fl
+exible</p></td>
+<td><p>🎨
+M
+odular</p></td>
+<td><p>⚙️
+Mon
+olithic</p></td>
+<td><p>⚙️
+M
+odular</p></td>
+</tr>
+<tr class="row-even"><td><p>Ease of Use</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>❌</p></td>
+<td><p>✔️</p></td>
+</tr>
+<tr class="row-odd"><td><p>Configurability</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+</tr>
+<tr class="row-even"><td><p>Documentation
+Quality</p></td>
+<td><p>📚
+Excellent</p></td>
+<td><p>📚
+Good</p></td>
+<td><p>📚
+Exc
+ellent</p></td>
+<td><p>📚 Very
+Good</p></td>
+<td><p>📚
+Good</p></td>
+</tr>
+<tr class="row-odd"><td><p>Flexible
+Deployments</p></td>
+<td><p>🌍 Flexible</p></td>
+<td><p>🌍
+St
+andard</p></td>
+<td><p>🌍
+St
+andard</p></td>
+<td><p>🌍
+S
+tandard</p></td>
+<td><p>🌍
+Fl
+exible</p></td>
+</tr>
+<tr class="row-even"><td><p>Testing Support</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+<td><p>✔️</p></td>
+</tr>
+<tr class="row-odd"><td><p>Community Size</p></td>
+<td><p>📢 Growing</p></td>
+<td><p>📢
+Large</p></td>
+<td><p>📢
+G
+rowing</p></td>
+<td><p>📢
+Large</p></td>
+<td><p>📢
+Em
+erging</p></td>
+</tr>
+<tr class="row-even"><td><p>Built-in
+Template Engine</p></td>
+<td><p>✔️ Jinja2 &amp;
+builtin</p></td>
+<td><p>✔️
+Jinja2</p></td>
+<td><p>✔️
+Jinja2</p></td>
+<td><p>✔️
+Django</p></td>
+<td><p>✔️
+Jinja2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Task Queue
+Integration</p></td>
+<td><p>❌</p></td>
+<td><p>✔️
+Celery</p></td>
+<td><p>✔️
+Celery</p></td>
+<td><p>✔️
+Celery</p></td>
+<td><p>✔️
+Celery</p></td>
+</tr>
+<tr class="row-even"><td><p>Static File
+Serving</p></td>
+<td><p>🚀 Built-in</p></td>
+<td><p>🌍
+Manual</p></td>
+<td><p>🚀
+Bu
+ilt-in</p></td>
+<td><p>🚀
+B
+uilt-in</p></td>
+<td><p>🚀
+Bu
+ilt-in</p></td>
+</tr>
+<tr class="row-odd"><td><p>Analytics
+Integration</p></td>
+<td><p>✔️ Easy</p></td>
+<td><p>🛠️
+Manual</p></td>
+<td><p>✔️
+Easy</p></td>
+<td><p>❌</p></td>
+<td><p>✔️
+Easy</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>📈 Note: Echonext excels in performance while staying lightweight,
+making it a top-notch choice for your next project!</p>
+</section>
+<section id="key-features">
+<h2>📚 Key Features<a class="headerlink" href="#key-features" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Intuitive API: Pythonic, object-oriented interface for interacting
+with routes and views.</p></li>
+<li><p>Performance Optimization: Lazy loading, eager loading, and other
+techniques for efficient web queries.</p></li>
+<li><p>Comprehensive Documentation: Detailed usage examples and API
+reference to help you get started.</p></li>
+<li><p>Modular Design: Clean, maintainable codebase that follows best
+software engineering practices.</p></li>
+<li><p>Extensive Test Coverage: Robust test suite to ensure the library’s
+reliability and stability.</p></li>
+</ul>
+<p align="right"><p>(back to top)</p>
+</p></section>
+<section id="functionality">
+<h2>⚙️ Functionality<a class="headerlink" href="#functionality" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>i18n/l10n localization</p></li>
+<li><p>basic project documentation generator</p></li>
+<li><p>request/response</p></li>
+<li><p>middlewares (with basic session cookie middleware)</p></li>
+<li><p>views and routes</p></li>
+<li><p>settings and config loader</p></li>
+<li><p>built-in template engine and Jinja2</p></li>
+<li><p>basic security and hashing</p></li>
+<li><p>static files management</p></li>
+<li><p>cache response bodies</p></li>
+<li><p>performance</p></li>
+<li><p>slugger</p></li>
+<li><p>permissions</p></li>
+</ul>
+<p align="right"><p>(back to top)</p>
+</p></section>
+<section id="getting-started">
+<h2>🚀 Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h2>
+<p>pyEchoNext is available on
+<a class="reference external" href="https://pypi.org/project/pyechonext">PyPI</a>. Simply install the
+package into your project environment with PIP:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>pyechonext
+</pre></div>
+</div>
+<p>Once installed, you can start using the library in your Python projects.
+Check out the
+<a class="reference external" href="https://alexeev-prog.github.io/pyEchoNext">documentation</a> for
+detailed usage examples and API reference.</p>
+<p align="right"><p>(back to top)</p>
+</p></section>
+<section id="depends-injection">
+<h2>⚙️ Depends Injection<a class="headerlink" href="#depends-injection" title="Link to this heading">¶</a></h2>
+<p>pyEchoNext is universal, and you are free to use any
+Dependency-Injection framework. But we recommend using the specially
+developed <a class="reference external" href="https://github.com/alexeev-prog/echonext_di">echonextdi</a>.
+It is simple and fast to use.</p>
+<p>Example code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">echonextdi.containers.container</span> <span class="kn">import</span> <span class="n">Container</span>
+<span class="kn">from</span> <span class="nn">echonextdi.depends</span> <span class="kn">import</span> <span class="n">Depends</span>
+<span class="kn">from</span> <span class="nn">echonextdi.providers.callable_provider</span> <span class="kn">import</span> <span class="n">CallableProvider</span>
+
+
+<span class="k">def</span> <span class="nf">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span><span class="o">**</span><span class="n">b</span>
+
+
+<span class="k">class</span> <span class="nc">SQRT_Dependency</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sqrt</span> <span class="o">=</span> <span class="n">sqrt</span>
+
+
+<span class="n">container</span> <span class="o">=</span> <span class="n">Container</span><span class="p">()</span>
+<span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;sqrt&quot;</span><span class="p">,</span> <span class="n">CallableProvider</span><span class="p">(</span><span class="n">sqrt</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">depend</span><span class="p">:</span> <span class="n">Depends</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">SQRT_Dependency</span><span class="p">)):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">number</span><span class="si">}</span><span class="s2"> ^2 = </span><span class="si">{</span><span class="n">depend</span><span class="p">()</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="n">calculate</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># Output: 16</span>
+</pre></div>
+</div>
+</section>
+<section id="usage-examples">
+<h2>💻 Usage Examples<a class="headerlink" href="#usage-examples" title="Link to this heading">¶</a></h2>
+<section id="basic-with-depends-injection">
+<h3>Basic With Depends Injection<a class="headerlink" href="#basic-with-depends-injection" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">pyechonext.app</span> <span class="kn">import</span> <span class="n">ApplicationType</span><span class="p">,</span> <span class="n">EchoNext</span>
+<span class="kn">from</span> <span class="nn">pyechonext.config</span> <span class="kn">import</span> <span class="n">Settings</span>
+<span class="kn">from</span> <span class="nn">pyechonext.middleware</span> <span class="kn">import</span> <span class="n">middlewares</span>
+<span class="kn">from</span> <span class="nn">pyechonext.mvc.controllers</span> <span class="kn">import</span> <span class="n">PageController</span>
+<span class="kn">from</span> <span class="nn">pyechonext.urls</span> <span class="kn">import</span> <span class="n">URL</span>
+
+<span class="kn">from</span> <span class="nn">echonextdi.containers.container</span> <span class="kn">import</span> <span class="n">Container</span>
+<span class="kn">from</span> <span class="nn">echonextdi.depends</span> <span class="kn">import</span> <span class="n">Depends</span>
+<span class="kn">from</span> <span class="nn">echonextdi.providers.callable_provider</span> <span class="kn">import</span> <span class="n">CallableProvider</span>
+
+
+<span class="k">class</span> <span class="nc">IndexController</span><span class="p">(</span><span class="n">PageController</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Hello&quot;</span>
+
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Hello&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">say_hello</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">phrase</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Hello&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">phrase</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span>
+
+
+<span class="k">class</span> <span class="nc">Hello_Dependency</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">say_hello</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">say_hello</span> <span class="o">=</span> <span class="n">say_hello</span>
+
+
+<span class="n">container</span> <span class="o">=</span> <span class="n">Container</span><span class="p">()</span>
+<span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;say_hello&quot;</span><span class="p">,</span> <span class="n">CallableProvider</span><span class="p">(</span><span class="n">say_hello</span><span class="p">))</span>
+
+<span class="n">url_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="n">URL</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">controller</span><span class="o">=</span><span class="n">IndexController</span><span class="p">)]</span>
+<span class="n">settings</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span>
+    <span class="n">BASE_DIR</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="n">TEMPLATES_DIR</span><span class="o">=</span><span class="s2">&quot;templates&quot;</span>
+<span class="p">)</span>
+<span class="n">echonext</span> <span class="o">=</span> <span class="n">EchoNext</span><span class="p">(</span>
+    <span class="vm">__name__</span><span class="p">,</span>
+    <span class="n">settings</span><span class="p">,</span>
+    <span class="n">middlewares</span><span class="p">,</span>
+    <span class="n">urls</span><span class="o">=</span><span class="n">url_patterns</span><span class="p">,</span>
+    <span class="n">application_type</span><span class="o">=</span><span class="n">ApplicationType</span><span class="o">.</span><span class="n">HTML</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="nd">@echonext</span><span class="o">.</span><span class="n">route_page</span><span class="p">(</span><span class="s2">&quot;/hello/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;World&quot;</span><span class="p">,</span> <span class="n">depend</span><span class="p">:</span> <span class="n">Depends</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="n">Hello_Dependency</span><span class="p">)):</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">depend</span><span class="p">()</span><span class="o">.</span><span class="n">say_hello</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-caching">
+<h3>Performance caching<a class="headerlink" href="#performance-caching" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">pyechonext.utils.performance</span> <span class="kn">import</span> <span class="n">InMemoryPerformanceCache</span><span class="p">,</span> <span class="n">SingletonPerformanceCache</span><span class="p">,</span> <span class="n">performance_cached</span>
+
+<span class="n">memorycache</span> <span class="o">=</span> <span class="n">InMemoryPerformanceCache</span>
+<span class="n">perf</span> <span class="o">=</span> <span class="n">SingletonPerformanceCache</span><span class="p">(</span><span class="n">memorycache</span><span class="p">)</span>
+
+
+<span class="nd">@performance_cached</span><span class="p">(</span><span class="n">perf</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">example_function</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="mi">6</span><span class="p">):</span>
+    <span class="n">inside_circle</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">inside_circle</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">inside_circle</span> <span class="o">/</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;start&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">example_function</span><span class="p">()</span><span class="si">}</span><span class="s1"> - Caching&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">example_function</span><span class="p">()</span><span class="si">}</span><span class="s1"> - Cached&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">example_function</span><span class="p">(</span><span class="mi">10</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="si">}</span><span class="s1"> - Caching new&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="permissions">
+<h3>Permissions<a class="headerlink" href="#permissions" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyechonext.permissions</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Permission</span><span class="p">,</span>
+    <span class="n">Role</span><span class="p">,</span>
+    <span class="n">Resource</span><span class="p">,</span>
+    <span class="n">AccessControlRule</span><span class="p">,</span>
+    <span class="n">Policy</span><span class="p">,</span>
+    <span class="n">AgeRestrictionsABP</span><span class="p">,</span>
+    <span class="n">User</span><span class="p">,</span>
+    <span class="n">DefaultPermissionChecker</span><span class="p">,</span>
+    <span class="n">UserController</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">view_users_perm</span> <span class="o">=</span> <span class="n">Permission</span><span class="p">(</span><span class="s2">&quot;view_users&quot;</span><span class="p">)</span>
+<span class="n">edit_users_perm</span> <span class="o">=</span> <span class="n">Permission</span><span class="p">(</span><span class="s2">&quot;edit_users&quot;</span><span class="p">)</span>
+
+<span class="n">admin_role</span> <span class="o">=</span> <span class="n">Role</span><span class="p">(</span><span class="s2">&quot;admin&quot;</span><span class="p">)</span>
+<span class="n">admin_role</span><span class="o">.</span><span class="n">add_permission</span><span class="p">(</span><span class="n">view_users_perm</span><span class="p">)</span>
+<span class="n">admin_role</span><span class="o">.</span><span class="n">add_permission</span><span class="p">(</span><span class="n">edit_users_perm</span><span class="p">)</span>
+
+<span class="n">user_role</span> <span class="o">=</span> <span class="n">Role</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+<span class="n">user_role</span><span class="o">.</span><span class="n">add_permission</span><span class="p">(</span><span class="n">view_users_perm</span><span class="p">)</span>
+
+<span class="n">user_resource</span> <span class="o">=</span> <span class="n">Resource</span><span class="p">(</span><span class="s2">&quot;UserResource&quot;</span><span class="p">)</span>
+
+<span class="n">policy</span> <span class="o">=</span> <span class="n">Policy</span><span class="p">()</span>
+<span class="n">policy</span><span class="o">.</span><span class="n">add_rule</span><span class="p">(</span><span class="n">AccessControlRule</span><span class="p">(</span><span class="n">admin_role</span><span class="p">,</span> <span class="n">view_users_perm</span><span class="p">,</span> <span class="n">user_resource</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+<span class="n">policy</span><span class="o">.</span><span class="n">add_rule</span><span class="p">(</span><span class="n">AccessControlRule</span><span class="p">(</span><span class="n">admin_role</span><span class="p">,</span> <span class="n">edit_users_perm</span><span class="p">,</span> <span class="n">user_resource</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+<span class="n">policy</span><span class="o">.</span><span class="n">add_rule</span><span class="p">(</span><span class="n">AccessControlRule</span><span class="p">(</span><span class="n">user_role</span><span class="p">,</span> <span class="n">view_users_perm</span><span class="p">,</span> <span class="n">user_resource</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+<span class="n">policy</span><span class="o">.</span><span class="n">add_rule</span><span class="p">(</span><span class="n">AccessControlRule</span><span class="p">(</span><span class="n">user_role</span><span class="p">,</span> <span class="n">edit_users_perm</span><span class="p">,</span> <span class="n">user_resource</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+<span class="n">age_policy</span> <span class="o">=</span> <span class="n">AgeRestrictionsABP</span><span class="p">(</span><span class="n">conditions</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">18</span><span class="p">},</span> <span class="n">rules</span><span class="o">=</span><span class="n">policy</span><span class="o">.</span><span class="n">rules</span><span class="p">)</span>
+<span class="n">age_policy</span><span class="o">.</span><span class="n">add_rule</span><span class="p">(</span><span class="n">AccessControlRule</span><span class="p">(</span><span class="n">user_role</span><span class="p">,</span> <span class="n">view_users_perm</span><span class="p">,</span> <span class="n">user_resource</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+
+<span class="n">admin_user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">})</span>
+<span class="n">admin_user</span><span class="o">.</span><span class="n">add_role</span><span class="p">(</span><span class="n">admin_role</span><span class="p">)</span>
+
+<span class="n">young_user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="s2">&quot;john_doe&quot;</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">17</span><span class="p">})</span>
+<span class="n">young_user</span><span class="o">.</span><span class="n">add_role</span><span class="p">(</span><span class="n">user_role</span><span class="p">)</span>
+
+<span class="n">permission_checker</span> <span class="o">=</span> <span class="n">DefaultPermissionChecker</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
+<span class="n">user_controller</span> <span class="o">=</span> <span class="n">UserController</span><span class="p">(</span><span class="n">permission_checker</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">user_controller</span><span class="o">.</span><span class="n">view_users</span><span class="p">(</span><span class="n">admin_user</span><span class="p">,</span> <span class="n">user_resource</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span>
+        <span class="s2">&quot;200 OK&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;User edit form&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">user_controller</span><span class="o">.</span><span class="n">edit_users</span><span class="p">(</span><span class="n">admin_user</span><span class="p">,</span> <span class="n">user_resource</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span>
+        <span class="s2">&quot;200 OK&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;User edit form&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">user_controller</span><span class="o">.</span><span class="n">edit_users</span><span class="p">(</span><span class="n">young_user</span><span class="p">,</span> <span class="n">user_resource</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span>
+        <span class="s2">&quot;403 Forbidden&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;You do not have permission to edit users.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">age_policy</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">young_user</span><span class="p">,</span> <span class="n">user_resource</span><span class="p">,</span> <span class="n">view_users_perm</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span>
+    <span class="k">assert</span> <span class="n">age_policy</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">admin_user</span><span class="p">,</span> <span class="n">user_resource</span><span class="p">,</span> <span class="n">view_users_perm</span><span class="p">)</span> <span class="o">==</span> <span class="kc">True</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="fullapp-with-locale-static-files-docs-generation">
+<h3>FullApp with locale, static files, docs generation<a class="headerlink" href="#fullapp-with-locale-static-files-docs-generation" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyechonext.apidoc_ui</span> <span class="kn">import</span> <span class="n">APIDocUI</span><span class="p">,</span> <span class="n">APIDocumentation</span>
+<span class="kn">from</span> <span class="nn">pyechonext.app</span> <span class="kn">import</span> <span class="n">ApplicationType</span><span class="p">,</span> <span class="n">EchoNext</span>
+<span class="kn">from</span> <span class="nn">pyechonext.config</span> <span class="kn">import</span> <span class="n">SettingsConfigType</span><span class="p">,</span> <span class="n">SettingsLoader</span>
+<span class="kn">from</span> <span class="nn">pyechonext.middleware</span> <span class="kn">import</span> <span class="n">middlewares</span>
+<span class="kn">from</span> <span class="nn">pyechonext.mvc.controllers</span> <span class="kn">import</span> <span class="n">PageController</span>
+<span class="kn">from</span> <span class="nn">pyechonext.static</span> <span class="kn">import</span> <span class="n">StaticFile</span>
+<span class="kn">from</span> <span class="nn">pyechonext.template_engine.jinja</span> <span class="kn">import</span> <span class="n">render_template</span>
+<span class="kn">from</span> <span class="nn">pyechonext.urls</span> <span class="kn">import</span> <span class="n">URL</span>
+<span class="kn">from</span> <span class="nn">pyechonext.utils.exceptions</span> <span class="kn">import</span> <span class="n">MethodNotAllow</span>
+
+
+<span class="k">class</span> <span class="nc">UsersView</span><span class="p">(</span><span class="n">PageController</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;index.html&quot;</span><span class="p">,</span>
+            <span class="n">user_name</span><span class="o">=</span><span class="s2">&quot;User&quot;</span><span class="p">,</span>
+            <span class="n">session_id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span>
+            <span class="n">friends</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;Anna&quot;</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">MethodNotAllow</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Request </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">: method not allow&quot;</span><span class="p">)</span>
+
+
+<span class="n">url_patterns</span> <span class="o">=</span> <span class="p">[</span><span class="n">URL</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;/users&quot;</span><span class="p">,</span> <span class="n">controller</span><span class="o">=</span><span class="n">UsersView</span><span class="p">)]</span>
+<span class="n">config_loader</span> <span class="o">=</span> <span class="n">SettingsLoader</span><span class="p">(</span><span class="n">SettingsConfigType</span><span class="o">.</span><span class="n">PYMODULE</span><span class="p">,</span> <span class="s2">&quot;el_config.py&quot;</span><span class="p">)</span>
+<span class="n">settings</span> <span class="o">=</span> <span class="n">config_loader</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span>
+<span class="n">static_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">StaticFile</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s2">&quot;styles.css&quot;</span><span class="p">)]</span>
+<span class="n">echonext</span> <span class="o">=</span> <span class="n">EchoNext</span><span class="p">(</span>
+    <span class="vm">__name__</span><span class="p">,</span>
+    <span class="n">settings</span><span class="p">,</span>
+    <span class="n">middlewares</span><span class="p">,</span>
+    <span class="n">urls</span><span class="o">=</span><span class="n">url_patterns</span><span class="p">,</span>
+    <span class="n">application_type</span><span class="o">=</span><span class="n">ApplicationType</span><span class="o">.</span><span class="n">HTML</span><span class="p">,</span>
+    <span class="n">static_files</span><span class="o">=</span><span class="n">static_files</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">apidoc</span> <span class="o">=</span> <span class="n">APIDocumentation</span><span class="p">(</span><span class="n">echonext</span><span class="p">)</span>
+
+
+<span class="nd">@echonext</span><span class="o">.</span><span class="n">route_page</span><span class="p">(</span><span class="s2">&quot;/api-docs&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">api_docs</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="n">ui</span> <span class="o">=</span> <span class="n">APIDocUI</span><span class="p">(</span><span class="n">apidoc</span><span class="o">.</span><span class="n">generate_spec</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">ui</span><span class="o">.</span><span class="n">generate_html_page</span><span class="p">()</span>
+
+
+<span class="nd">@echonext</span><span class="o">.</span><span class="n">route_page</span><span class="p">(</span><span class="s2">&quot;/book&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">BooksResource</span><span class="p">(</span><span class="n">PageController</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class describes a books resource.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get queries</span>
+
+<span class="sd">        :param      request:   The request</span>
+<span class="sd">        :type       request:   Request</span>
+<span class="sd">        :param      response:  The response</span>
+<span class="sd">        :type       response:  Response</span>
+<span class="sd">        :param      kwargs:    The keywords arguments</span>
+<span class="sd">        :type       kwargs:    dictionary</span>
+
+<span class="sd">        :returns:   result</span>
+<span class="sd">        :rtype:     str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">echonext</span><span class="o">.</span><span class="n">i18n_loader</span><span class="o">.</span><span class="n">get_string</span><span class="p">(</span><span class="s2">&quot;title %</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        post queries</span>
+
+<span class="sd">        :param      request:   The request</span>
+<span class="sd">        :type       request:   Request</span>
+<span class="sd">        :param      response:  The response</span>
+<span class="sd">        :type       response:  Response</span>
+<span class="sd">        :param      kwargs:    The keywords arguments</span>
+<span class="sd">        :type       kwargs:    dictionary</span>
+
+<span class="sd">        :returns:   result</span>
+<span class="sd">        :rtype:     str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">echonext</span><span class="o">.</span><span class="n">l10n_loader</span><span class="o">.</span><span class="n">format_currency</span><span class="p">(</span><span class="mf">1305.50</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create file <code class="docutils literal notranslate"><span class="pre">static/styles.css</span></code>:</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">body</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#f8f2f2</span><span class="p">;</span>
+<span class="w">    </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="mh">#1f1f1f</span><span class="p">;</span>
+<span class="w">    </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="kc">monospace</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Create file <code class="docutils literal notranslate"><span class="pre">el_config.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">TEMPLATES_DIR</span> <span class="o">=</span> <span class="s1">&#39;templates&#39;</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s1">&#39;secret-key&#39;</span>
+<span class="n">LOCALE</span> <span class="o">=</span> <span class="s1">&#39;RU_RU&#39;</span>
+<span class="n">LOCALE_DIR</span> <span class="o">=</span> <span class="s1">&#39;locales&#39;</span>
+<span class="n">VERSION</span> <span class="o">=</span> <span class="s2">&quot;0.1.0&quot;</span>
+<span class="n">DESCRIPTION</span> <span class="o">=</span> <span class="s1">&#39;Example echonext webapp&#39;</span>
+<span class="n">STATIC_DIR</span> <span class="o">=</span> <span class="s1">&#39;static&#39;</span>
+</pre></div>
+</div>
+<p>Create file <code class="docutils literal notranslate"><span class="pre">locales/RU_RU.json</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;i18n&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;pyEchoNext Веб-приложение с локалью&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;example one&quot;</span><span class="p">:</span> <span class="s2">&quot;пример один&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;l10n&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;date_format&quot;</span><span class="p">:</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;time_format&quot;</span><span class="p">:</span> <span class="s2">&quot;%H:%M&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;date_time_fromat&quot;</span><span class="p">:</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;thousands_separator&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;decimal_separator&quot;</span><span class="p">:</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;currency_symbol&quot;</span><span class="p">:</span> <span class="s2">&quot;$&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;currency_format&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{symbol}{amount}</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p align="right"><p>(back to top)</p>
+</p></section>
+</section>
+<section id="specifications">
+<h2>🔧 Specifications<a class="headerlink" href="#specifications" title="Link to this heading">¶</a></h2>
+<section id="security">
+<h3>Security<a class="headerlink" href="#security" title="Link to this heading">¶</a></h3>
+<p>A security module created for hash functions and crypto-algorithms.</p>
+<section id="crypts">
+<h4>Crypts<a class="headerlink" href="#crypts" title="Link to this heading">¶</a></h4>
+<p>Simple crypto-algorithms.</p>
+<section id="pspcalgorithm">
+<h5>PSPCAlgorithm<a class="headerlink" href="#pspcalgorithm" title="Link to this heading">¶</a></h5>
+<p>Point Simple Password Crypt Algorithm.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Base</span><span class="p">:</span> <span class="n">AngryPassword</span>
+<span class="n">Crypted</span><span class="p">:</span> <span class="mf">00778.87999.74379.363401.558001.558001.96058.06107.711601.87999.13309.07469.50075</span>
+<span class="n">Decrypted</span><span class="p">:</span> <span class="n">AngryPassword</span>
+
+<span class="n">Base</span><span class="p">:</span> <span class="n">S0mesd7623tds</span><span class="o">@&amp;</span><span class="mi">6</span><span class="o">^</span><span class="nd">@_</span>
+<span class="n">Crypted</span><span class="p">:</span> <span class="mf">51338.82165.83428.85374.62333.82165.558001.00778.237101.72744.05834.85374.53284.00778.558001.77588.39559.69024.19727</span>
+<span class="n">Decrypted</span><span class="p">:</span> <span class="n">S0mesd7623tds</span><span class="o">@&amp;</span><span class="mi">6</span><span class="o">^</span><span class="nd">@_</span>
+
+<span class="n">Base</span><span class="p">:</span> <span class="n">PassWord</span>
+<span class="n">Crypted</span><span class="p">:</span> <span class="mf">00778.87999.74379.99267.558001.558001.96058.06107</span>
+<span class="n">Decrypted</span><span class="p">:</span> <span class="n">PassWord</span>
+
+<span class="n">Base</span><span class="p">:</span> <span class="n">Pass</span>
+<span class="n">Crypted</span><span class="p">:</span> <span class="mf">558001.558001.96058.06107</span>
+<span class="n">Decrypted</span><span class="p">:</span> <span class="n">Pass</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyechonext.security.crypts</span> <span class="kn">import</span> <span class="n">PSPCAlgorithm</span>
+
+
+<span class="n">pspc</span> <span class="o">=</span> <span class="n">PSPCAlgorithm</span><span class="p">()</span>
+
+<span class="n">passwords</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;AngryPassword&#39;</span><span class="p">,</span> <span class="s1">&#39;S0mesd7623tds@&amp;6^@_&#39;</span><span class="p">,</span> <span class="s1">&#39;PassWord&#39;</span><span class="p">,</span> <span class="s1">&#39;Pass&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">password</span> <span class="ow">in</span> <span class="n">passwords</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Base:&#39;</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Crypted:&#39;</span><span class="p">,</span> <span class="n">pspc</span><span class="o">.</span><span class="n">crypt</span><span class="p">(</span><span class="n">password</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Decrypted:&#39;</span><span class="p">,</span> <span class="n">pspc</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">pspc</span><span class="o">.</span><span class="n">crypt</span><span class="p">(</span><span class="n">password</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="hashing">
+<h4>Hashing<a class="headerlink" href="#hashing" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>Module: <code class="docutils literal notranslate"><span class="pre">pyechonext.security.hashing</span></code></p></li>
+</ul>
+<section id="hashalgorithm">
+<h5>HashAlgorithm<a class="headerlink" href="#hashalgorithm" title="Link to this heading">¶</a></h5>
+<p>Enum class with available hashing algorithms</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HashAlgorithm</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class describes a hash algorithms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">SHA256</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">SHA512</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">MD5</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">BLAKE2B</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">BLAKE2S</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="plainhasher">
+<h5>PlainHasher<a class="headerlink" href="#plainhasher" title="Link to this heading">¶</a></h5>
+<p>A simple class for hashing text. Has no ‘salting’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hasher</span> <span class="o">=</span> <span class="n">PlainHasher</span><span class="p">(</span><span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">BLAKE2S</span><span class="p">)</span>
+<span class="n">old_hash</span> <span class="o">=</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="s2">&quot;TEXT&quot;</span><span class="p">)</span>
+<span class="n">new_hash</span> <span class="o">=</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="s2">&quot;TEXT&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s2">&quot;TEXT&quot;</span><span class="p">,</span> <span class="n">new_hash</span><span class="p">):</span> <span class="c1"># true</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Yes!&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s2">&quot;TEXT2&quot;</span><span class="p">,</span> <span class="n">old_hash</span><span class="p">):</span> <span class="c1"># false</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Yes!&#39;</span><span class="p">)</span>
+
+<span class="c1"># Output: one &quot;Yes!&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="saltedhasher">
+<h5>SaltedHasher<a class="headerlink" href="#saltedhasher" title="Link to this heading">¶</a></h5>
+<p>A simple class for hashing text. Has hash salt.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">hasher</span> <span class="o">=</span> <span class="n">SaltedHasher</span><span class="p">(</span><span class="n">HashAlgorithm</span><span class="o">.</span><span class="n">BLAKE2S</span><span class="p">,</span> <span class="n">salt</span><span class="o">=</span><span class="s1">&#39;bob&#39;</span><span class="p">)</span>
+<span class="n">old_hash</span> <span class="o">=</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="s2">&quot;TEXT&quot;</span><span class="p">)</span>
+<span class="n">new_hash</span> <span class="o">=</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hash</span><span class="p">(</span><span class="s2">&quot;TEXT&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s2">&quot;TEXT&quot;</span><span class="p">,</span> <span class="n">new_hash</span><span class="p">):</span> <span class="c1"># true</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Yes!&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">hasher</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="s2">&quot;TEXT2&quot;</span><span class="p">,</span> <span class="n">old_hash</span><span class="p">):</span> <span class="c1"># false</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Yes!&#39;</span><span class="p">)</span>
+
+<span class="c1"># Output: one &quot;Yes!&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="view">
+<h3>View<a class="headerlink" href="#view" title="Link to this heading">¶</a></h3>
+<p>View is an abstract class, with abstract get and post methods (all
+descendants must create these methods).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">View</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Page view</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get</span>
+
+<span class="sd">        :param      request:   The request</span>
+<span class="sd">        :type       request:   Request</span>
+<span class="sd">        :param      response:  The response</span>
+<span class="sd">        :type       response:  Response</span>
+<span class="sd">        :param      args:      The arguments</span>
+<span class="sd">        :type       args:      list</span>
+<span class="sd">        :param      kwargs:    The keywords arguments</span>
+<span class="sd">        :type       kwargs:    dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Post</span>
+
+<span class="sd">        :param      request:   The request</span>
+<span class="sd">        :type       request:   Request</span>
+<span class="sd">        :param      response:  The response</span>
+<span class="sd">        :type       response:  Response</span>
+<span class="sd">        :param      args:      The arguments</span>
+<span class="sd">        :type       args:      list</span>
+<span class="sd">        :param      kwargs:    The keywords arguments</span>
+<span class="sd">        :type       kwargs:    dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</pre></div>
+</div>
+<p>Example of view:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">IndexView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get</span>
+
+<span class="sd">        :param      request:   The request</span>
+<span class="sd">        :type       request:   Request</span>
+<span class="sd">        :param      response:  The response</span>
+<span class="sd">        :type       response:  Response</span>
+<span class="sd">        :param      args:      The arguments</span>
+<span class="sd">        :type       args:      list</span>
+<span class="sd">        :param      kwargs:    The keywords arguments</span>
+<span class="sd">        :type       kwargs:    dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Hello World!&quot;</span>
+
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Post</span>
+
+<span class="sd">        :param      request:   The request</span>
+<span class="sd">        :type       request:   Request</span>
+<span class="sd">        :param      response:  The response</span>
+<span class="sd">        :type       response:  Response</span>
+<span class="sd">        :param      args:      The arguments</span>
+<span class="sd">        :type       args:      list</span>
+<span class="sd">        :param      kwargs:    The keywords arguments</span>
+<span class="sd">        :type       kwargs:    dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Message has accepted!&quot;</span>
+</pre></div>
+</div>
+<p>Or you can return response:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">IndexView</span><span class="p">(</span><span class="n">View</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get</span>
+
+<span class="sd">        :param      request:   The request</span>
+<span class="sd">        :type       request:   Request</span>
+<span class="sd">        :param      response:  The response</span>
+<span class="sd">        :type       response:  Response</span>
+<span class="sd">        :param      args:      The arguments</span>
+<span class="sd">        :type       args:      list</span>
+<span class="sd">        :param      kwargs:    The keywords arguments</span>
+<span class="sd">        :type       kwargs:    dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Post</span>
+
+<span class="sd">        :param      request:   The request</span>
+<span class="sd">        :type       request:   Request</span>
+<span class="sd">        :param      response:  The response</span>
+<span class="sd">        :type       response:  Response</span>
+<span class="sd">        :param      args:      The arguments</span>
+<span class="sd">        :type       args:      list</span>
+<span class="sd">        :param      kwargs:    The keywords arguments</span>
+<span class="sd">        :type       kwargs:    dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="s2">&quot;Message has accepted!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tests-coverage">
+<h2>Tests coverage<a class="headerlink" href="#tests-coverage" title="Link to this heading">¶</a></h2>
+<p>To test the web framework, PyTest with the pytest-cov plugin is used.
+You can look at the tests in <a class="reference external" href="./tests">tests directory</a></p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Statements</p></th>
+<th class="head"><p>Miss</p></th>
+<th class="head"><p>Coverage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1553</p></td>
+<td><p>720</p></td>
+<td><p>54%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="documentation">
+<h2>Documentation 🌍<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h2>
+<p>The main documentation is
+<a class="reference external" href="https://alexeev-prog.github.io/pyEchoNext/">here</a>.</p>
+<blockquote>
+<div><p>At the moment documentation move from doxygen to sphinx</p>
+</div></blockquote>
+</section>
+<section id="support">
+<h2>💬 Support<a class="headerlink" href="#support" title="Link to this heading">¶</a></h2>
+<p>If you encounter any issues or have questions about pyEchoNext, please:</p>
+<ul class="simple">
+<li><p>Check the
+<a class="reference external" href="https://alexeev-prog.github.io/pyEchoNext">documentation</a> for
+answers</p></li>
+<li><p>Open an <a class="reference external" href="https://github.com/alexeev-prog/pyEchoNext/issues/new">issue on
+GitHub</a></p></li>
+<li><p>Reach out to the project maintainers via the <a class="reference external" href="mailto:alexeev&#46;dev&#37;&#52;&#48;mail&#46;ru">mailing
+list</a></p></li>
+</ul>
+<p align="right"><p>(back to top)</p>
+</p></section>
+<section id="contributing">
+<h2>🤝 Contributing<a class="headerlink" href="#contributing" title="Link to this heading">¶</a></h2>
+<p>We welcome contributions from the community! If you’d like to help
+improve pyEchoNext, please check out the <a class="reference external" href="https://github.com/alexeev-prog/pyEchoNext/blob/main/CONTRIBUTING.md">contributing
+guidelines</a>
+to get started.</p>
+<p align="right"><p>(back to top)</p>
+</p></section>
+<section id="join-the-community">
+<h2>👥 Join the Community!<a class="headerlink" href="#join-the-community" title="Link to this heading">¶</a></h2>
+<p>If you find Echonext valuable and want to support the project:</p>
+<ul class="simple">
+<li><p>Star on GitHub ⭐</p></li>
+<li><p>Share it with friends and colleagues!</p></li>
+<li><p>Donate via cryptocurrency 🙌</p></li>
+</ul>
+<p>Connect with fellow Echonext users: <a class="reference external" href="https://t.me/pyEchoNext_Forum">Join our Telegram
+Chat</a></p>
+</section>
+<section id="roadmap">
+<h2>🔮 Roadmap<a class="headerlink" href="#roadmap" title="Link to this heading">¶</a></h2>
+<p>Our future goals for pyEchoNext include:</p>
+<ul class="simple">
+<li><p>📚 Improve middlewares</p></li>
+<li><p>🚀 Add async support</p></li>
+<li><p>✅ Improve logging</p></li>
+<li><p>🌍 Add authentication, JWT tokens</p></li>
+<li><p>💻 Depedency Injection</p></li>
+<li><p>🌐 More stability and scalablity</p></li>
+</ul>
+<p align="right"><p>(back to top)</p>
+</p></section>
+<section id="get-started-today">
+<h2>🌟 Get Started Today!<a class="headerlink" href="#get-started-today" title="Link to this heading">¶</a></h2>
+<p>Unlock your potential as a developer with Echonext. Don’t just build
+applications—craft experiences that resonate with your users! The
+possibilities are limitless when you harness the power of Echonext.</p>
+<p><strong>Happy Coding!</strong> 💻✨</p>
+<p>This README is designed to grab attention from the very first lines. It
+emphasizes the framework’s strengths and makes a compelling case for why
+developers should choose Echonext for their projects. Feel free to
+adjust any specific links or images to fit your project!</p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading">¶</a></h2>
+<p>Distributed under the GNU LGPL 2.1 License. See
+<a class="reference external" href="https://github.com/alexeev-prog/pyEchoNext/blob/main/LICENSE">LICENSE</a>
+for more information.</p>
+<p align="right"><p>(back to top)</p>
+</p><hr class="docutils" />
+<p>EchoNext is a lightweight, fast and scalable web framework for Python
+Copyright (C) 2024 Alexeev Bronislav (C) 2024</p>
+<p>This library is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2.1 of the License, or (at
+your option) any later version.</p>
+<p>This library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+General Public License for more details.</p>
+<p>You should have received a copy of the GNU Lesser General Public License
+along with this library; if not, write to the Free Software Foundation,
+Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="webframework_design.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Web frameworks design</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Alexeev Bronislaw
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=48f8e935"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>
