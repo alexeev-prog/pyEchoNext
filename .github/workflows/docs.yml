@@ -1,6 +1,4 @@
-name: documentation
-
-on: [push, pull_request, workflow_dispatch]
+name: documentation]
 
 permissions:
   contents: write
