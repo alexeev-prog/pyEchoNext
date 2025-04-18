@@ -28,6 +28,7 @@ Controllers
 Here is source code of Controllers.
 
 .. code:: python
+
     class BaseController(ABC):
     	"""
     	Controls the data flow into a base object and updates the view whenever data changes.
@@ -158,6 +159,7 @@ Models
 Here is source code of Models.
 
 .. code:: python
+
     class BaseModel(ABC):
     	"""
     	This class describes a base model.
@@ -258,6 +260,7 @@ Views
 Here is source code of Views.
 
 .. code:: python
+
     from abc import ABC, abstractmethod
 
     from pyechonext.mvc.models import PageModel
@@ -302,6 +305,7 @@ Simple Example
 Here is simple example of API with PageControllers:
 
 .. code::python
+
     import os
 
     from pyechonext.app import ApplicationType, EchoNext
