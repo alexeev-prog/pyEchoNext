@@ -1,76 +1,30 @@
 name: documentation
 
+on: [push, pull_request, workflow_dispatch]
+
 permissions:
   contents: write
 
-on:
-  push:
-    branches:
-    - main
-
 jobs:
   docs:
-    name: Docs
     runs-on: ubuntu-latest
     steps:
-
-    - uses: actions/checkout@v2
-
-    - name: Install Python
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.12
-
-    - name: Install requirements
-      run: |
-        pip3 install -r requirements.txt
-        
-    - name: Sphinx api docs build
-      run: |
-        cd docs
-        sphinx-apidoc -o . ../pyechonext
-    
-    - name: Build docs
-      run: |
-        cd docs
-        make html
-
-    # https://github.com/peaceiris/actions-gh-pages
-    - name: Deploy
-      if: success()
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        publish_branch: gh-pages
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: docs/_build/html/
-
-# name: documentation
-
-# on: [push, pull_request, workflow_dispatch]
-
-# permissions:
-#   contents: write
-
-# jobs:
-#   docs:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v4
-#       - uses: actions/setup-python@v5
-#       - name: Install dependencies
-#         run: |
-#           pip install sphinx sphinx_rtd_theme myst_parser furo
-#       - name: Sphinx api docs build
-#         run: |
-#           sphinx-apidoc -o docs ./pyechonext
-#       - name: Sphinx build
-#         run: |
-#           sphinx-build docs _build
-#       - name: Deploy to GitHub Pages
-#         uses: peaceiris/actions-gh-pages@v3
-#         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-#         with:
-#           publish_branch: gh-pages
-#           github_token: ${{ secrets.GITHUB_TOKEN }}
-#           publish_dir: _build/
-#           force_orphan: false
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+      - name: Install dependencies
+        run: |
+          pip install sphinx sphinx_rtd_theme myst_parser furo
+      - name: Sphinx api docs build
+        run: |
+          sphinx-apidoc -o docs ./pyechonext
+      - name: Sphinx build
+        run: |
+          sphinx-build docs _build
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _build/
+          force_orphan: false
