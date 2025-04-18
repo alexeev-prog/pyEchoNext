@@ -690,30 +690,6 @@ The main documentation is [here](https://alexeev-prog.github.io/pyEchoNext/).
 
  > At the moment documentation move from doxygen to sphinx
 
-Extended documentation and framework specifications are available at the following links:
-
-### English
-
-1. [Index](./docs/en/index.md)
-2. [Web framework design](./docs/en/webframework_design.md)
-3. [Creating a web application](./docs/en/webapp_creation.md)
-4. [Creating routes (routes&views)](./docs/en/routes_and_views.md)
-5. [Request/Response](./docs/en/requests_responses.md)
-6. [Localization i18n/l10n](./docs/en/i18n_locales.md)
-7. [Security](./docs/en/security.md)
-8. [Permissions & rights](./docs/en/permissions.md)
-
-### Russian / Русский
-
-1. [Содержание](./docs/ru/index.md)
-2. [Устройство веб-фреймворка](./docs/ru/webframework_design.md)
-3. [Создание веб-приложения](./docs/ru/webapp_creation.md)
-4. [Создание маршрутов (routes&views)](./docs/ru/routes_and_views.md)
-5. [Request/Response](./docs/ru/requests_responses.md)
-6. [Локализация i18n/l10n](./docs/ru/i18n_locales.md)
-7. [Безопасность](./docs/ru/security.md)
-8. [Разрешения и права](./docs/ru/permissions.md)
-
 ## 💬 Support
 If you encounter any issues or have questions about pyEchoNext, please:
 

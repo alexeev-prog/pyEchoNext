@@ -170,3 +170,5 @@ translatedocs.py
 flake.lock
 
 *.lock
+format-code.py
+*.log
