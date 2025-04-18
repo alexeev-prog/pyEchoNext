@@ -1,7 +1,8 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath("../pyechonext"))
+# sys.path.insert(0, os.path.abspath("../pyechonext"))
+sys.path.insert(0, os.path.abspath(os.path.join("..", "..")))
 
 project = "pyEchoNext"
 author = "name"

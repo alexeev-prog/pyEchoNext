@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any, Union
 
-from pyechonext import EchoNext
 from pyechonext.request import Request
 from pyechonext.response import Response
 
@@ -60,7 +59,7 @@ class PageModel(BaseModel):
 		self.response = response
 
 	def get_response(
-		self, data: Union[Response, Any], app: EchoNext, *args, **kwargs
+		self, data: Union[Response, Any], app, *args, **kwargs
 	) -> Response:
 		"""
 		Creates a response.
