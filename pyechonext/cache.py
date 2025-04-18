@@ -25,7 +25,7 @@ class InMemoryCache:
 		"""Initialize InMemoryCace
 
 		Args:
-			timeout (int, optional): _description_. Defaults to 300.
+				timeout (int, optional): _description_. Defaults to 300.
 		"""
 		self._cache: Dict[str, CacheEntry] = {}
 		self._timeout: int = timeout
@@ -34,8 +34,8 @@ class InMemoryCache:
 		"""Set item into cache
 
 		Args:
-			key (str): key
-			value (Any): value
+				key (str): key
+				value (Any): value
 		"""
 		expiry_time = time.time() + self._timeout
 
@@ -47,10 +47,10 @@ class InMemoryCache:
 		"""Get item by specified key
 
 		Args:
-			key (str): key item
+				key (str): key item
 
 		Returns:
-			Optional[Any]: item value
+				Optional[Any]: item value
 		"""
 		entry = self._cache.get(key)
 
@@ -65,7 +65,7 @@ class InMemoryCache:
 		"""Invalidate item by key
 
 		Args:
-			key (str): item key
+				key (str): item key
 		"""
 		if key in self._cache:
 			del self._cache[key]
@@ -98,7 +98,7 @@ class Cacheable:
 		"""Initialize Cachable Interace
 
 		Args:
-			cache (InMemoryCache): cache instance
+				cache (InMemoryCache): cache instance
 		"""
 		self.cache = cache
 
@@ -106,8 +106,8 @@ class Cacheable:
 		"""Save item in cache
 
 		Args:
-			key (str): item key
-			data (Any): item data
+				key (str): item key
+				data (Any): item data
 		"""
 		self.cache.set(key, data)
 
@@ -115,8 +115,8 @@ class Cacheable:
 		"""Update item by key
 
 		Args:
-			key (str): item key
-			new_data (Any): new item data
+				key (str): item key
+				new_data (Any): new item data
 		"""
 		self.clear_data(key)
 		self.save(key, new_data)
@@ -125,6 +125,6 @@ class Cacheable:
 		"""Clear item data by key
 
 		Args:
-			key (str): item key
+				key (str): item key
 		"""
 		self.cache.invalidate(key)

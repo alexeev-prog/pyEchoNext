@@ -1,4 +1,4 @@
-pyEchoNext / Creating routes (routes&views)
+Creating routes (routes&views)
 ===========================================
 
 --------------
@@ -102,113 +102,58 @@ Example django-like and flask-like:
 Both methods can be mixed, but we recommend using only one per web
 application.
 
-Views
------
 
-Views - “views”, a special class for displaying site pages. Inspired by
-Django style.
+URLs
+----
 
-.. code:: python
-
-   class View(ABC):
-   """
-   Page view
-   """
-
-   @abstractmethod
-   def get(
-   self, request: Request, response: Response, *args, **kwargs
-   ) -> Union[Response, Any]:
-   """
-   Get
-
-   :param    request:   The request
-   :type   request:   Request
-   :param    response:  The response
-   :type   response:  Response
-   :param    args:    The arguments
-   :type   args:    list
-   :param    kwargs:    The keywords arguments
-   :type   kwargs:    dictionary
-   """
-   raise NotImplementedError
-
-   @abstractmethod
-   def post(
-   self, request: Request, response: Response, *args, **kwargs
-   ) -> Union[Response, Any]:
-   """
-   Post
-
-   :param    request:   The request
-   :type   request:   Request
-   :param    response:  The response
-   :type   response:  Response
-   :param    args:    The arguments
-   :type   args:    list
-   :param    kwargs:    The keywords arguments
-   :type   kwargs:    dictionary
-   """
-   raise NotImplementedError
-
-To pass them to the EchoNext application, you need to combine Views into
-a URL:
+By default, ``urls`` is an empty list. urls contains instances of the
+URL dataclass (pyechonext.urls):
 
 .. code:: python
 
    @dataclass
    class URL:
-   """
-   This dataclass describes an url.
-   """
+      path: str
+	   controller: Type[PageController]
+	   summary: Optional[str] = None
 
-   url: str
-   view: Type[View]
+Controller is an abstraction of the site route (django-like). It must have two
+methods: ``get`` and ``post`` (to respond to get and post requests).
+These methods should return:
 
+-  Data, page content. This can be a dictionary or a string.
 
-   url_patterns = [URL(url="/", view=<ВАШ View>)]
+OR:
 
-Example:
+-  Response class object (pyechonext.response)
+
+You can combine these two methods. There are the following
+recommendations for their use:
+
+1. If the method only returns already prepared data, then you should not
+   return Response, return data.
+2. If the method works with the response passed to it, then return the
+   data or the response itself passed in the arguments.
+3. In other cases, you can create a Response and return it, not data.
+4. In the get and post methods, you should use only one method, you
+   should not mix them. But if you cannot do without it, then this
+   recommendation can be violated.
+
+These recommendations may be violated at the request of the developer.
+
+You can also throw WebError exceptions instead of returning a result:
+URLNotFound and MethodNotAllow. In this case, the application will not
+stop working, but will display an error on the web page side. If another
+exception occurs, the application will stop working.
+
+We use MVC (Model-View-Controller) model. To understand this, read :doc:`MVC Docs </mvc>`.
+
+There is also a base list in pyechonext.urls to pass as arguments to
+EchoNext:
 
 .. code:: python
 
-   class IndexView(View):
-   def get(
-   self, request: Request, response: Response, **kwargs
-   ) -> Union[Response, Any]:
-   """
-   Get
-
-   :param    request:   The request
-   :type   request:   Request
-   :param    response:  The response
-   :type   response:  Response
-   :param    args:    The arguments
-   :type   args:    list
-   :param    kwargs:    The keywords arguments
-   :type   kwargs:    dictionary
-   """
-   return "Hello World!"
-
-   def post(
-   self, request: Request, response: Response, **kwargs
-   ) -> Union[Response, Any]:
-   """
-   Post
-
-   :param    request:   The request
-   :type   request:   Request
-   :param    response:  The response
-   :type   response:  Response
-   :param    args:    The arguments
-   :type   args:    list
-   :param    kwargs:    The keywords arguments
-   :type   kwargs:    dictionary
-   """
-   return "Message has accepted!"
-
-
-   url_patterns = [URL(url="/", view=IndexView)]
+   url_patterns = [URL(url="/", controller=MyController, summary="Page")]
 
 Routes
 ------

@@ -78,15 +78,15 @@ class EchoNext:
 		"""Initialize a WSGI
 
 		Args:
-			app_name (str): application name
-			settings (Settings): settings of app
-			middlewares (List[Type[BaseMiddleware]]): list of middlewares
-			urls (Optional[List[URL]], optional): basic URLs list. Defaults to [].
-			application_type (Optional[ApplicationType], optional): application type. Defaults to ApplicationType.JSON.
-			static_files (Optional[List[StaticFile]], optional): static files list. Defaults to [].
+				app_name (str): application name
+				settings (Settings): settings of app
+				middlewares (List[Type[BaseMiddleware]]): list of middlewares
+				urls (Optional[List[URL]], optional): basic URLs list. Defaults to [].
+				application_type (Optional[ApplicationType], optional): application type. Defaults to ApplicationType.JSON.
+				static_files (Optional[List[StaticFile]], optional): static files list. Defaults to [].
 
 		Raises:
-			TeapotError: Easter Egg
+				TeapotError: Easter Egg
 		"""
 		self.app_name: str = app_name
 		self.settings: Settings = settings
@@ -107,7 +107,7 @@ class EchoNext:
 			self.settings.LOCALE, self.settings.LOCALE_DIR
 		)
 
-		self._validate_arguments() # Validate arguments
+		self._validate_arguments()	# Validate arguments
 
 		if self.application_type == ApplicationType.TEAPOT:
 			raise TeapotError("Where's my coffie?")
@@ -120,7 +120,7 @@ class EchoNext:
 		"""Validate arguments and params at app initialization
 
 		Raises:
-			ValueError: _description_
+				ValueError: _description_
 		"""
 		# Check URLs
 		for url in self._urls:
@@ -133,10 +133,10 @@ class EchoNext:
 		"""Test Session
 
 		Args:
-				host (str, optional): hostname of session. Defaults to "echonext".
+						host (str, optional): hostname of session. Defaults to "echonext".
 
 		Returns:
-				RequestsSession: request session for tests
+						RequestsSession: request session for tests
 		"""
 		session = RequestsSession()
 		session.mount(prefix=f"http://{host}", adapter=RequestsWSGIAdapter(self))
@@ -146,21 +146,21 @@ class EchoNext:
 		"""Get request object
 
 		Args:
-			environ (dict): environ info
+				environ (dict): environ info
 
 		Returns:
-			Request: request object
-		"""		
+				Request: request object
+		"""
 		return Request(environ, self.settings)
 
 	def _get_response(self, request: Request) -> Response:
 		"""Get response object
 
 		Args:
-			request (Request): basic request
+				request (Request): basic request
 
 		Returns:
-			Response: response object
+				Response: response object
 		"""
 		return Response(request, content_type=self.application_type.value)
 
@@ -170,9 +170,9 @@ class EchoNext:
 		"""Add page route
 
 		Args:
-			page_path (str): page path url
-			handler (Callable): handler of route
-			summary (Optional[str], optional): summary documentation. Defaults to None.
+				page_path (str): page path url
+				handler (Callable): handler of route
+				summary (Optional[str], optional): summary documentation. Defaults to None.
 		"""
 		if inspect.isclass(handler):
 			self.router.add_url(URL(path=page_path, controller=handler))
@@ -183,21 +183,21 @@ class EchoNext:
 		"""Route page
 
 		Args:
-			page_path (str): page path url
-			summary (Optional[str], optional): summary documentation. Defaults to None.
+				page_path (str): page path url
+				summary (Optional[str], optional): summary documentation. Defaults to None.
 
 		Returns:
-			Callable: wrapper
+				Callable: wrapper
 		"""
 
 		def wrapper(handler):
 			"""Decoration for page routing.
 
 			Args:
-				handler (_type_): handler function
+					handler (_type_): handler function
 
 			Returns:
-				_type_: handler function
+					_type_: handler function
 			"""
 			if inspect.isclass(handler):
 				self.router.add_url(
@@ -214,7 +214,7 @@ class EchoNext:
 		"""Apply middlewares to request
 
 		Args:
-			request (Request): request for applying middlewares
+				request (Request): request for applying middlewares
 		"""
 		stack = LIFOStack()
 
@@ -230,7 +230,7 @@ class EchoNext:
 		"""Apply middlewares to response
 
 		Args:
-			response (Response): request for applying middlewares
+				response (Response): request for applying middlewares
 		"""
 		stack = LIFOStack()
 
@@ -246,7 +246,7 @@ class EchoNext:
 		"""Process exceptions from middlewares
 
 		Args:
-			exception (Exception): exception class
+				exception (Exception): exception class
 		"""
 		stack = LIFOStack()
 
@@ -262,8 +262,8 @@ class EchoNext:
 		"""Get default response (HTTP 404)
 
 		Args:
-			response (Response): Response object
-			error (WebError): web error
+				response (Response): Response object
+				error (WebError): web error
 		"""
 		response.status_code = str(error.code)
 		response.body = str(error)
@@ -272,10 +272,10 @@ class EchoNext:
 		"""Find handler by request
 
 		Args:
-			request (Request): Request object
+				request (Request): Request object
 
 		Returns:
-			Tuple[Callable, str]: handlers tuple
+				Tuple[Callable, str]: handlers tuple
 		"""
 		url = _prepare_url(request.path)
 
@@ -293,11 +293,11 @@ class EchoNext:
 		"""Set and save item to cache
 
 		Args:
-			key (str): key
-			value (Any): value
+				key (str): key
+				value (Any): value
 
 		Returns:
-			Any: item from cache
+				Any: item from cache
 		"""
 		item = self.main_cache.get(key)
 
@@ -316,11 +316,11 @@ class EchoNext:
 		"""Serve static files
 
 		Args:
-			request (Request): request object
-			response (Response): response object
+				request (Request): request object
+				response (Response): response object
 
 		Returns:
-			Response: served response object
+				Response: served response object
 		"""
 		logger.debug(f"Serve static file by path: {request.path}")
 		response.content_type = self.static_files_manager.get_file_type(request.path)
@@ -333,14 +333,14 @@ class EchoNext:
 		"""Check handler
 
 		Args:
-			request (Request): request object
-			handler (Callable): handler
+				request (Request): request object
+				handler (Callable): handler
 
 		Raises:
-			MethodNotAllow: handler request method is None, method not allowed
+				MethodNotAllow: handler request method is None, method not allowed
 
 		Returns:
-			Callable: _description_
+				Callable: _description_
 		"""
 		if isinstance(handler, PageController) or inspect.isclass(handler):
 			handler = getattr(handler, request.method.lower(), None)
@@ -363,11 +363,11 @@ class EchoNext:
 		"""Filling response
 
 		Args:
-			route (Route): route
-			response (Response): response object
-			request (Request): request object
-			result (Any): result data
-			handler (Callable): handler object
+				route (Route): route
+				response (Response): response object
+				request (Request): request object
+				result (Any): result data
+				handler (Callable): handler object
 		"""
 		if route.route_type == RoutesTypes.URL_BASED:
 			view = route.handler.get_rendered_view(request, result, self)
@@ -380,13 +380,13 @@ class EchoNext:
 		"""Handle request
 
 		Args:
-			request (Request): request object
+				request (Request): request object
 
 		Raises:
-			URLNotFound: URL for request not found
+				URLNotFound: URL for request not found
 
 		Returns:
-			Response: response object
+				Response: response object
 		"""
 		logger.debug(f"Handle request: {request.path}")
 		response = self._get_response(request)
@@ -415,8 +415,8 @@ class EchoNext:
 		"""Switch locale
 
 		Args:
-			locale (str): locale name
-			locale_dir (str): directory with locales
+				locale (str): locale name
+				locale_dir (str): directory with locales
 		"""
 		logger.info(f"Switch to another locale: {locale_dir}/{locale}")
 		self.i18n_loader.locale = locale
@@ -434,11 +434,11 @@ class EchoNext:
 		"""Makes the application object callable
 
 		Args:
-			environ (dict): environ dictionary
-			start_response (method): the start response
+				environ (dict): environ dictionary
+				start_response (method): the start response
 
 		Returns:
-			Iterable: iterable response
+				Iterable: iterable response
 		"""
 		request = self._get_request(environ)
 		self._apply_middlewares_to_request(request)

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Union
 
+from pyechonext import EchoNext
 from pyechonext.request import Request
 from pyechonext.response import Response
 
@@ -59,7 +60,7 @@ class PageModel(BaseModel):
 		self.response = response
 
 	def get_response(
-		self, data: Union[Response, Any], app: "EchoNext", *args, **kwargs
+		self, data: Union[Response, Any], app: EchoNext, *args, **kwargs
 	) -> Response:
 		"""
 		Creates a response.
@@ -79,7 +80,7 @@ class PageModel(BaseModel):
 			response = Response(body=str(data), *args, **kwargs)
 
 		if response.use_i18n:
-			response.body = app.i18n_loader.get_string(model.response.body)
+			response.body = app.i18n_loader.get_string(response.body)
 
 		response.body = app.get_and_save_cache_item(response.body, response.body)
 

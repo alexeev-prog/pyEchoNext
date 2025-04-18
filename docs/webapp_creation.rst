@@ -1,4 +1,4 @@
-pyEchoNext / creating a web application
+Creating a web application
 =======================================
 
 --------------
@@ -279,16 +279,14 @@ URLNotFound and MethodNotAllow. In this case, the application will not
 stop working, but will display an error on the web page side. If another
 exception occurs, the application will stop working.
 
-We use MVC (Model-View-Controller) model. To understand this, read :ref:`mvc`.
+We use MVC (Model-View-Controller) model. To understand this, read :doc:`MVC Docs </mvc>`.
 
 There is also a base list in pyechonext.urls to pass as arguments to
 EchoNext:
 
 .. code:: python
 
-   url_patterns = [URL(url="/", view=IndexView)]
-
-The IndexView here is the built-in View that you could see above.
+   url_patterns = [URL(url="/", controller=MyController, summary="Page")]
 
 application_type
 ----------------

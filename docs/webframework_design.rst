@@ -1,4 +1,4 @@
-pyEchoNext / web frameworks device
+Web frameworks design
 ==================================
 
 --------------

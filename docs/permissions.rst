@@ -1,4 +1,4 @@
-pyEchoNext / Permissions and Rights
+Permissions and Rights
 ===================================
 
 --------------
