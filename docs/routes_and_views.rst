@@ -1,8 +1,6 @@
 Creating routes (routes&views)
 ===========================================
 
---------------
-
 Routes are the basis of a web application.
 
 pyEchoNext has two methods for creating web page routes:
@@ -191,5 +189,3 @@ Routes inspired by flask/fastapi path:
 
 You can also route Views without passing them to parameters, but by
 creating a class with a page routing decorator.
-
---------------

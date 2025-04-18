@@ -1,3 +1,21 @@
+commit b1c93331ba1620272bf905ba26fb45210140928b
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Apr 18 23:52:45 2025 +0700
+
+    docs/structure: remake examples structure, fix docs, fix codestyle
+
+commit 7a3650a87c32bbaf7bcedf61dbb3acf33b7f1511
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Apr 18 23:32:40 2025 +0700
+
+    improve docs
+
+commit fb5cd3857dda024f964513bf712f78e5d73cdbb3
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Apr 18 23:24:15 2025 +0700
+
+    improve docs
+
 commit d5c26660cfe6755143053466bf4f9735a3e3408c
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Fri Apr 18 22:17:52 2025 +0700

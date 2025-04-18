@@ -1,8 +1,6 @@
 Request/Response
 =============================
 
---------------
-
 Request - HTTP request. Response - HTTP response.
 
 Introduction
@@ -336,5 +334,3 @@ Response has the following methods:
 -  ``_encode_body`` - response body encoding
 -  ``__call__`` - magic method, makes the Response object callable
 -  ``json`` - class property for receiving the response body as json
-
---------------

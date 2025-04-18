@@ -1,8 +1,6 @@
 Security
 ===========================================
 
---------------
-
 Security is a top priority at pyEchoNext. We understand that some
 developers may neglect basic protection against vulnerabilities, and
 therefore we took care of the warning system, cryptography and
@@ -132,5 +130,3 @@ Example:
       print('Crypted:', pspc.crypt(password))
       print('Decrypted:', pspc.decrypt(pspc.crypt(password)))
       print()
-
---------------

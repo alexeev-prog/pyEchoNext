@@ -1,8 +1,6 @@
 Creating a web application
 =======================================
 
---------------
-
 Creating an application is not difficult in pyEchoNext. Thanks to its
 modularity and versatility, you can configure many settings and use
 different methods for creating web application routes.
@@ -309,5 +307,3 @@ Currently supported: ApplicationType.JSON, ApplicationType.HTML,
 ApplicationType.PLAINTEXT.
 
 Defaults to ApplicationType.JSON.
-
---------------

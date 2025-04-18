@@ -1,7 +1,5 @@
-pyEchoNext / i18n, l10n - localization and internationalization
+i18n, l10n - localization and internationalization
 ===============================================================
-
---------------
 
 pyEchoNext since version 0.5.3 supports i18n (so far in its basic form).
 
@@ -90,8 +88,8 @@ By default they create the default locale. It looks like this for i18n:
 .. code:: python
 
    DEFAULT_LOCALE = {
-   "title": "pyEchoNext Example Website",
-   "description": "This web application is an example of the pyEchonext web framework.",
+      "title": "pyEchoNext Example Website",
+      "description": "This web application is an example of the pyEchonext web framework.",
    }
 
 And so for l10n:
@@ -107,19 +105,19 @@ Let’s say RU_RU.json:
 .. code:: json
 
    {
-   "i18n": {
-   "title": "pyEchoNext Web application with locale",
-   "example one": "example one"
-   },
-   "l10n": {
-   "date_format": "%Y-%m-%d",
-   "time_format": "%H:%M",
-   "date_time_fromat": "%Y-%m-%d %H:%M",
-   "thousands_separator": ",",
-   "decimal_separator": ".",
-   "currency_symbol": "$",
-   "currency_format": "{symbol}{amount}"
-   }
+      "i18n": {
+         "title": "pyEchoNext Web application with locale",
+         "example one": "example one"
+      },
+      "l10n": {
+         "date_format": "%Y-%m-%d",
+         "time_format": "%H:%M",
+         "date_time_fromat": "%Y-%m-%d %H:%M",
+         "thousands_separator": ",",
+         "decimal_separator": ".",
+         "currency_symbol": "$",
+         "currency_format": "{symbol}{amount}"
+      }
    }
 
 And already in Settings we specify the following settings:
@@ -137,12 +135,12 @@ loader <./webapp_creation.md>`__):
 
    config_loader = SettingsLoader(SettingsConfigType.PYMODULE, 'el_config.py')
    settings = config_loader.get_settings()
-   echonext = EchoNext(
-   __name__,
-   settings,
-   middlewares,
-   urls=url_patterns,
-   application_type=ApplicationType.HTML,
+      echonext = EchoNext(
+      __name__,
+      settings,
+      middlewares,
+      urls=url_patterns,
+      application_type=ApplicationType.HTML,
    )
 
 el_config.py:
@@ -169,7 +167,3 @@ And now you can introduce internationalization to your application!
    by `this
    documentation <https://developer.mozilla.org/ru/docs/Mozilla/Add-ons/WebExtensions/Internationalization>`__,
    reworking it for our web framework.
-
---------------
-
-`Contents <./index.md>`__

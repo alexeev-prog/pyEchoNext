@@ -1,8 +1,6 @@
 Web frameworks design
 ==================================
 
---------------
-
 The most important parts of web frameworks are:
 
 -  Routing handlers:
@@ -170,5 +168,3 @@ As a result, the main characteristics of the project are as follows:
 4. Relevance: the web sphere is very popular at the moment, the ability
    to work with web frameworks, abstractions, and know the structure of
    sites will help everyone.
-
---------------

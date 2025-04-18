@@ -1,8 +1,6 @@
 Permissions and Rights
 ===================================
 
---------------
-
 in pyEchoNext you can create an additional layer of abstraction, in the
 form of policies, permissions, roles. For example, this way you can
 create user and administrator roles, introduce restrictions, and much
@@ -93,5 +91,3 @@ Usage example:
 
    test_controller()
    test_age_policy()
-
---------------
