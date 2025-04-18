@@ -338,5 +338,3 @@ Response has the following methods:
 -  ``json`` - class property for receiving the response body as json
 
 --------------
-
-`Contents <./index.md>`__

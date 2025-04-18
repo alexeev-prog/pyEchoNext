@@ -27,15 +27,15 @@ Usage example:
 .. code:: python
 
    from pyechonext.permissions import (
-   Permission,
-   Role,
-   Resource,
-   AccessControlRule,
-   Policy,
-   AgeRestrictionsABP,
-   User,
-   DefaultPermissionChecker,
-   UserController,
+      Permission,
+      Role,
+      Resource,
+      AccessControlRule,
+      Policy,
+      AgeRestrictionsABP,
+      User,
+      DefaultPermissionChecker,
+      UserController,
    )
 
    view_users_perm = Permission("view_users")
@@ -70,30 +70,28 @@ Usage example:
 
 
    def test_controller():
-   """Test Controller"""
-   assert user_controller.view_users(admin_user, user_resource) == (
-   "200 OK",
-   "User edit form",
-   )
-   assert user_controller.edit_users(admin_user, user_resource) == (
-   "200 OK",
-   "User edit form",
-   )
-   assert user_controller.edit_users(young_user, user_resource) == (
-   "403 Forbidden",
-   "You do not have permission to edit users.",
-   )
+      """Test Controller"""
+      assert user_controller.view_users(admin_user, user_resource) == (
+      "200 OK",
+      "User edit form",
+      )
+      assert user_controller.edit_users(admin_user, user_resource) == (
+      "200 OK",
+      "User edit form",
+      )
+      assert user_controller.edit_users(young_user, user_resource) == (
+      "403 Forbidden",
+      "You do not have permission to edit users.",
+      )
 
 
    def test_age_policy():
-   """Test Age Policy"""
-   assert age_policy.evaluate(young_user, user_resource, view_users_perm) == False
-   assert age_policy.evaluate(admin_user, user_resource, view_users_perm) == True
+      """Test Age Policy"""
+      assert age_policy.evaluate(young_user, user_resource, view_users_perm) == False
+      assert age_policy.evaluate(admin_user, user_resource, view_users_perm) == True
 
 
    test_controller()
    test_age_policy()
 
 --------------
-
-`Contents <./index.md>`__

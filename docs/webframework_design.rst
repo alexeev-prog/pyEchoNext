@@ -172,5 +172,3 @@ As a result, the main characteristics of the project are as follows:
    sites will help everyone.
 
 --------------
-
-`Contents <./index.md>`__

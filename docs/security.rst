@@ -34,15 +34,15 @@ supported.
 .. code:: python
 
    class HashAlgorithm(Enum):
-   """
-   This class describes a hash algorithms.
-   """
+      """
+      This class describes a hash algorithms.
+      """
 
-   SHA256 = auto()
-   SHA512 = auto()
-   MD5 = auto()
-   BLAKE2B = auto()
-   BLAKE2S = auto()
+      SHA256 = auto()
+      SHA512 = auto()
+      MD5 = auto()
+      BLAKE2B = auto()
+      BLAKE2S = auto()
 
 PlainHasher
 ^^^^^^^^^^^
@@ -58,10 +58,10 @@ A simple class for hashing:
    new_hash = hasher.hash("TEXT")
 
    if hasher.verify("TEXT", new_hash): # true
-   print('Yes!')
+      print('Yes!')
 
    if hasher.verify("TEXT2", old_hash): # false
-   print('Yes!')
+      print('Yes!')
 
    # Output: one "Yes!"
 
@@ -79,10 +79,10 @@ Class for hashing with salt:
    new_hash = hasher.hash("TEXT")
 
    if hasher.verify("TEXT", new_hash): # true
-   print('Yes!')
+      print('Yes!')
 
    if hasher.verify("TEXT2", old_hash): # false
-   print('Yes!')
+      print('Yes!')
 
    # Output: one "Yes!"
 
@@ -127,11 +127,9 @@ Example:
    passwords = ['AngryPassword', 'S0mesd7623tds@&6^@_', 'PassWord', 'Pass']
 
    for password in passwords:
-   print('Base:', password)
-   print('Crypted:', pspc.crypt(password))
-   print('Decrypted:', pspc.decrypt(pspc.crypt(password)))
-   print()
+      print('Base:', password)
+      print('Crypted:', pspc.crypt(password))
+      print('Decrypted:', pspc.decrypt(pspc.crypt(password)))
+      print()
 
 --------------
-
-`Contents <./index.md>`__

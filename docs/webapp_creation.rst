@@ -31,25 +31,25 @@ This argument is an instance of the Settings dataclass
 
    @dataclass
    class Settings:
-   """
-   This class describes settings.
-   """
+      """
+      This class describes settings.
+      """
 
-   BASE_DIR: str
-   TEMPLATES_DIR: str
-   SECRET_KEY: str
-   VERSION: str = '1.0.0'
-   DESCRIPTION: str = 'Echonext webapp'
-   LOCALE: str = "DEFAULT"
-   LOCALE_DIR: str = None
+      BASE_DIR: str
+      TEMPLATES_DIR: str
+      SECRET_KEY: str
+      VERSION: str = '1.0.0'
+      DESCRIPTION: str = 'Echonext webapp'
+      LOCALE: str = "DEFAULT"
+      LOCALE_DIR: str = None
 
 Create an instance:
 
 .. code:: python
 
    settings = Settings(
-   BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates",
-   SECRET_KEY='your-secret-key'
+      BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates",
+      SECRET_KEY='your-secret-key'
    )
 
 BASE_DIR - base directory of the application file, TEMPLATES_DIR -
@@ -83,13 +83,13 @@ SettingsConfigType contains the following values:
 .. code:: python
 
    class SettingsConfigType(Enum):
-   """
-   This class describes a settings configuration type.
-   """
+      """
+      This class describes a settings configuration type.
+      """
 
-   THIS = 'this'
-   DOTENV = 'dotenv'
-   PYMODULE = 'pymodule'
+      THIS = 'this'
+      DOTENV = 'dotenv'
+      PYMODULE = 'pymodule'
 
 Examples of config loading:
 
@@ -163,29 +163,29 @@ Middlewares - “middleware”. The BaseMiddleware class looks like this:
 .. code:: python
 
    class BaseMiddleware(ABC):
-   """
-   This abstract class describes a base middleware.
-   """
+      """
+      This abstract class describes a base middleware.
+      """
 
-   @abstractmethod
-   def to_request(self, request: Request):
-   """
-   To request method
+      @abstractmethod
+      def to_request(self, request: Request):
+         """
+         To request method
 
-   :param      request:  The request
-   :type       request:  Request
-   """
-   raise NotImplementedError
+         :param      request:  The request
+         :type       request:  Request
+         """
+         raise NotImplementedError
 
-   @abstractmethod
-   def to_response(self, response: Response):
-   """
-   To response method
+      @abstractmethod
+      def to_response(self, response: Response):
+         """
+         To response method
 
-   :param      response:  The response
-   :type       response:  Response
-   """
-   raise NotImplementedError
+         :param      response:  The response
+         :type       response:  Response
+         """
+         raise NotImplementedError
 
 To create your own Middleware, you need to create a new class based on
 this class and be sure to implement the to_request and to_response
@@ -194,36 +194,36 @@ methods. pyEchoNext has a basic Middleware for creating sessions:
 .. code:: python
 
    class SessionMiddleware(BaseMiddleware):
-   """
-   This class describes a session (cookie) middleware.
-   """
+      """
+      This class describes a session (cookie) middleware.
+      """
 
-   def to_request(self, request: Request):
-   """
-   Set to request
+      def to_request(self, request: Request):
+         """
+         Set to request
 
-   :param      request:  The request
-   :type       request:  Request
-   """
-   cookie = request.environ.get('HTTP_COOKIE', None)
+         :param      request:  The request
+         :type       request:  Request
+         """
+         cookie = request.environ.get('HTTP_COOKIE', None)
 
-   if not cookie:
-   return
+         if not cookie:
+            return
 
-   session_id = parse_qs(cookie)['session_id'][0]
-   request.extra['session_id'] = session_id
+         session_id = parse_qs(cookie)['session_id'][0]
+         request.extra['session_id'] = session_id
 
-   def to_response(self, response: Response):
-   """
-   Set to response
+      def to_response(self, response: Response):
+         """
+         Set to response
 
-   :param      response:  The response
-   :type       response:  Response
-   """
-   if not response.request.session_id:
-   response.add_headers([
-   ("Set-Cookie", f'session_id={uuid4()}'),
-   ])
+         :param      response:  The response
+         :type       response:  Response
+         """
+         if not response.request.session_id:
+            response.add_headers([
+                  ("Set-Cookie", f'session_id={uuid4()}'),
+            ])
 
 There is also a basic list of ``middlewares`` in pyechonext.middleware
 to pass as arguments to EchoNext:
@@ -231,7 +231,7 @@ to pass as arguments to EchoNext:
 .. code:: python
 
    middlewares = [
-   SessionMiddleware
+      SessionMiddleware
    ]
 
 This way you can import it and use or add to it.
@@ -246,10 +246,11 @@ URL dataclass (pyechonext.urls):
 
    @dataclass
    class URL:
-   url: str
-   view: Type[View]
+      path: str
+	   controller: Type[PageController]
+	   summary: Optional[str] = None
 
-View is an abstraction of the site route (django-like). It must have two
+Controller is an abstraction of the site route (django-like). It must have two
 methods: ``get`` and ``post`` (to respond to get and post requests).
 These methods should return:
 
@@ -258,118 +259,6 @@ These methods should return:
 OR:
 
 -  Response class object (pyechonext.response)
-
-View is an object of the View class (pyechonext.views):
-
-.. code:: python
-
-   class View(ABC):
-   """
-   Page view
-   """
-
-   @abstractmethod
-   def get(self, request: Request, response: Response, *args, **kwargs) -> Union[Response, Any]:
-   """
-   Get
-
-   :param      request:   The request
-   :type       request:   Request
-   :param      response:  The response
-   :type       response:  Response
-   :param      args:      The arguments
-   :type       args:      list
-   :param      kwargs:    The keywords arguments
-   :type       kwargs:    dictionary
-   """
-   raise NotImplementedError
-
-   @abstractmethod
-   def post(self, request: Request, response: Response, *args, **kwargs) -> Union[Response, Any]:
-   """
-   Post
-
-   :param      request:   The request
-   :type       request:   Request
-   :param      response:  The response
-   :type       response:  Response
-   :param      args:      The arguments
-   :type       args:      list
-   :param      kwargs:    The keywords arguments
-   :type       kwargs:    dictionary
-   """
-   raise NotImplementedError
-
-For example, pyechonext.views has an IndexView, an example View
-implementation.
-
-.. code:: python
-
-   class IndexView(View):
-   def get(self, request: Request, response: Response, **kwargs) -> Union[Response, Any]:
-   """
-   Get
-
-   :param      request:   The request
-   :type       request:   Request
-   :param      response:  The response
-   :type       response:  Response
-   :param      args:      The arguments
-   :type       args:      list
-   :param      kwargs:    The keywords arguments
-   :type       kwargs:    dictionary
-   """
-   return "Hello World!"
-
-   def post(self, request: Request, response: Response, **kwargs) -> Union[Response, Any]:
-   """
-   Post
-
-   :param      request:   The request
-   :type       request:   Request
-   :param      response:  The response
-   :type       response:  Response
-   :param      args:      The arguments
-   :type       args:      list
-   :param      kwargs:    The keywords arguments
-   :type       kwargs:    dictionary
-   """
-   return "Message has accepted!"
-
-This implementation returns a string. But you can also return Response:
-
-.. code:: python
-
-   class IndexView(View):
-   def get(self, request: Request, response: Response, **kwargs) -> Union[Response, Any]:
-   """
-   Get
-
-   :param      request:   The request
-   :type       request:   Request
-   :param      response:  The response
-   :type       response:  Response
-   :param      args:      The arguments
-   :type       args:      list
-   :param      kwargs:    The keywords arguments
-   :type       kwargs:    dictionary
-   """
-   return Response(request, body='Hello World!')
-
-   def post(self, request: Request, response: Response, **kwargs) -> Union[Response, Any]:
-   """
-   Post
-
-   :param      request:   The request
-   :type       request:   Request
-   :param      response:  The response
-   :type       response:  Response
-   :param      args:      The arguments
-   :type       args:      list
-   :param      kwargs:    The keywords arguments
-   :type       kwargs:    dictionary
-   """
-   return Response(request, body='Message has accepted!')
 
 You can combine these two methods. There are the following
 recommendations for their use:
@@ -390,6 +279,8 @@ URLNotFound and MethodNotAllow. In this case, the application will not
 stop working, but will display an error on the web page side. If another
 exception occurs, the application will stop working.
 
+We use MVC (Model-View-Controller) model. To understand this, read :ref:`mvc`.
+
 There is also a base list in pyechonext.urls to pass as arguments to
 EchoNext:
 
@@ -408,13 +299,13 @@ ApplicationType enum class:
 .. code:: python
 
    class ApplicationType(Enum):
-   """
-   This enum class describes an application type.
-   """
+      """
+      This enum class describes an application type.
+      """
 
-   JSON = "application/json"
-   HTML = "text/html"
-   PLAINTEXT = "text/plain"
+      JSON = "application/json"
+      HTML = "text/html"
+      PLAINTEXT = "text/plain"
 
 Currently supported: ApplicationType.JSON, ApplicationType.HTML,
 ApplicationType.PLAINTEXT.
@@ -422,5 +313,3 @@ ApplicationType.PLAINTEXT.
 Defaults to ApplicationType.JSON.
 
 --------------
-
-`Contents <./index.md>`__

@@ -233,20 +233,18 @@ Routes inspired by flask/fastapi path:
 
    @echonext.route_page("/")
    def home(request, response):
-   return "Hello from the HOME page"
+      return "Hello from the HOME page"
 
 
    @echonext.route_page("/book")
    class BooksResource(View):
-   def get(self, request, response, **kwargs):
-   return f"GET Params: {request.GET}"
+      def get(self, request, response, **kwargs):
+         return f"GET Params: {request.GET}"
 
-   def post(self, request, response, **kwargs):
-   return f"POST Params: {request.POST}"
+      def post(self, request, response, **kwargs):
+         return f"POST Params: {request.POST}"
 
 You can also route Views without passing them to parameters, but by
 creating a class with a page routing decorator.
 
 --------------
-
-`Contents <./index.md>`__

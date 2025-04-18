@@ -23,5 +23,3 @@ responsible for how the user sees it, the latter controls its operation.
    a document.
 
 --------------
-
-`Contents <./index.md>`__
