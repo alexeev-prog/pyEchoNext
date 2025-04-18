@@ -18,7 +18,6 @@ pyEchoNext documentation
    security
    webapp_creation
    webframework_design
-      
    pyechonext
    pyechonext.apidoc_ui
    pyechonext.auth
