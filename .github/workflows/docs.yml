@@ -1,4 +1,8 @@
 name: documentation
+
+permissions:
+  contents: write
+
 on:
   push:
     branches:
