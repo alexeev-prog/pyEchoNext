@@ -14,6 +14,18 @@ jobs:
       pages: write
       id-token: write
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'  # Укажите версию Python, которую вы хотите использовать
+
+    - name: Install dependencies
+      run: |
+        pip install sphinx furo
+
     - id: deployment
       uses: sphinx-notes/pages@v3
 
