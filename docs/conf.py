@@ -6,6 +6,15 @@ project = 'pyEchoNext'
 author = 'name'
 version = '0.7.14'
 release = '0.7'
+project_copyright = "2025, Alexeev Bronislaw"
+
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'restructuredtext',
+    '.md': 'markdown',
+}
+
+source_parsers = {'.md': 'recommonmark.parser.CommonMarkParser'}
 
 extensions = [
     'sphinx.ext.autodoc',  # авто документации из docstrings

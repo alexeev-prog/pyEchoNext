@@ -22,25 +22,20 @@ class InMemoryCache:
 	"""
 
 	def __init__(self, timeout: int = 300):
-		"""
-		Constructs a new instance.
+		"""Initialize InMemoryCace
 
-		:param		timeout:  The timeout
-		:type		timeout:  int
+		Args:
+			timeout (int, optional): _description_. Defaults to 300.
 		"""
 		self._cache: Dict[str, CacheEntry] = {}
 		self._timeout: int = timeout
 
 	def set(self, key: str, value: Any, **kwargs):
-		"""
-		Set new item in cache
+		"""Set item into cache
 
-		:param		key:	 The new value
-		:type		key:	 str
-		:param		value:	 The value
-		:type		value:	 Any
-		:param		kwargs:	 The keywords arguments
-		:type		kwargs:	 dictionary
+		Args:
+			key (str): key
+			value (Any): value
 		"""
 		expiry_time = time.time() + self._timeout
 
@@ -49,14 +44,13 @@ class InMemoryCache:
 		)
 
 	def get(self, key: str) -> Optional[Any]:
-		"""
-		Gets the specified key.
+		"""Get item by specified key
 
-		:param		key:  The key
-		:type		key:  str
+		Args:
+			key (str): key item
 
-		:returns:	entry
-		:rtype:		Optional[Any]
+		Returns:
+			Optional[Any]: item value
 		"""
 		entry = self._cache.get(key)
 
@@ -68,18 +62,17 @@ class InMemoryCache:
 		return None
 
 	def invalidate(self, key: str):
-		"""
-		Delete item by key from cache
+		"""Invalidate item by key
 
-		:param		str:  The key string
-		:type		str:  str
+		Args:
+			key (str): item key
 		"""
 		if key in self._cache:
 			del self._cache[key]
 
 	def clean_up(self):
 		"""
-		Clean up expired items
+		Clean up cache
 		"""
 		current_time = time.time()
 		keys_to_delete = [
@@ -102,42 +95,36 @@ class Cacheable:
 	"""
 
 	def __init__(self, cache: InMemoryCache):
-		"""
-		Constructs a new instance.
+		"""Initialize Cachable Interace
 
-		:param		cache:	The cache
-		:type		cache:	InMemoryCache
+		Args:
+			cache (InMemoryCache): cache instance
 		"""
 		self.cache = cache
 
 	def save(self, key: str, data: Any):
-		"""
-		Save item
+		"""Save item in cache
 
-		:param		key:   The key
-		:type		key:   str
-		:param		data:  The data
-		:type		data:  Any
+		Args:
+			key (str): item key
+			data (Any): item data
 		"""
 		self.cache.set(key, data)
 
 	def update(self, key: str, new_data: Any):
-		"""
-		Update item
+		"""Update item by key
 
-		:param		key:	   The key
-		:type		key:	   str
-		:param		new_data:  The new data
-		:type		new_data:  Any
+		Args:
+			key (str): item key
+			new_data (Any): new item data
 		"""
 		self.clear_data(key)
 		self.save(key, new_data)
 
 	def clear_data(self, key: str):
-		"""
-		Clear data
+		"""Clear item data by key
 
-		:param		key:  The key
-		:type		key:  str
+		Args:
+			key (str): item key
 		"""
 		self.cache.invalidate(key)
