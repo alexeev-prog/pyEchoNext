@@ -1,24 +1,17 @@
 MVC Architecture
 =============================
 
-MVC stands for Model-View-Controller, an architectural pattern that
-divides an application into three logical components: the model, the
-View, and the controller.
+MVC stands for Model-View-Controller, an architectural pattern that divides an application into three logical components: the model, the view, and the controller.
 
-The main idea of the MVC pattern is that each section of code has its
-own purpose. Part of the code contains application data, the other is
-responsible for how the user sees it, the latter controls its operation.
+The main idea of the MVC pattern is that each section of code has its own purpose. Part of the code contains application data, the other is responsible for how the user sees it, the latter controls its operation.
 
--  Model code **Model** stores data and associated logic, and anchors
-    the structure of the application. That is, the programmer will
-    determine the main components of the application using the template.
--  The application’s appearance code, **View**, consists of functions
-    that are responsible for the interface and how the user interacts
-    with it. Views are created based on data collected from the model.
--  The controller code, **Controller**, links the model and view. It
-    receives user input, interprets it and informs about the necessary
-    changes. For example, sends commands to update state, such as saving
-    a document.
+- Model: The model stores data and associated logic, and anchors the structure of the application. This is where the core data resides, along with the business rules that govern how that data can be created, read, updated, or deleted. The model is usually designed to notify the view of any changes that need to be reflected in the user interface. For instance, if a new record is added, the model could trigger an update to the view to reflect that change.
+
+- View: The view consists of functions that are responsible for the interface and how the user interacts with it. Views are created based on data collected from the model, and they determine how that data is presented to the user. A good view handles the display logic and can be designed to update dynamically as the underlying data changes. It should be decoupled from the model, meaning that it should not need to know the details of how data is managed or stored.
+
+- Controller: The controller links the model and view. It acts as an intermediary that processes user input received from the view, interacts with the model to update the application's state, and then returns the output to the view. For example, if a user submits a form, the controller will gather that input, validate it, and often pass it to the model for further action, such as saving it in a database or retrieving related data. 
+
+In summary, the MVC pattern promotes organized code and separation of concerns, making it easier to manage and maintain complex applications. By clearly delineating responsibilities among the model, view, and controller, developers can work on individual components without affecting others, leading to better collaboration and more scalable solutions. This architectural design is widely adopted in various programming languages and frameworks, enabling developers to build robust and efficient software applications.
 
 Source code available at `this link <https://github.com/alexeev-prog/pyEchoNext/tree/main/pyechonext/mvc>`__.
 
