@@ -14,6 +14,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install sphinx sphinx_rtd_theme myst_parser furo
+      - name: Copy pyechonext to build directory
+        run: |
+          mkdir -p _build/pyechonext
+          cp -r pyechonext/* _build/pyechonext/
       - name: Sphinx api docs build
         run: |
           sphinx-apidoc -o docs ./pyechonext
@@ -27,4 +31,4 @@ jobs:
           publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: _build/
-          force_orphan: false
+          force_orphan: true
