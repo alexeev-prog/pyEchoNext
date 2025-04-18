@@ -7,11 +7,6 @@ on:
 jobs:
   pages:
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/setup-python@v5
-    - name: Install dependencies
-      run: |
-        pip install sphinx myst_parser furo
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
