@@ -16,7 +16,7 @@ jobs:
           pip install sphinx sphinx_rtd_theme myst_parser furo
       - name: Sphinx api docs build
         run: |
-          sphinx-apidoc -o . ./pyechonext
+          sphinx-apidoc -o docs ./pyechonext
       - name: Sphinx build
         run: |
           sphinx-build docs _build
