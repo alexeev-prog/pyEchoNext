@@ -29,25 +29,17 @@ class Response:
 		charset: Optional[str] = None,
 		i18n_params: Optional[dict] = {},
 	):
-		"""
-		Constructs a new instance.
+		"""Initialize new response
 
-		:param		request:	   The request
-		:type		request:	   Request
-		:param		use_i18n:	   The use i 18 n
-		:type		use_i18n:	   bool
-		:param		status_code:   The status code
-		:type		status_code:   int
-		:param		body:		   The body
-		:type		body:		   str
-		:param		headers:	   The headers
-		:type		headers:	   Dict[str, str]
-		:param		content_type:  The content type
-		:type		content_type:  str
-		:param		charset:	   The charset
-		:type		charset:	   str
-		:param		kwargs:		   The keywords arguments
-		:type		kwargs:		   dictionary
+		Args:
+			request (Request, optional): request object. Defaults to None.
+			use_i18n (bool, optional): i18n using status. Defaults to False.
+			status_code (Optional[int], optional): default status code. Defaults to 200.
+			body (Optional[str], optional): response body. Defaults to None.
+			headers (Optional[Dict[str, str]], optional): http headers. Defaults to {}.
+			content_type (Optional[str], optional): content type. Defaults to None.
+			charset (Optional[str], optional): charset. Defaults to None.
+			i18n_params (Optional[dict], optional): params for i18n. Defaults to {}.
 		"""
 		if status_code == 200:
 			self.status_code: str = "200 OK"
@@ -80,18 +72,22 @@ class Response:
 		self._update_headers()
 
 	def __getattr__(self, item: Any) -> Union[Any, None]:
-		"""
-		Magic method for get attrs (from extra)
+		"""Magic method for get attrs (from extra)
 
-		:param		item:  The item
-		:type		item:  Any
+		Args:
+			item (Any): item key
 
-		:returns:	Item from self.extra or None
-		:rtype:		Union[Any, None]
+		Returns:
+			Union[Any, None]: value
 		"""
 		return self.extra.get(item, None)
 
-	def _structuring_headers(self, environ):
+	def _structuring_headers(self, environ: dict):
+		"""Structurize headers 
+
+		Args:
+			environ (dict): environ dictionary
+		"""
 		headers = {
 			"Host": environ.get("HTTP_HOST"),
 			"Accept": environ.get("HTTP_ACCEPT"),
@@ -105,11 +101,7 @@ class Response:
 			self._headerslist.append(header_tuple)
 
 	def _update_headers(self) -> None:
-		"""
-		Sets the headers by environ.
-
-		:param		environ:  The environ
-		:type		environ:  dict
+		"""Update headers by response data
 		"""
 		self._headerslist = [
 			("Content-Type", f"{self.content_type}; charset={self.charset}"),
@@ -117,11 +109,10 @@ class Response:
 		]
 
 	def add_headers(self, headers: List[Tuple[str, str]]):
-		"""
-		Adds new headers.
+		"""Adds new headers
 
-		:param		headers:  The headers
-		:type		headers:  List[Tuple[str, str]]
+		Args:
+			headers (List[Tuple[str, str]]): new headers
 		"""
 		for header in headers:
 			self._added_headers.append(header)
@@ -139,16 +130,16 @@ class Response:
 			self.body = str(self.body).encode("UTF-8")
 
 	def __call__(self, environ: dict, start_response: method) -> Iterable:
-		"""
-		Makes the Response object callable.
+		"""Makes the response callable.
+		
+		This method calling another methods for encode body, fill headers and starting response.
 
-		:param		environ:		 The environ
-		:type		environ:		 dict
-		:param		start_response:	 The start response
-		:type		start_response:	 method
+		Args:
+			environ (dict): environ data
+			start_response (method): start response method
 
-		:returns:	response body
-		:rtype:		Iterable
+		Returns:
+			Iterable: iterable encoded body
 		"""
 		self._encode_body()
 
@@ -165,11 +156,10 @@ class Response:
 
 	@property
 	def json(self) -> dict:
-		"""
-		Parse request body as JSON.
+		"""Get response body as JSON
 
-		:returns:	json body
-		:rtype:		dict
+		Returns:
+			dict: _description_
 		"""
 		if self.body:
 			if self.content_type == "application/json":
@@ -179,11 +169,10 @@ class Response:
 
 		return {}
 
-	def __repr__(self):
-		"""
-		Returns a unambiguous string representation of the object (for debug...).
+	def __repr__(self) -> str:
+		"""Returns a unambiguous string representation of the object (for debug...).
 
-		:returns:	String representation of the object.
-		:rtype:		str
+		Returns:
+			str: unambiguous string representation
 		"""
 		return f"<{self.__class__.__name__} at 0x{abs(id(self)):x} {self.status_code}>"

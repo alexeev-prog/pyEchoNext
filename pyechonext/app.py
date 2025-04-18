@@ -167,7 +167,7 @@ class EchoNext:
 	def add_route(
 		self, page_path: str, handler: Callable, summary: Optional[str] = None
 	):
-		"""Add page route
+		"""Add page route without decorator
 
 		Args:
 				page_path (str): page path url
@@ -180,7 +180,7 @@ class EchoNext:
 			self.router.add_page_route(page_path, handler, summary)
 
 	def route_page(self, page_path: str, summary: Optional[str] = None) -> Callable:
-		"""Route page
+		"""Route page decorator
 
 		Args:
 				page_path (str): page path url

@@ -291,7 +291,7 @@ Dependency-Injection framework. But we recommend using the specially
 developed `echonextdi <https://github.com/alexeev-prog/echonext_di>`__.
 It is simple and fast to use.
 
-   echonext_di goes in echonext dependencies
+Example code:
 
 .. code:: python
 

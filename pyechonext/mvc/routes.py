@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import Callable, Dict, List, Optional, Tuple, Union
+import inspect
 
 from parse import parse
 
@@ -53,16 +54,15 @@ def _create_url_route(url: URL) -> Route:
 def _create_page_route(
 	page_path: str, handler: Callable, summary: Optional[str] = None
 ) -> Route:
-	"""
-	Creates a page route.
+	"""Create page route
 
-	:param		page_path:	The page path
-	:type		page_path:	str
-	:param		handler:	The handler
-	:type		handler:	Callable
+	Args:
+		page_path (str): _description_
+		handler (Callable): _description_
+		summary (Optional[str], optional): _description_. Defaults to None.
 
-	:returns:	Route dataclass object
-	:rtype:		Route
+	Returns:
+		Route: _description_
 	"""
 	return Route(
 		page_path=page_path,
@@ -78,16 +78,46 @@ class Router:
 	"""
 
 	def __init__(self, urls: Optional[List[URL]] = []):
-		"""
-		Constructs a new instance.
+		"""Initialize a router with urls and routes
 
-		:param		urls:  The urls
-		:type		urls:  Array
+		Args:
+			urls (Optional[List[URL]], optional): urls list. Defaults to [].
 		"""
 		self.urls = urls
 		self.routes = {}
 
 		self._prepare_urls()
+		
+	def route_page(self, page_path: str, summary: Optional[str] = None) -> Callable:
+		"""Route page decorator
+
+		Args:
+				page_path (str): page path url
+				summary (Optional[str], optional): summary documentation. Defaults to None.
+
+		Returns:
+				Callable: wrapper
+		"""
+
+		def wrapper(handler):
+			"""Decoration for page routing.
+
+			Args:
+					handler (_type_): handler function
+
+			Returns:
+					_type_: handler function
+			"""
+			if inspect.isclass(handler):
+				self.add_url(
+					URL(path=page_path, controller=handler, summary=summary)
+				)
+			else:
+				self.add_page_route(page_path, handler, summary)
+
+			return handler
+
+		return wrapper
 
 	def _prepare_urls(self):
 		"""
@@ -99,15 +129,15 @@ class Router:
 	def add_page_route(
 		self, page_path: str, handler: Callable, summary: Optional[str] = None
 	):
-		"""
-		Adds a page route.
+		"""Add page route
 
-		:param		page_path:			   The page path
-		:type		page_path:			   str
-		:param		handler:			   The handler
-		:type		handler:			   Callable
+		Args:
+			page_path (str): page path URL
+			handler (Callable): handler object
+			summary (Optional[str], optional): summary docstring. Defaults to None.
 
-		:raises		RoutePathExistsError:  Such route already exists
+		Raises:
+			RoutePathExistsError: route with this path already exists
 		"""
 		if page_path in self.routes:
 			raise RoutePathExistsError(f'Route "{page_path}" already exists.')
@@ -117,25 +147,26 @@ class Router:
 	def generate_page_route(
 		self, page_path: str, handler: Callable, summary: Optional[str] = None
 	) -> Route:
-		"""
-		Generate page route
+		"""Generate page route
 
-		:param		page_path:	The page path
-		:type		page_path:	str
-		:param		handler:	The handler
-		:type		handler:	Callable
+		Args:
+			page_path (str): page path url
+			handler (Callable): handler object
+			summary (Optional[str], optional): summary docstring. Defaults to None.
 
-		:returns:	route dataclass object
-		:rtype:		Route
+		Returns:
+			Route: created route
 		"""
 		return _create_page_route(page_path, handler)
 
 	def add_url(self, url: URL):
-		"""
-		Adds an url.
+		"""Add an url
 
-		:param		url:  The url
-		:type		url:  URL
+		Args:
+			url (URL): URL class instance
+
+		Raises:
+			RoutePathExistsError: route with url.path already exists
 		"""
 		if url.path in self.routes:
 			raise RoutePathExistsError(f'Route "{url.path}" already exists.')
@@ -145,18 +176,17 @@ class Router:
 	def resolve(
 		self, request: Request, raise_404: Optional[bool] = True
 	) -> Union[Tuple[Callable, Dict], None]:
-		"""
-		Resolve path from request
+		"""Resolve path from request
 
-		:param		request:	  The request
-		:type		request:	  Request
-		:param		raise_404:	  Indicates if the 404 is raised
-		:type		raise_404:	  bool
+		Args:
+			request (Request): request object
+			raise_404 (Optional[bool], optional): Raise 404 error if url not found or not. Defaults to True.
 
-		:returns:	handler and named OR raise URLNotFound (if raise_404) OR None
-		:rtype:		Union[Tuple[Callable, Dict], None]:
+		Raises:
+			URLNotFound: URL Not found, error 404
 
-		:raises		URLNotFound:  URL Not Found
+		Returns:
+			Union[Tuple[Callable, Dict], None]: route and parse result or None
 		"""
 		url = _prepare_url(request.path)
 

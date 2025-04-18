@@ -12,11 +12,11 @@ class Request:
 	"""
 
 	def __init__(self, environ: dict = {}, settings: Settings = None):
-		"""
-		Constructs a new instance.
+		"""Constructs a new request
 
-		:param		environ:  The environ
-		:type		environ:  dict
+		Args:
+			environ (dict, optional): environ info. Defaults to {}.
+			settings (Settings, optional): settings of app. Defaults to None.
 		"""
 		self.environ: Dict[str, Any] = environ
 		self.settings: Settings = settings
@@ -34,31 +34,34 @@ class Request:
 		logger.debug(f"New request created: {self.method} {self.path}")
 
 	def __getattr__(self, item: Any) -> Union[Any, None]:
-		"""
-		Magic method for get attrs (from extra)
+		"""Magic method for get attrs (from extra)
 
-		:param		item:  The item
-		:type		item:  Any
+		Args:
+			item (Any): item key
 
-		:returns:	Item from self.extra or None
-		:rtype:		Union[Any, None]
+		Returns:
+			Union[Any, None]: value
 		"""
 		return self.extra.get(item, None)
 
-	def _build_get_params_dict(self, raw_params: str):
-		"""
-		Builds a get parameters dictionary.
+	def _build_get_params_dict(self, raw_params: str) -> dict:
+		"""Build GET params dictionary
 
-		:param		raw_params:	 The raw parameters
-		:type		raw_params:	 str
+		Args:
+			raw_params (str): raw params string
+
+		Returns:
+			dict: GET params
 		"""
 		return parse_qs(raw_params)
 
-	def _build_post_params_dict(self, raw_params: bytes):
-		"""
-		Builds a post parameters dictionary.
+	def _build_post_params_dict(self, raw_params: bytes) -> dict:
+		"""Build POST params dictionary
 
-		:param		raw_params:	 The raw parameters
-		:type		raw_params:	 bytes
+		Args:
+			raw_params (bytes): raw parameters
+
+		Returns:
+			dict: POST params
 		"""
 		return parse_qs(raw_params.decode())

@@ -39,8 +39,14 @@
 </p>
 
  > EchoNext is a lightweight, fast and scalable web framework for Python
+ 
+ > [!CAUTION]
+> At the moment, EchoNext is under active development, many things may not work, and this version is not recommended for use (all at your own risk)
 
 Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the sluggishness of traditional web frameworks? Want a solution that keeps pace with your ambitious apps? Look no further. EchoNext is your agile companion in the world of web development!
+
+> [!NOTE]
+> Versions below 0.7.14a are not recommended for use with gunicorn <23.0 due to the fact that they used an older version of gunicorn (<23.0), which was [vulnerable](https://deps.dev/advisory/osv/GHSA-hc5x-x2vx-497g).
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/logo.jpg">
@@ -145,7 +151,13 @@ Once installed, you can start using the library in your Python projects. Check o
 ## ⚙️ Depends Injection
 pyEchoNext is universal, and you are free to use any Dependency-Injection framework. But we recommend using the specially developed [echonextdi](https://github.com/alexeev-prog/echonext_di). It is simple and fast to use.
 
- > echonext_di goes in echonext dependencies
+Install:
+
+```bash
+pip install echonextdi
+```
+
+Example code:
 
 ```python
 from echonextdi.containers.container import Container

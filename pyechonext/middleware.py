@@ -16,33 +16,44 @@ class BaseMiddleware(ABC):
 
 	@abstractmethod
 	def to_request(self, request: Request):
-		"""
-		To request method
+		"""Apply actions to request
 
-		:param		request:  The request
-		:type		request:  Request
+		Args:
+			request (Request): request object
+
+		Raises:
+			NotImplementedError: abstract method
 		"""
 		raise NotImplementedError
 
 	@abstractmethod
 	def to_response(self, response: Response):
-		"""
-		To response method
+		"""Apply actions to response
 
-		:param		response:  The response
-		:type		response:  Response
+		Args:
+			response (Response): response object
+
+		Raises:
+			NotImplementedError: abstract method
 		"""
 		raise NotImplementedError
 
 	def process_template(self, *args, **kwargs):
+		"""Process template with middleware
+
+		Raises:
+			NotImplementedError: abstract method
+		"""
 		raise NotImplementedError
 
 	def process_exception(self, exception: Exception):
-		"""
-		Process exception
+		"""Process exception with middleware
 
-		:param		exception:	The exception
-		:type		exception:	Exception
+		Args:
+			exception (Exception): exception class
+
+		Raises:
+			exception: exception from arguments
 		"""
 		if not isinstance(exception, pyEchoNextException) or not isinstance(
 			exception, WebError
@@ -56,11 +67,10 @@ class SessionMiddleware(BaseMiddleware):
 	"""
 
 	def to_request(self, request: Request):
-		"""
-		Set to request
+		"""Apply cookies to request
 
-		:param		request:  The request
-		:type		request:  Request
+		Args:
+			request (Request): request object
 		"""
 		cookie = request.environ.get("HTTP_COOKIE", None)
 
@@ -74,11 +84,10 @@ class SessionMiddleware(BaseMiddleware):
 		request.extra["session_id"] = session_id
 
 	def to_response(self, response: Response):
-		"""
-		Set to response
+		"""Get session uuid by response
 
-		:param		response:  The response
-		:type		response:  Response
+		Args:
+			response (Response): response
 		"""
 		if not response.request.session_id:
 			session_id = uuid4()

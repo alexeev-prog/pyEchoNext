@@ -16,7 +16,12 @@ extensions = [
     "sphinx.ext.todo",  # support TODO
     "sphinx.ext.coverage",  # check docs coverage
     "sphinx.ext.ifconfig",  # directives in docs
+    'sphinx.ext.autosummary', # generating summary for code
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.githubpages'
 ]
+
+pygments_style = 'gruvbox-dark'
 
 html_theme = "furo"  # theme
 html_static_path = ["_static"]  # static dir

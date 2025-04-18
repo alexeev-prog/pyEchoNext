@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Set, Tuple
+from typing import Any, Dict, List, Set, Tuple, Type
 
 
 class AbstractPermission(ABC):
@@ -9,10 +9,10 @@ class AbstractPermission(ABC):
 
 	@abstractmethod
 	def __str__(self):
-		"""
-		Returns a string representation of the object.
+		"""Returns a string representation of the object.
 
-		:raises		NotImplementedError:  abstract method
+		Raises:
+			NotImplementedError: abstract method
 		"""
 		raise NotImplementedError()
 
@@ -23,20 +23,18 @@ class Permission(AbstractPermission):
 	"""
 
 	def __init__(self, name: str):
-		"""
-		Constructs a new instance.
+		"""Initialize a permission
 
-		:param		name:  The name
-		:type		name:  str
+		Args:
+			name (str): permission name
 		"""
 		self.name: str = name
 
 	def __str__(self) -> str:
-		"""
-		Returns a string representation of the object.
+		"""Returns a string representation of the object.
 
-		:returns:	String representation of the object.
-		:rtype:		str
+		Returns:
+			str: permission name
 		"""
 		return self.name
 
@@ -47,41 +45,41 @@ class AbstractRole(ABC):
 	"""
 
 	@abstractmethod
-	def has_permission(self, permission: AbstractPermission) -> bool:
-		"""
-		Determines if permission.
+	def has_permission(self, permission: Type[AbstractPermission]) -> bool:
+		"""Determines if permission
 
-		:param		permission:			  The permission
-		:type		permission:			  AbstractPermission
+		Args:
+			permission (AbstractPermission): permission object
 
-		:returns:	True if permission, False otherwise.
-		:rtype:		bool
+		Raises:
+			NotImplementedError: abstract method
 
-		:raises		NotImplementedError:  abstract method
+		Returns:
+			bool: true is has, false otherwise
 		"""
 		raise NotImplementedError()
 
 	@abstractmethod
 	def get_permissions(self) -> Set[AbstractPermission]:
-		"""
-		Gets the permissions.
+		"""Get list of permissions
 
-		:returns:	The permissions.
-		:rtype:		Set[AbstractPermission]
+		Raises:
+			NotImplementedError: abstract method
 
-		:raises		NotImplementedError:  abstract method
+		Returns:
+			Set[AbstractPermission]: set with abstract permissions
 		"""
 		raise NotImplementedError()
 
 	@abstractmethod
 	def get_name(self) -> str:
-		"""
-		Gets the name.
+		"""Get the role name
 
-		:returns:	The name.
-		:rtype:		str
+		Raises:
+			NotImplementedError: abstract method
 
-		:raises		NotImplementedError:  abstract method
+		Returns:
+			str: role name
 		"""
 		raise NotImplementedError()
 
@@ -92,60 +90,53 @@ class Role(AbstractRole):
 	"""
 
 	def __init__(self, name: str):
-		"""
-		Constructs a new instance.
+		"""Constructs a new instance
 
-		:param		name:  The name
-		:type		name:  str
+		Args:
+			name (str): role name
 		"""
 		self.name = name
 		self.permissions: Set[AbstractPermission] = set()
 
-	def add_permission(self, permission: AbstractPermission):
-		"""
-		Adds a permission.
+	def add_permission(self, permission: Type[AbstractPermission]):
+		"""Add a permission
 
-		:param		permission:	 The permission
-		:type		permission:	 AbstractPermission
+		Args:
+			permission (AbstractPermission): permission object
 		"""
 		self.permissions.add(permission)
 
-	def remove_permission(self, permission: AbstractPermission):
-		"""
-		Removes a permission.
+	def remove_permission(self, permission: Type[AbstractPermission]):
+		"""Remove a permission
 
-		:param		permission:	 The permission
-		:type		permission:	 AbstractPermission
+		Args:
+			permission (AbstractPermission): permission object
 		"""
 		self.permissions.discard(permission)
 
-	def has_permission(self, permission: AbstractPermission) -> bool:
-		"""
-		Determines if permission.
+	def has_permission(self, permission: Type[AbstractPermission]) -> bool:
+		"""Determines if permission
 
-		:param		permission:	 The permission
-		:type		permission:	 AbstractPermission
+		Args:
+			permission (AbstractPermission): permission object
 
-		:returns:	True if permission, False otherwise.
-		:rtype:		bool
+			bool: true is has, false otherwise
 		"""
 		return permission in self.permissions
 
 	def get_permissions(self) -> Set[AbstractPermission]:
-		"""
-		Gets the permissions.
+		"""Get list of permissions
 
-		:returns:	The permissions.
-		:rtype:		Set[AbstractPermission]
+		Returns:
+			Set[AbstractPermission]: set with abstract permissions
 		"""
 		return self.permissions
 
 	def get_name(self) -> str:
-		"""
-		Gets the name.
+		"""Get the role name
 
-		:returns:	The name.
-		:rtype:		str
+		Returns:
+			str: role name
 		"""
 		return self.name
 
@@ -156,64 +147,57 @@ class User:
 	"""
 
 	def __init__(self, username: str, attributes: Dict[str, Any] = {}):
-		"""
-		Constructs a new instance.
+		"""Constructs a new instance
 
-		:param		username:	 The username
-		:type		username:	 str
-		:param		attributes:	 The attributes
-		:type		attributes:	 Dict[str, Any]
+		Args:
+			username (str): name of user
+			attributes (Dict[str, Any], optional): attributes for user. Defaults to {}.
 		"""
 		self.username: str = username
 		self.roles: Set[AbstractRole] = set()
 		self.attributes: Dict[str, Any] = attributes
 
-	def add_role(self, role: AbstractRole):
-		"""
-		Adds a role.
+	def add_role(self, role: Type[AbstractRole]):
+		"""Adds a role
 
-		:param		role:  The role
-		:type		role:  AbstractRole
+		Args:
+			role (AbstractRole): role object
 		"""
 		self.roles.add(role)
 
-	def remove_role(self, role: AbstractRole):
-		"""
-		Removes a role.
+	def remove_role(self, role: Type[AbstractRole]):
+		"""Remove a role
 
-		:param		role:  The role
-		:type		role:  AbstractRole
+		Args:
+			role (Type[AbstractRole]): role object
 		"""
 		self.roles.discard(role)
 
-	def has_permission(self, permission: AbstractPermission) -> bool:
-		"""
-		Determines if permission.
+	def has_permission(self, permission: Type[AbstractPermission]) -> bool:
+		"""Determines if permission
 
-		:param		permission:	 The permission
-		:type		permission:	 AbstractPermission
+		Args:
+			permission (Type[AbstractPermission]): permission object
 
-		:returns:	True if permission, False otherwise.
-		:rtype:		bool
+		Returns:
+			bool: true is has, false otherwise
 		"""
 		perms = [str(perm) for p in self.roles for perm in p.permissions]
 		return str(permission) in perms
 
 	def get_roles(self) -> Set[AbstractRole]:
-		"""
-		Gets the roles.
+		"""Get roles
 
-		:returns:	The roles.
-		:rtype:		Set[AbstractRole]
+		Returns:
+			Set[AbstractRole]: roles set
 		"""
 		return self.roles
 
 	def get_username(self) -> str:
-		"""
-		Gets the username.
+		"""Get username
 
-		:returns:	The username.
-		:rtype:		str
+		Returns:
+			str: username
 		"""
 		return self.username
 
@@ -224,20 +208,18 @@ class Resource:
 	"""
 
 	def __init__(self, name: str):
-		"""
-		Constructs a new instance.
+		"""Constructs a new resource
 
-		:param		name:  The name
-		:type		name:  str
+		Args:
+			name (str): resource name
 		"""
 		self.name = name
 
 	def __str__(self) -> str:
-		"""
-		Returns a string representation of the object.
+		"""Returns a string representation of the object.
 
-		:returns:	String representation of the object.
-		:rtype:		str
+		Returns:
+			str: resource name
 		"""
 		return self.name
 
@@ -249,43 +231,36 @@ class AccessControlRule:
 
 	def __init__(
 		self,
-		role: AbstractRole,
-		permission: AbstractPermission,
-		resource: Resource,
+		role: Type[AbstractRole],
+		permission: Type[AbstractPermission],
+		resource: Type[Resource],
 		allowed: bool,
 	):
-		"""
-		Constructs a new instance.
+		"""Constructs a new instance
 
-		:param		role:		 The role
-		:type		role:		 AbstractRole
-		:param		permission:	 The permission
-		:type		permission:	 AbstractPermission
-		:param		resource:	 The resource
-		:type		resource:	 Resource
-		:param		allowed:	 Indicates if allowed
-		:type		allowed:	 bool
+		Args:
+			role (Type[AbstractRole]): role object
+			permission (Type[AbstractPermission]): permission object
+			resource (Type[Resource]): resource object
+			allowed (bool): allowed status
 		"""
-		self.role: AbstractRole = role
-		self.permission: AbstractPermission = permission
-		self.resource: Resource = resource
+		self.role: Type[AbstractRole] = role
+		self.permission: Type[AbstractPermission] = permission
+		self.resource: Type[Resource] = resource
 		self.allowed: bool = allowed
 
 	def applies_to(
-		self, user: User, resource: Resource, permission: AbstractPermission
+		self, user: User, resource: Type[Resource], permission: Type[AbstractPermission]
 	) -> bool:
-		"""
-		Applies to access
+		"""Applies to user
 
-		:param		user:		 The user
-		:type		user:		 User
-		:param		resource:	 The resource
-		:type		resource:	 Resource
-		:param		permission:	 The permission
-		:type		permission:	 AbstractPermission
+		Args:
+			user (User): user
+			resource (Type[Resource]): resource
+			permission (Type[AbstractPermission]): permissions
 
-		:returns:	True if applies, False otherwise.
-		:rtype:		bool
+		Returns:
+			bool: true if is applies, false otherwise
 		"""
 		return (
 			self.role in user.get_roles()
@@ -294,11 +269,10 @@ class AccessControlRule:
 		)
 
 	def __str__(self):
-		"""
-		Returns a string representation of the object.
+		"""Returns a string representation of the object.
 
-		:returns:	String representation of the object.
-		:rtype:		str
+		Returns:
+			str: rule name
 		"""
 		return f"Rule {self.role} {self.permission} {self.resource} {self.allowed}"
 
@@ -315,29 +289,25 @@ class Policy:
 		self.rules: List[AccessControlRule] = []
 
 	def add_rule(self, rule: AccessControlRule):
-		"""
-		Adds a rule.
+		"""Add a new rule
 
-		:param		rule:  The rule
-		:type		rule:  AccessControlRule
+		Args:
+			rule (AccessControlRule): new rule
 		"""
 		self.rules.append(rule)
 
 	def evaluate(
-		self, user: User, resource: Resource, permission: AbstractPermission
+		self, user: User, resource: Type[Resource], permission: Type[AbstractPermission]
 	) -> bool:
-		"""
-		Evaluate policy access
+		"""Evaluate policty access
 
-		:param		user:		 The user
-		:type		user:		 User
-		:param		resource:	 The resource
-		:type		resource:	 Resource
-		:param		permission:	 The permission
-		:type		permission:	 AbstractPermission
+		Args:
+			user (User): user object
+			resource (Resource): resource
+			permission (AbstractPermission): permission
 
-		:returns:	True if access, False otherwise.
-		:rtype:		bool
+		Returns:
+			bool: true is allowed, false otherwise
 		"""
 		for rule in self.rules:
 			if rule.applies_to(user, resource, permission):
@@ -352,30 +322,26 @@ class AttributeBasedPolicy(Policy):
 	"""
 
 	def __init__(self, conditions: Dict[str, Any]):
-		"""
-		Constructs a new instance.
+		"""Constructs a new instance
 
-		:param		conditions:	 The conditions
-		:type		conditions:	 Dict[str, Any]
+		Args:
+			conditions (Dict[str, Any]): conditions dictionary
 		"""
 		super().__init__()
 		self.conditions = conditions
 
 	def evaluate(
-		self, user: User, resource: Resource, permission: AbstractPermission
+		self, user: User, resource: Type[Resource], permission: Type[AbstractPermission]
 	) -> bool:
-		"""
-		Evaluate policy access
+		"""Evaluate policy access
 
-		:param		user:		 The user
-		:type		user:		 User
-		:param		resource:	 The resource
-		:type		resource:	 Resource
-		:param		permission:	 The permission
-		:type		permission:	 AbstractPermission
+		Args:
+			user (User): user model
+			resource (Resource): resource model
+			permission (AbstractPermission): permission model
 
-		:returns:	True if access, False otherwise.
-		:rtype:		bool
+		Returns:
+			bool: evaluation status
 		"""
 		for condition, value in self.conditions.items():
 			if user.attributes.get(condition, None) is None:
@@ -390,33 +356,28 @@ class AgeRestrictionsABP(Policy):
 	"""
 
 	def __init__(self, conditions: Dict[str, Any], rules: List[AccessControlRule]):
-		"""
-		Constructs a new instance.
+		"""Initialize a Age Policy
 
-		:param		conditions:	 The conditions
-		:type		conditions:	 conditions: Dict[str, Any]
-		:param		rules:		 The rules
-		:type		rules:		 List[AccessControlRule]
+		Args:
+			conditions (Dict[str, Any]): conditions
+			rules (List[AccessControlRule]): rules list
 		"""
 		super().__init__()
 		self.conditions = conditions
 		self.rules += rules
 
 	def evaluate(
-		self, user: User, resource: Resource, permission: AbstractPermission
+		self, user: User, resource: Type[Resource], permission: Type[AbstractPermission]
 	) -> bool:
-		"""
-		Evaluate policy access
+		"""Evaluate policy access
 
-		:param		user:		 The user
-		:type		user:		 User
-		:param		resource:	 The resource
-		:type		resource:	 Resource
-		:param		permission:	 The permission
-		:type		permission:	 AbstractPermission
+		Args:
+			user (User): user object
+			resource (Resource): resource object
+			permission (AbstractPermission): permission object
 
-		:returns:	True if access, False otherwise.
-		:rtype:		bool
+		Returns:
+			bool: evaluation status
 		"""
 		for condition, value in self.conditions.items():
 			if user.attributes.get(condition, 0) < value:
@@ -432,22 +393,20 @@ class PermissionChecker(ABC):
 
 	@abstractmethod
 	def check(
-		self, user: User, resource: Resource, permission: AbstractPermission
+		self, user: User, resource: Type[Resource], permission: Type[AbstractPermission]
 	) -> bool:
-		"""
-		Check permission for user
+		"""Check permissions for user
 
-		:param		user:				  The user
-		:type		user:				  User
-		:param		resource:			  The resource
-		:type		resource:			  Resource
-		:param		permission:			  The permission
-		:type		permission:			  AbstractPermission
+		Args:
+			user (User): user object
+			resource (Resource): resource object
+			permission (AbstractPermission): permission object
 
-		:returns:	True is valid, false otherwise
-		:rtype:		bool
+		Raises:
+			NotImplementedError: abstract method
 
-		:raises		NotImplementedError:  abstract method
+		Returns:
+			bool: true is valid, false otherwise
 		"""
 		raise NotImplementedError()
 
@@ -458,29 +417,25 @@ class DefaultPermissionChecker(PermissionChecker):
 	"""
 
 	def __init__(self, policy: Policy):
-		"""
-		Constructs a new instance.
+		"""Initialize a checker
 
-		:param		policy:	 The policy
-		:type		policy:	 Policy
+		Args:
+			policy (Policy): policy for checkr
 		"""
 		self.policy: Policy = policy
 
 	def check(
-		self, user: User, resource: Resource, permission: AbstractPermission
+		self, user: User, resource: Type[Resource], permission: Type[AbstractPermission]
 	) -> bool:
-		"""
-		Check permission for user
+		"""Check user permissions
 
-		:param		user:				  The user
-		:type		user:				  User
-		:param		resource:			  The resource
-		:type		resource:			  Resource
-		:param		permission:			  The permission
-		:type		permission:			  AbstractPermission
+		Args:
+			user (User): user object
+			resource (Resource): resource object
+			permission (AbstractPermission): permissions object
 
-		:returns:	True is valid, false otherwise
-		:rtype:		bool
+		Returns:
+			bool: true is valid, false otherwise
 		"""
 		if user.has_permission(permission):
 			return self.policy.evaluate(user, resource, permission)
@@ -495,32 +450,29 @@ class AbstractController(ABC):
 
 	@abstractmethod
 	def __init__(self, permission_checker: PermissionChecker):
-		"""
-		Constructs a new instance.
+		"""Constructs a new instance
 
-		:param		permission_checker:	 The permission checker
-		:type		permission_checker:	 PermissionChecker
+		Args:
+			permission_checker (PermissionChecker): permission checker class
 		"""
-		raise NotImplementedError()
+		pass
 
 	@abstractmethod
 	def check(
-		self, current_user: User, resource: Resource, permission: Permission
+		self, current_user: User, resource: Type[Resource], permission: Permission
 	) -> bool:
-		"""
-		Check permission for user
+		"""Check permissions for user
 
-		:param		user:				  The user
-		:type		user:				  User
-		:param		resource:			  The resource
-		:type		resource:			  Resource
-		:param		permission:			  The permission
-		:type		permission:			  AbstractPermission
+		Args:
+			current_user (User): user object
+			resource (Resource): resource object
+			permission (Permission): permission object
 
-		:returns:	True is valid, false otherwise
-		:rtype:		bool
+		Raises:
+			NotImplementedError: abstractmethod
 
-		:raises		NotImplementedError:  abstract method
+		Returns:
+			bool: true is valid, otherwise false
 		"""
 		raise NotImplementedError()
 
@@ -531,43 +483,37 @@ class UserController(AbstractController):
 	"""
 
 	def __init__(self, permission_checker: PermissionChecker):
-		"""
-		Constructs a new instance.
+		"""Constructs a new instance
 
-		:param		permission_checker:	 The permission checker
-		:type		permission_checker:	 PermissionChecker
+		Args:
+			permission_checker (PermissionChecker): permission checker class
 		"""
 		self.permission_checker = permission_checker
 
 	def check(
-		self, current_user: User, resource: Resource, permission: Permission
+		self, current_user: User, resource: Type[Resource], permission: Permission
 	) -> bool:
-		"""
-		Check permission for user
+		"""Check permissions for user
 
-		:param		user:				  The user
-		:type		user:				  User
-		:param		resource:			  The resource
-		:type		resource:			  Resource
-		:param		permission:			  The permission
-		:type		permission:			  AbstractPermission
+		Args:
+			current_user (User): current user object
+			resource (Resource): resource object
+			permission (Permission): user permission
 
-		:returns:	True is valid, false otherwise
-		:rtype:		bool
+		Returns:
+			bool: True is valid, false otherwise
 		"""
 		return self.permission_checker.check(current_user, resource, permission)
 
-	def view_users(self, current_user: User, resource: Resource) -> Tuple[str]:
-		"""
-		View users
+	def view_users(self, current_user: User, resource: Type[Resource]) -> Tuple[str]:
+		"""View users by current user and resource
 
-		:param		current_user:  The current user
-		:type		current_user:  User
-		:param		resource:	   The resource
-		:type		resource:	   Resource
+		Args:
+			current_user (User): current user object
+			resource (Resource): resource object
 
-		:returns:	response
-		:rtype:		Tuple[str]
+		Returns:
+			Tuple[str]: data
 		"""
 		if not self.permission_checker.check(
 			current_user, resource, Permission("view_users")
@@ -576,17 +522,15 @@ class UserController(AbstractController):
 
 		return ("200 OK", "User edit form")
 
-	def edit_users(self, current_user: User, resource: Resource) -> Tuple[str]:
-		"""
-		Edit users
+	def edit_users(self, current_user: User, resource: Type[Resource]) -> Tuple[str]:
+		"""Edit users with current user and resource
 
-		:param		current_user:  The current user
-		:type		current_user:  User
-		:param		resource:	   The resource
-		:type		resource:	   Resource
+		Args:
+			current_user (User): user object
+			resource (Resource): resource object
 
-		:returns:	response
-		:rtype:		Tuple[str]
+		Returns:
+			Tuple[str]: data
 		"""
 		if not self.permission_checker.check(
 			current_user, resource, Permission("edit_users")
