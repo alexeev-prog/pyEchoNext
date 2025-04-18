@@ -11,13 +11,15 @@ pyEchoNext documentation
    :maxdepth: 2
    :caption: Contents:
    
+   webframework_design
+   webapp_creation
+   routes_and_views
+   requests_responses
+   i18n_locales
+   security
    mvc
    permissions
-   requests_responses
-   routes_and_views
-   security
-   webapp_creation
-   webframework_design
+   
 
 ------------------
 
