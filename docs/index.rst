@@ -18,6 +18,13 @@ pyEchoNext documentation
    security
    webapp_creation
    webframework_design
+
+------------------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+   
    pyechonext
    pyechonext.apidoc_ui
    pyechonext.auth
