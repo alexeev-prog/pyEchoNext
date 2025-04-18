@@ -16,14 +16,15 @@ jobs:
           pip install sphinx myst_parser furo
       - name: Sphinx api docs build
         run: |
-          sphinx-apidoc -o docs pyechonext
+          sphinx-apidoc -o docs ./pyechonext
       - name: Sphinx build
         run: |
-          sphinx-build docs docs/_build
+          sphinx-build docs _build
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         with:
-          publish_branch: main
+          publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/_build/
+          publish_dir: _build/
           force_orphan: false
