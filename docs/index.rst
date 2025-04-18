@@ -9,7 +9,7 @@ pyEchoNext documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Article Docs:
    
    webframework_design
    webapp_creation
@@ -25,7 +25,7 @@ pyEchoNext documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Source code docs:
    
    pyechonext
    pyechonext.apidoc_ui
@@ -322,8 +322,6 @@ It is simple and fast to use.
 💻 Usage Examples
 -----------------
 
-You can view examples at `examples directory <./examples>`__.
-
 Basic With Depends Injection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -481,8 +479,6 @@ Permissions
 
 FullApp with locale, static files, docs generation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Also see in `examples <./examples/example_locale.py>`__
 
 .. code:: python
 
@@ -873,34 +869,7 @@ The main documentation is
 `here <https://alexeev-prog.github.io/pyEchoNext/>`__.
 
    At the moment documentation move from doxygen to sphinx
-
-Extended documentation and framework specifications are available at the
-following links:
-
-English
-~~~~~~~
-
-1. `Index <./docs/en/index.md>`__
-2. `Web framework design <./docs/en/webframework_design.md>`__
-3. `Creating a web application <./docs/en/webapp_creation.md>`__
-4. `Creating routes (routes&views) <./docs/en/routes_and_views.md>`__
-5. `Request/Response <./docs/en/requests_responses.md>`__
-6. `Localization i18n/l10n <./docs/en/i18n_locales.md>`__
-7. `Security <./docs/en/security.md>`__
-8. `Permissions & rights <./docs/en/permissions.md>`__
-
-Russian / Русский
-~~~~~~~~~~~~~~~~~
-
-1. `Содержание <./docs/ru/index.md>`__
-2. `Устройство веб-фреймворка <./docs/ru/webframework_design.md>`__
-3. `Создание веб-приложения <./docs/ru/webapp_creation.md>`__
-4. `Создание маршрутов (routes&views) <./docs/ru/routes_and_views.md>`__
-5. `Request/Response <./docs/ru/requests_responses.md>`__
-6. `Локализация i18n/l10n <./docs/ru/i18n_locales.md>`__
-7. `Безопасность <./docs/ru/security.md>`__
-8. `Разрешения и права <./docs/ru/permissions.md>`__
-
+   
 💬 Support
 ----------
 

@@ -22,129 +22,129 @@ Here is source code of Controllers.
 
 .. code:: python
 
-    class BaseController(ABC):
-    	"""
-    	Controls the data flow into a base object and updates the view whenever data changes.
-    	"""
+	class BaseController(ABC):
+		"""
+		Controls the data flow into a base object and updates the view whenever data changes.
+		"""
 
-    	@abstractmethod
-    	def get(self, request: Request, response: Response, *args, **kwargs):
-    		"""
-    		Get method
+		@abstractmethod
+		def get(self, request: Request, response: Response, *args, **kwargs):
+			"""
+			Get method
 
-    		:param		request:			  The request
-    		:type		request:			  Request
-    		:param		response:			  The response
-    		:type		response:			  Response
-    		:param		args:				  The arguments
-    		:type		args:				  list
-    		:param		kwargs:				  The keywords arguments
-    		:type		kwargs:				  dictionary
+			:param		request:			  The request
+			:type		request:			  Request
+			:param		response:			  The response
+			:type		response:			  Response
+			:param		args:				  The arguments
+			:type		args:				  list
+			:param		kwargs:				  The keywords arguments
+			:type		kwargs:				  dictionary
 
-    		:raises		NotImplementedError:  abstract method
-    		"""
-    		raise NotImplementedError()
+			:raises		NotImplementedError:  abstract method
+			"""
+			raise NotImplementedError()
 
-    	@abstractmethod
-    	def post(self, request: Request, response: Response, *args, **kwargs):
-    		"""
-    		Post method
+		@abstractmethod
+		def post(self, request: Request, response: Response, *args, **kwargs):
+			"""
+			Post method
 
-    		:param		request:			  The request
-    		:type		request:			  Request
-    		:param		response:			  The response
-    		:type		response:			  Response
-    		:param		args:				  The arguments
-    		:type		args:				  list
-    		:param		kwargs:				  The keywords arguments
-    		:type		kwargs:				  dictionary
+			:param		request:			  The request
+			:type		request:			  Request
+			:param		response:			  The response
+			:type		response:			  Response
+			:param		args:				  The arguments
+			:type		args:				  list
+			:param		kwargs:				  The keywords arguments
+			:type		kwargs:				  dictionary
 
-    		:raises		NotImplementedError:  abstract method
-    		"""
-    		raise NotImplementedError()
+			:raises		NotImplementedError:  abstract method
+			"""
+			raise NotImplementedError()
 
 
-    class PageController(BaseController):
-    	"""
-    	Controls the data flow into a page object and updates the view whenever data changes.
-    	"""
+	class PageController(BaseController):
+		"""
+		Controls the data flow into a page object and updates the view whenever data changes.
+		"""
 
-    	def _create_model(
-    		self, request: Request, data: Union[Response, Any], app: "EchoNext"
-    	) -> PageModel:
-    		"""
-    		Creates a model.
+		def _create_model(
+			self, request: Request, data: Union[Response, Any], app: "EchoNext"
+		) -> PageModel:
+			"""
+			Creates a model.
 
-    		:param		request:  The request
-    		:type		request:  Request
-    		:param		data:	  The data
-    		:type		data:	  Union[Response, Any]
-    		:param		app:	  The application
-    		:type		app:	  EchoNext
+			:param		request:  The request
+			:type		request:  Request
+			:param		data:	  The data
+			:type		data:	  Union[Response, Any]
+			:param		app:	  The application
+			:type		app:	  EchoNext
 
-    		:returns:	The page model.
-    		:rtype:		PageModel
-    		"""
-    		model = PageModel(request)
-    		model.response = model.get_response(data, app)
+			:returns:	The page model.
+			:rtype:		PageModel
+			"""
+			model = PageModel(request)
+			model.response = model.get_response(data, app)
 
-    		return model
+			return model
 
-    	def get_rendered_view(
-    		self, request: Request, data: Union[Response, Any], app: "EchoNext"
-    	) -> str:
-    		"""
-    		Gets the rendered view.
+		def get_rendered_view(
+			self, request: Request, data: Union[Response, Any], app: "EchoNext"
+		) -> str:
+			"""
+			Gets the rendered view.
 
-    		:param		request:  The request
-    		:type		request:  Request
-    		:param		data:	  The data
-    		:type		data:	  Union[Response, Any]
-    		:param		app:	  The application
-    		:type		app:	  EchoNext
+			:param		request:  The request
+			:type		request:  Request
+			:param		data:	  The data
+			:type		data:	  Union[Response, Any]
+			:param		app:	  The application
+			:type		app:	  EchoNext
 
-    		:returns:	The rendered view.
-    		:rtype:		str
-    		"""
-    		model = self._create_model(request, data, app)
+			:returns:	The rendered view.
+			:rtype:		str
+			"""
+			model = self._create_model(request, data, app)
 
-    		view = PageView()
+			view = PageView()
 
-    		return view.render(model)
+			return view.render(model)
 
-    	def get(self, request: Request, response: Response, *args, **kwargs):
-    		"""
-    		Get Method
+		def get(self, request: Request, response: Response, *args, **kwargs):
+			"""
+			Get Method
 
-    		:param		request:		 The request
-    		:type		request:		 Request
-    		:param		response:		 The response
-    		:type		response:		 Response
-    		:param		args:			 The arguments
-    		:type		args:			 list
-    		:param		kwargs:			 The keywords arguments
-    		:type		kwargs:			 dictionary
+			:param		request:		 The request
+			:type		request:		 Request
+			:param		response:		 The response
+			:type		response:		 Response
+			:param		args:			 The arguments
+			:type		args:			 list
+			:param		kwargs:			 The keywords arguments
+			:type		kwargs:			 dictionary
 
-    		:raises		MethodNotAllow:	 get method not allowed
-    		"""
-    		raise MethodNotAllow("Method Not Allow: GET")
+			:raises		MethodNotAllow:	 get method not allowed
+			"""
+			raise MethodNotAllow("Method Not Allow: GET")
 
-    	def post(self, request: Request, response: Response, *args, **kwargs):
-    		"""
-    		Post Method
+		def post(self, request: Request, response: Response, *args, **kwargs):
+			"""
+			Post Method
 
-    		:param		request:		 The request
-    		:type		request:		 Request
-    		:param		response:		 The response
-    		:type		response:		 Response
-    		:param		args:			 The arguments
-    		:type		args:			 list
-    		:param		kwargs:			 The keywords arguments
-    		:type		kwargs:			 dictionary
+			:param		request:		 The request
+			:type		request:		 Request
+			:param		response:		 The response
+			:type		response:		 Response
+			:param		args:			 The arguments
+			:type		args:			 list
+			:param		kwargs:			 The keywords arguments
+			:type		kwargs:			 dictionary
 
-    		:raises		MethodNotAllow:	 post method not allowed
-    		"""
-    		raise MethodNotAllow("Method Not Allow: Post")
+			:raises		MethodNotAllow:	 post method not allowed
+			"""
+			raise MethodNotAllow("Method Not Allow: Post")
 
 Models
 ------
@@ -153,99 +153,99 @@ Here is source code of Models.
 
 .. code:: python
 
-    class BaseModel(ABC):
-    	"""
-    	This class describes a base model.
-    	"""
+	class BaseModel(ABC):
+		"""
+		This class describes a base model.
+		"""
 
-    	@abstractmethod
-    	def get_response(self, *args, **kwargs) -> Response:
-    		"""
-    		Creates a response.
+		@abstractmethod
+		def get_response(self, *args, **kwargs) -> Response:
+			"""
+			Creates a response.
 
-    		:param		args:	 The arguments
-    		:type		args:	 list
-    		:param		kwargs:	 The keywords arguments
-    		:type		kwargs:	 dictionary
+			:param		args:	 The arguments
+			:type		args:	 list
+			:param		kwargs:	 The keywords arguments
+			:type		kwargs:	 dictionary
 
-    		:returns:	response object
-    		:rtype:		Response
-    		"""
-    		raise NotImplementedError
+			:returns:	response object
+			:rtype:		Response
+			"""
+			raise NotImplementedError
 
-    	@abstractmethod
-    	def get_request(self, *args, **kwargs) -> Request:
-    		"""
-    		Creates a request.
+		@abstractmethod
+		def get_request(self, *args, **kwargs) -> Request:
+			"""
+			Creates a request.
 
-    		:param		args:	 The arguments
-    		:type		args:	 list
-    		:param		kwargs:	 The keywords arguments
-    		:type		kwargs:	 dictionary
+			:param		args:	 The arguments
+			:type		args:	 list
+			:param		kwargs:	 The keywords arguments
+			:type		kwargs:	 dictionary
 
-    		:returns:	request object
-    		:rtype:		Request
-    		"""
-    		raise NotImplementedError
+			:returns:	request object
+			:rtype:		Request
+			"""
+			raise NotImplementedError
 
 
-    class PageModel(BaseModel):
-    	"""
-    	This class describes a page model.
-    	"""
+	class PageModel(BaseModel):
+		"""
+		This class describes a page model.
+		"""
 
-    	def __init__(self, request: Request = None, response: Response = None):
-    		"""
-    		Constructs a new instance.
+		def __init__(self, request: Request = None, response: Response = None):
+			"""
+			Constructs a new instance.
 
-    		:param		request:    The request
-    		:type		request:    Request
-    		:param		response:  The response
-    		:type		response:  Response
-    		"""
-    		self.request = request
-    		self.response = response
+			:param		request:    The request
+			:type		request:    Request
+			:param		response:  The response
+			:type		response:  Response
+			"""
+			self.request = request
+			self.response = response
 
-    	def get_response(
-    		self, data: Union[Response, Any], app: EchoNext, *args, **kwargs
-    	) -> Response:
-    		"""
-    		Creates a response.
+		def get_response(
+			self, data: Union[Response, Any], app: EchoNext, *args, **kwargs
+		) -> Response:
+			"""
+			Creates a response.
 
-    		:param		args:	 The arguments
-    		:type		args:	 list
-    		:param		kwargs:	 The keywords arguments
-    		:type		kwargs:	 dictionary
+			:param		args:	 The arguments
+			:type		args:	 list
+			:param		kwargs:	 The keywords arguments
+			:type		kwargs:	 dictionary
 
-    		:returns:	response object
-    		:rtype:		Response
-    		"""
+			:returns:	response object
+			:rtype:		Response
+			"""
 
-    		if isinstance(data, Response):
-    			response = data
-    		else:
-    			response = Response(body=str(data), *args, **kwargs)
+			if isinstance(data, Response):
+				response = data
+			else:
+				response = Response(body=str(data), *args, **kwargs)
 
-    		if response.use_i18n:
-    			response.body = app.i18n_loader.get_string(response.body)
+			if response.use_i18n:
+				response.body = app.i18n_loader.get_string(response.body)
 
-    		response.body = app.get_and_save_cache_item(response.body, response.body)
+			response.body = app.get_and_save_cache_item(response.body, response.body)
 
-    		return response
+			return response
 
-    	def get_request(self, *args, **kwargs) -> Request:
-    		"""
-    		Creates a request.
+		def get_request(self, *args, **kwargs) -> Request:
+			"""
+			Creates a request.
 
-    		:param		args:	 The arguments
-    		:type		args:	 list
-    		:param		kwargs:	 The keywords arguments
-    		:type		kwargs:	 dictionary
+			:param		args:	 The arguments
+			:type		args:	 list
+			:param		kwargs:	 The keywords arguments
+			:type		kwargs:	 dictionary
 
-    		:returns:	request object
-    		:rtype:		Request
-    		"""
-    		return Request(*args, **kwargs)
+			:returns:	request object
+			:rtype:		Request
+			"""
+			return Request(*args, **kwargs)
 
 Views
 -----
@@ -254,43 +254,43 @@ Here is source code of Views.
 
 .. code:: python
 
-    from abc import ABC, abstractmethod
+	from abc import ABC, abstractmethod
 
-    from pyechonext.mvc.models import PageModel
-
-
-    class BaseView(ABC):
-    	"""
-    	Base visualization of the data that model contains.
-    	"""
-
-    	@abstractmethod
-    	def render(self, model: PageModel):
-    		"""
-    		Render data
-
-    		:param		model:	The model
-    		:type		model:	PageModel
-    		"""
-    		raise NotImplementedError
+	from pyechonext.mvc.models import PageModel
 
 
-    class PageView(BaseView):
-    	"""
-    	Page visualization of the data that model contains.
-    	"""
+	class BaseView(ABC):
+		"""
+		Base visualization of the data that model contains.
+		"""
 
-    	def render(self, model: PageModel) -> str:
-    		"""
-    		Renders the given model.
+		@abstractmethod
+		def render(self, model: PageModel):
+			"""
+			Render data
 
-    		:param		model:	The model
-    		:type		model:	PageModel
+			:param		model:	The model
+			:type		model:	PageModel
+			"""
+			raise NotImplementedError
 
-    		:returns:	model response body content
-    		:rtype:		str
-    		"""
-    		return str(model.response.body)
+
+	class PageView(BaseView):
+		"""
+		Page visualization of the data that model contains.
+		"""
+
+		def render(self, model: PageModel) -> str:
+			"""
+			Renders the given model.
+
+			:param		model:	The model
+			:type		model:	PageModel
+
+			:returns:	model response body content
+			:rtype:		str
+			"""
+			return str(model.response.body)
 
 Simple Example
 --------------
@@ -299,43 +299,43 @@ Here is simple example of API with PageControllers:
 
 .. code::python
 
-    import os
+	import os
 
-    from pyechonext.app import ApplicationType, EchoNext
-    from pyechonext.config import Settings
-    from pyechonext.middleware import middlewares
-    from pyechonext.mvc.controllers import PageController
-    from pyechonext.response import Response
-    from pyechonext.urls import URL
-
-
-    class UsersPageController(PageController):
-    	def get(self, request, response, **kwargs):
-    		return Response(request, body={"users": "get"})
-
-    	def post(self, request, response, **kwargs):
-    		return {"users": "post"}
+	from pyechonext.app import ApplicationType, EchoNext
+	from pyechonext.config import Settings
+	from pyechonext.middleware import middlewares
+	from pyechonext.mvc.controllers import PageController
+	from pyechonext.response import Response
+	from pyechonext.urls import URL
 
 
-    url_patterns = [URL(path="/users", controller=UsersPageController)]
+	class UsersPageController(PageController):
+		def get(self, request, response, **kwargs):
+			return Response(request, body={"users": "get"})
 
-    settings = Settings(
-    	BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
-    )
-
-    echonext = EchoNext(
-    	__name__,
-    	settings,
-    	middlewares,
-    	urls=url_patterns,
-    	application_type=ApplicationType.JSON,
-    )
+		def post(self, request, response, **kwargs):
+			return {"users": "post"}
 
 
-    @echonext.route_page("/book")
-    class BooksResource(PageController):
-    	def get(self, request, response, **kwargs):
-    		return {"params": request.GET, "page": "books"}
+	url_patterns = [URL(path="/users", controller=UsersPageController)]
 
-    	def post(self, request, response, **kwargs):
-    		return {"params": request.POST, "page": "books"}
+	settings = Settings(
+		BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
+	)
+
+	echonext = EchoNext(
+		__name__,
+		settings,
+		middlewares,
+		urls=url_patterns,
+		application_type=ApplicationType.JSON,
+	)
+
+
+	@echonext.route_page("/book")
+	class BooksResource(PageController):
+		def get(self, request, response, **kwargs):
+			return {"params": request.GET, "page": "books"}
+
+		def post(self, request, response, **kwargs):
+			return {"params": request.POST, "page": "books"}
