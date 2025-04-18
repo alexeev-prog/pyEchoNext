@@ -14,8 +14,6 @@ source_suffix = {
     '.md': 'markdown',
 }
 
-source_parsers = {'.md': 'recommonmark.parser.CommonMarkParser'}
-
 extensions = [
     'sphinx.ext.autodoc',  # авто документации из docstrings
     'sphinx.ext.viewcode',  # ссылки на исходный код
