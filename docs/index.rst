@@ -28,6 +28,15 @@ pyEchoNext documentation
    :caption: Source code docs:
    
    pyechonext
+   pyechonext.app
+   pyechonext.middleware
+   pyechonext.permissions
+   pyechonext.request
+   pyechonext.response
+   pyechonext.static
+   pyechonext.urls
+   pyechonext.cache
+   pyechonext.config
    pyechonext.apidoc_ui
    pyechonext.auth
    pyechonext.docsgen
