@@ -9,125 +9,125 @@ from pyechonext.utils.exceptions import MethodNotAllow
 
 
 class BaseController(ABC):
-	"""
-	Controls the data flow into a base object and updates the view whenever data changes.
-	"""
+    """
+    Controls the data flow into a base object and updates the view whenever data changes.
+    """
 
-	@abstractmethod
-	def get(self, request: Request, response: Response, *args, **kwargs):
-		"""
-		Get method
+    @abstractmethod
+    def get(self, request: Request, response: Response, *args, **kwargs):
+        """
+        Get method
 
-		:param		request:			  The request
-		:type		request:			  Request
-		:param		response:			  The response
-		:type		response:			  Response
-		:param		args:				  The arguments
-		:type		args:				  list
-		:param		kwargs:				  The keywords arguments
-		:type		kwargs:				  dictionary
+        :param		request:			  The request
+        :type		request:			  Request
+        :param		response:			  The response
+        :type		response:			  Response
+        :param		args:				  The arguments
+        :type		args:				  list
+        :param		kwargs:				  The keywords arguments
+        :type		kwargs:				  dictionary
 
-		:raises		NotImplementedError:  abstract method
-		"""
-		raise NotImplementedError()
+        :raises		NotImplementedError:  abstract method
+        """
+        raise NotImplementedError()
 
-	@abstractmethod
-	def post(self, request: Request, response: Response, *args, **kwargs):
-		"""
-		Post method
+    @abstractmethod
+    def post(self, request: Request, response: Response, *args, **kwargs):
+        """
+        Post method
 
-		:param		request:			  The request
-		:type		request:			  Request
-		:param		response:			  The response
-		:type		response:			  Response
-		:param		args:				  The arguments
-		:type		args:				  list
-		:param		kwargs:				  The keywords arguments
-		:type		kwargs:				  dictionary
+        :param		request:			  The request
+        :type		request:			  Request
+        :param		response:			  The response
+        :type		response:			  Response
+        :param		args:				  The arguments
+        :type		args:				  list
+        :param		kwargs:				  The keywords arguments
+        :type		kwargs:				  dictionary
 
-		:raises		NotImplementedError:  abstract method
-		"""
-		raise NotImplementedError()
+        :raises		NotImplementedError:  abstract method
+        """
+        raise NotImplementedError()
 
 
 class PageController(BaseController):
-	"""
-	Controls the data flow into a page object and updates the view whenever data changes.
-	"""
+    """
+    Controls the data flow into a page object and updates the view whenever data changes.
+    """
 
-	def _create_model(
-		self, request: Request, data: Union[Response, Any], app: "EchoNext"
-	) -> PageModel:
-		"""
-		Creates a model.
+    def _create_model(
+        self, request: Request, data: Union[Response, Any], app: "EchoNext"
+    ) -> PageModel:
+        """
+        Creates a model.
 
-		:param		request:  The request
-		:type		request:  Request
-		:param		data:	  The data
-		:type		data:	  Union[Response, Any]
-		:param		app:	  The application
-		:type		app:	  EchoNext
+        :param		request:  The request
+        :type		request:  Request
+        :param		data:	  The data
+        :type		data:	  Union[Response, Any]
+        :param		app:	  The application
+        :type		app:	  EchoNext
 
-		:returns:	The page model.
-		:rtype:		PageModel
-		"""
-		model = PageModel(request)
-		model.response = model.get_response(data, app)
+        :returns:	The page model.
+        :rtype:		PageModel
+        """
+        model = PageModel(request)
+        model.response = model.get_response(data, app)
 
-		return model
+        return model
 
-	def get_rendered_view(
-		self, request: Request, data: Union[Response, Any], app: "EchoNext"
-	) -> str:
-		"""
-		Gets the rendered view.
+    def get_rendered_view(
+        self, request: Request, data: Union[Response, Any], app: "EchoNext"
+    ) -> str:
+        """
+        Gets the rendered view.
 
-		:param		request:  The request
-		:type		request:  Request
-		:param		data:	  The data
-		:type		data:	  Union[Response, Any]
-		:param		app:	  The application
-		:type		app:	  EchoNext
+        :param		request:  The request
+        :type		request:  Request
+        :param		data:	  The data
+        :type		data:	  Union[Response, Any]
+        :param		app:	  The application
+        :type		app:	  EchoNext
 
-		:returns:	The rendered view.
-		:rtype:		str
-		"""
-		model = self._create_model(request, data, app)
+        :returns:	The rendered view.
+        :rtype:		str
+        """
+        model = self._create_model(request, data, app)
 
-		view = PageView()
+        view = PageView()
 
-		return view.render(model)
+        return view.render(model)
 
-	def get(self, request: Request, response: Response, *args, **kwargs):
-		"""
-		Get Method
+    def get(self, request: Request, response: Response, *args, **kwargs):
+        """
+        Get Method
 
-		:param		request:		 The request
-		:type		request:		 Request
-		:param		response:		 The response
-		:type		response:		 Response
-		:param		args:			 The arguments
-		:type		args:			 list
-		:param		kwargs:			 The keywords arguments
-		:type		kwargs:			 dictionary
+        :param		request:		 The request
+        :type		request:		 Request
+        :param		response:		 The response
+        :type		response:		 Response
+        :param		args:			 The arguments
+        :type		args:			 list
+        :param		kwargs:			 The keywords arguments
+        :type		kwargs:			 dictionary
 
-		:raises		MethodNotAllow:	 get method not allowed
-		"""
-		raise MethodNotAllow("Method Not Allow: GET")
+        :raises		MethodNotAllow:	 get method not allowed
+        """
+        raise MethodNotAllow("Method Not Allow: GET")
 
-	def post(self, request: Request, response: Response, *args, **kwargs):
-		"""
-		Post Method
+    def post(self, request: Request, response: Response, *args, **kwargs):
+        """
+        Post Method
 
-		:param		request:		 The request
-		:type		request:		 Request
-		:param		response:		 The response
-		:type		response:		 Response
-		:param		args:			 The arguments
-		:type		args:			 list
-		:param		kwargs:			 The keywords arguments
-		:type		kwargs:			 dictionary
+        :param		request:		 The request
+        :type		request:		 Request
+        :param		response:		 The response
+        :type		response:		 Response
+        :param		args:			 The arguments
+        :type		args:			 list
+        :param		kwargs:			 The keywords arguments
+        :type		kwargs:			 dictionary
 
-		:raises		MethodNotAllow:	 post method not allowed
-		"""
-		raise MethodNotAllow("Method Not Allow: Post")
+        :raises		MethodNotAllow:	 post method not allowed
+        """
+        raise MethodNotAllow("Method Not Allow: Post")

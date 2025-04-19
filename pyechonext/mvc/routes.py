@@ -13,219 +13,211 @@ from pyechonext.utils.exceptions import RoutePathExistsError, URLNotFound
 
 
 class RoutesTypes(Enum):
-	"""
-	This class describes routes types.
-	"""
+    """
+    This class describes routes types.
+    """
 
-	URL_BASED = 0
-	PAGE = 1
+    URL_BASED = 0
+    PAGE = 1
 
 
 @dataclass
 class Route:
-	"""
-	This class describes a route.
-	"""
+    """
+    This class describes a route.
+    """
 
-	page_path: str
-	handler: Callable | PageController
-	route_type: RoutesTypes
-	methods: list = field(default_factory=list)
-	summary: Optional[str] = None
+    page_path: str
+    handler: Callable | PageController
+    route_type: RoutesTypes
+    methods: list = field(default_factory=list)
+    summary: Optional[str] = None
 
 
 def _create_url_route(url: URL) -> Route:
-	"""
-	Creates an url route.
+    """Create URL Route
 
-	:param		url:  The url
-	:type		url:  URL
+    Args:
+            url (URL): URL instance
 
-	:returns:	Route dataclass object
-	:rtype:		Route
-	"""
-	return Route(
-		page_path=url.path,
-		handler=url.controller(),
-		route_type=RoutesTypes.URL_BASED,
-		summary=url.summary,
-	)
+    Returns:
+            Route: route instance
+    """
+    return Route(
+        page_path=url.path,
+        handler=url.controller(),
+        route_type=RoutesTypes.URL_BASED,
+        summary=url.summary,
+    )
 
 
 def _create_page_route(
-	page_path: str,
-	handler: Callable,
-	methods: list = ["GET"],
-	summary: Optional[str] = None,
+    page_path: str,
+    handler: Callable,
+    methods: list = ["GET"],
+    summary: Optional[str] = None,
 ) -> Route:
-	"""Create page route
+    """Create page route
 
-	Args:
-			page_path (str): _description_
-			handler (Callable): _description_
-			summary (Optional[str], optional): _description_. Defaults to None.
+    Args:
+            page_path (str): _description_
+            handler (Callable): _description_
+            summary (Optional[str], optional): _description_. Defaults to None.
 
-	Returns:
-			Route: _description_
-	"""
-	return Route(
-		page_path=page_path,
-		handler=handler,
-		route_type=RoutesTypes.PAGE,
-		methods=methods,
-		summary=summary,
-	)
+    Returns:
+            Route: route
+    """
+    return Route(
+        page_path=page_path,
+        handler=handler,
+        route_type=RoutesTypes.PAGE,
+        methods=methods,
+        summary=summary,
+    )
 
 
 class Router:
-	"""
-	This class describes a router.
-	"""
+    """
+    This class describes a router.
+    """
 
-	def __init__(self, urls: Optional[List[URL]] = [], prefix: Optional[str] = None):
-		"""Initialize a router with urls and routes
+    def __init__(self, urls: Optional[List[URL]] = [], prefix: Optional[str] = None):
+        """Initialize a router with urls and routes
 
-		Args:
-				urls (Optional[List[URL]], optional): urls list. Defaults to [].
-		"""
-		self.prefix = prefix
-		self.urls = urls
-		self.routes = {}
+        Args:
+                urls (Optional[List[URL]], optional): urls list. Defaults to [].
+        """
+        self.prefix = prefix
+        self.urls = urls
+        self.routes = {}
 
-		self._prepare_urls()
+        self._prepare_urls()
 
-	def route_page(
-		self, page_path: str, methods: list = ["GET"], summary: Optional[str] = None
-	) -> Callable:
-		"""Route page decorator
+    def route_page(
+        self, page_path: str, methods: list = ["GET"], summary: Optional[str] = None
+    ) -> Callable:
+        """Route a page
 
-		Args:
-						page_path (str): page path url
-						summary (Optional[str], optional): summary documentation. Defaults to None.
+        Args:
+                page_path (str): page path
+                methods (list, optional): methods list. Defaults to ["GET"].
+                summary (Optional[str], optional): summary docstring. Defaults to None.
 
-		Returns:
-						Callable: wrapper
-		"""
+        Returns:
+                Callable: route page wrapper
+        """
 
-		def wrapper(handler):
-			"""Decoration for page routing.
+        def wrapper(handler):
+            nonlocal page_path
 
-			Args:
-							handler (_type_): handler function
+            page_path = (
+                page_path if self.prefix is None else f"{self.prefix}{page_path}"
+            )
 
-			Returns:
-							_type_: handler function
-			"""
-			nonlocal page_path
+            if inspect.isclass(handler):
+                self.add_url(URL(path=page_path, controller=handler, summary=summary))
+            else:
+                self.add_page_route(page_path, handler, methods, summary)
 
-			page_path = (
-				page_path if self.prefix is None else f"{self.prefix}{page_path}"
-			)
+            return handler
 
-			if inspect.isclass(handler):
-				self.add_url(URL(path=page_path, controller=handler, summary=summary))
-			else:
-				self.add_page_route(page_path, handler, methods, summary)
+        return wrapper
 
-			return handler
+    def _prepare_urls(self):
+        """
+        Prepare URLs (add to routes)
+        """
+        for url in self.urls:
+            self.routes[
+                url.path if self.prefix is None else f"{self.prefix}{url.path}"
+            ] = _create_url_route(url)
 
-		return wrapper
+    def add_page_route(
+        self,
+        page_path: str,
+        handler: Callable,
+        methods: list = ["GET"],
+        summary: Optional[str] = None,
+    ):
+        """Add page route
 
-	def _prepare_urls(self):
-		"""
-		Prepare URLs (add to routes)
-		"""
-		for url in self.urls:
-			self.routes[
-				url.path if self.prefix is None else f"{self.prefix}{url.path}"
-			] = _create_url_route(url)
+        Args:
+                page_path (str): page path URL
+                handler (Callable): handler object
+                summary (Optional[str], optional): summary docstring. Defaults to None.
 
-	def add_page_route(
-		self,
-		page_path: str,
-		handler: Callable,
-		methods: list = ["GET"],
-		summary: Optional[str] = None,
-	):
-		"""Add page route
+        Raises:
+                RoutePathExistsError: route with this path already exists
+        """
+        if page_path in self.routes:
+            raise RoutePathExistsError(
+                f'Route "{page_path if self.prefix is None else f"{self.prefix}{page_path}"}" already exists.'
+            )
 
-		Args:
-				page_path (str): page path URL
-				handler (Callable): handler object
-				summary (Optional[str], optional): summary docstring. Defaults to None.
+        self.routes[
+            page_path if self.prefix is None else f"{self.prefix}{page_path}"
+        ] = _create_page_route(
+            page_path if self.prefix is None else f"{self.prefix}{page_path}",
+            handler,
+            methods,
+            summary,
+        )
 
-		Raises:
-				RoutePathExistsError: route with this path already exists
-		"""
-		if page_path in self.routes:
-			raise RoutePathExistsError(
-				f'Route "{page_path if self.prefix is None else f"{self.prefix}{page_path}"}" already exists.'
-			)
+    def generate_page_route(
+        self, page_path: str, handler: Callable, summary: Optional[str] = None
+    ) -> Route:
+        """Generate page route
 
-		self.routes[
-			page_path if self.prefix is None else f"{self.prefix}{page_path}"
-		] = _create_page_route(
-			page_path if self.prefix is None else f"{self.prefix}{page_path}",
-			handler,
-			methods,
-			summary,
-		)
+        Args:
+                page_path (str): page path url
+                handler (Callable): handler object
+                summary (Optional[str], optional): summary docstring. Defaults to None.
 
-	def generate_page_route(
-		self, page_path: str, handler: Callable, summary: Optional[str] = None
-	) -> Route:
-		"""Generate page route
+        Returns:
+                Route: created route
+        """
+        return _create_page_route(page_path, handler)
 
-		Args:
-				page_path (str): page path url
-				handler (Callable): handler object
-				summary (Optional[str], optional): summary docstring. Defaults to None.
+    def add_url(self, url: URL):
+        """Add an url
 
-		Returns:
-				Route: created route
-		"""
-		return _create_page_route(page_path, handler)
+        Args:
+                url (URL): URL class instance
 
-	def add_url(self, url: URL):
-		"""Add an url
+        Raises:
+                RoutePathExistsError: route with url.path already exists
+        """
+        url_path = url.path if self.prefix is None else f"{self.prefix}{url.path}"
+        if url_path in self.routes:
+            raise RoutePathExistsError(f'Route "{url_path}" already exists.')
 
-		Args:
-				url (URL): URL class instance
+        self.routes[url_path] = _create_url_route(url)
 
-		Raises:
-				RoutePathExistsError: route with url.path already exists
-		"""
-		url_path = url.path if self.prefix is None else f"{self.prefix}{url.path}"
-		if url_path in self.routes:
-			raise RoutePathExistsError(f'Route "{url_path}" already exists.')
+    def resolve(
+        self, request: Request, raise_404: Optional[bool] = True
+    ) -> Union[Tuple[Callable, Dict], None]:
+        """Resolve path from request
 
-		self.routes[url_path] = _create_url_route(url)
+        Args:
+                request (Request): request object
+                raise_404 (Optional[bool], optional): Raise 404 error if url not found or not. Defaults to True.
 
-	def resolve(
-		self, request: Request, raise_404: Optional[bool] = True
-	) -> Union[Tuple[Callable, Dict], None]:
-		"""Resolve path from request
+        Raises:
+                URLNotFound: URL Not found, error 404
 
-		Args:
-				request (Request): request object
-				raise_404 (Optional[bool], optional): Raise 404 error if url not found or not. Defaults to True.
+        Returns:
+                Union[Tuple[Callable, Dict], None]: route and parse result or None
+        """
+        url = _prepare_url(request.path)
 
-		Raises:
-				URLNotFound: URL Not found, error 404
+        url = url if self.prefix is None else f"{self.prefix}{url}"
 
-		Returns:
-				Union[Tuple[Callable, Dict], None]: route and parse result or None
-		"""
-		url = _prepare_url(request.path)
+        for path, route in self.routes.items():
+            parse_result = parse(path, url)
+            if parse_result is not None:
+                return route, parse_result.named
 
-		url = url if self.prefix is None else f"{self.prefix}{url}"
-
-		for path, route in self.routes.items():
-			parse_result = parse(path, url)
-			if parse_result is not None:
-				return route, parse_result.named
-
-		if raise_404:
-			raise URLNotFound(f'URL "{url}" not found.')
-		else:
-			return None, None
+        if raise_404:
+            raise URLNotFound(f'URL "{url}" not found.')
+        else:
+            return None, None
