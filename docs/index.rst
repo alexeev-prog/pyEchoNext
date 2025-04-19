@@ -1,52 +1,3 @@
-.. pyEchoNext documentation master file, created by
-   sphinx-quickstart on Fri Apr 18 00:12:47 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-pyEchoNext documentation
-========================
-
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Article Docs:
-   
-   webframework_design
-   webapp_creation
-   routes_and_views
-   requests_responses
-   i18n_locales
-   security
-   mvc
-   permissions
-   
-
-------------------
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Source code docs:
-   
-   pyechonext
-   pyechonext.app
-   pyechonext.middleware
-   pyechonext.permissions
-   pyechonext.request
-   pyechonext.response
-   pyechonext.static
-   pyechonext.urls
-   pyechonext.cache
-   pyechonext.config
-   pyechonext.apidoc_ui
-   pyechonext.auth
-   pyechonext.docsgen
-   pyechonext.i18n_l10n
-   pyechonext.logging
-   pyechonext.template_engine
-   pyechonext.utils
-
-------------------
-
 🌟 **EchoNext: The Future of Web** 🚀
 =====================================
 
@@ -57,6 +8,8 @@ pyEchoNext documentation
       <p align="center">
 
    EchoNext is a lightweight, fast and scalable web framework for Python
+   Explore the docs » Why Choose pyEchoNext · Key Features · Getting
+   Started · Basic Usage · Specification · Documentation · License
 
    .. raw:: html
 
@@ -70,14 +23,23 @@ pyEchoNext documentation
 
    </p>
 
+   EchoNext is a lightweight, fast and scalable web framework for Python
+
 ..
 
-   EchoNext is a lightweight, fast and scalable web framework for Python
+   [!CAUTION] At the moment, EchoNext is under active development, many
+   things may not work, and this version is not recommended for use (all
+   at your own risk)
 
 Welcome to **EchoNext**, where innovation meets simplicity! Are you
 tired of the sluggishness of traditional web frameworks? Want a solution
 that keeps pace with your ambitious apps? Look no further. EchoNext is
 your agile companion in the world of web development!
+
+   [!NOTE] Versions below 0.7.14a are not recommended for use with
+   gunicorn <23.0 due to the fact that they used an older version of
+   gunicorn (<23.0), which was
+   `vulnerable <https://deps.dev/advisory/osv/GHSA-hc5x-x2vx-497g>`__.
 
 .. raw:: html
 
@@ -91,7 +53,7 @@ your agile companion in the world of web development!
 web applications with lightning speed and flexibility. With EchoNext,
 you’re not just coding; you’re building a masterpiece!
 
-   Last stable version: 0.7.13 alpha
+   Last stable version: 0.7.14 alpha
 
 ..
 
@@ -237,12 +199,18 @@ detailed usage examples and API reference.
    </p>
 
 ⚙️ Dependency Injection
---------------------
+-----------------------
 
 pyEchoNext is universal, and you are free to use any
 Dependency-Injection framework. But we recommend using the specially
 developed `echonextdi <https://github.com/alexeev-prog/echonext_di>`__.
 It is simple and fast to use.
+
+Install:
+
+.. code:: bash
+
+   pip install echonextdi
 
 Example code:
 
@@ -274,6 +242,8 @@ Example code:
 
 💻 Usage Examples
 -----------------
+
+You can view examples at `examples directory <./examples>`__.
 
 Basic With Depends Injection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -432,6 +402,8 @@ Permissions
 
 FullApp with locale, static files, docs generation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Also see in `examples <./examples/example_locale.py>`__
 
 .. code:: python
 
@@ -821,8 +793,6 @@ Documentation 🌍
 The main documentation is
 `here <https://alexeev-prog.github.io/pyEchoNext/>`__.
 
-   At the moment documentation move from doxygen to sphinx
-   
 💬 Support
 ----------
 

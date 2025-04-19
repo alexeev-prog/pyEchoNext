@@ -39,9 +39,10 @@
     <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/alexeev-prog/pyEchoNext?style=for-the-badge">
 </p>
 
-<img src="https://github.com/alexeev-prog/pyEchoNext/actions/workflows/docs.yml/badge.svg">
+<p align="center">
+    <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/pallet-0.png">
+</p>
 
-![](./docs/pallet-0.png)
 
  > EchoNext is a lightweight, fast and scalable web framework for Python
  
@@ -54,12 +55,12 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 > Versions below 0.7.14a are not recommended for use with gunicorn <23.0 due to the fact that they used an older version of gunicorn (<23.0), which was [vulnerable](https://deps.dev/advisory/osv/GHSA-hc5x-x2vx-497g).
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/logo.jpg">
+    <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/logo.jpg" width="70%" height="70%" >
 </p>
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last stable version: 0.7.13 alpha
+ > Last stable version: 0.7.14 alpha
 
  > Next Big Update: ASYNC & unicorn support
 
@@ -684,7 +685,7 @@ To test the web framework, PyTest with the pytest-cov plugin is used. You can lo
 ## Documentation 🌍
 The main documentation is [here](https://alexeev-prog.github.io/pyEchoNext/).
 
- > At the moment documentation move from doxygen to sphinx
+<img src="https://github.com/alexeev-prog/pyEchoNext/actions/workflows/docs.yml/badge.svg">
 
 ## 💬 Support
 If you encounter any issues or have questions about pyEchoNext, please:
