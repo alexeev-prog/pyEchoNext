@@ -31,7 +31,6 @@
     <img src="https://img.shields.io/github/stars/alexeev-prog/pyEchoNext?style=for-the-badge">
     <img src="https://img.shields.io/github/issues/alexeev-prog/pyEchoNext?style=for-the-badge">
     <img src="https://img.shields.io/github/last-commit/alexeev-prog/pyEchoNext?style=for-the-badge">
-    <img src="https://github.com/alexeev-prog/pyEchoNext/actions/workflows/docs.yml/badge.svg">
     <img src="https://img.shields.io/pypi/wheel/uvolution?style=for-the-badge">
     <img src="https://img.shields.io/badge/coverage-54%25-54%25?style=for-the-badge" alt="">
     <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/pyEchoNext?style=for-the-badge">
@@ -39,6 +38,8 @@
     <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/pyEchoNext?style=for-the-badge">
     <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/alexeev-prog/pyEchoNext?style=for-the-badge">
 </p>
+
+<img src="https://github.com/alexeev-prog/pyEchoNext/actions/workflows/docs.yml/badge.svg">
 
  > EchoNext is a lightweight, fast and scalable web framework for Python
  
