@@ -153,7 +153,7 @@ Check Other My Projects
 
    <p align="right">
 
-(back to top)
+
 
 .. raw:: html
 
@@ -177,7 +177,7 @@ Check Other My Projects
 
    <p align="right">
 
-(back to top)
+
 
 .. raw:: html
 
@@ -204,7 +204,7 @@ Check Other My Projects
 
    <p align="right">
 
-(back to top)
+
 
 .. raw:: html
 
@@ -230,7 +230,7 @@ detailed usage examples and API reference.
 
    <p align="right">
 
-(back to top)
+
 
 .. raw:: html
 
@@ -568,7 +568,7 @@ Create file ``locales/RU_RU.json``:
 
    <p align="right">
 
-(back to top)
+
 
 .. raw:: html
 
@@ -840,7 +840,7 @@ If you encounter any issues or have questions about pyEchoNext, please:
 
    <p align="right">
 
-(back to top)
+
 
 .. raw:: html
 
@@ -858,7 +858,7 @@ to get started.
 
    <p align="right">
 
-(back to top)
+
 
 .. raw:: html
 
@@ -892,7 +892,7 @@ Our future goals for pyEchoNext include:
 
    <p align="right">
 
-(back to top)
+
 
 .. raw:: html
 
@@ -923,7 +923,7 @@ for more information.
 
    <p align="right">
 
-(back to top)
+
 
 .. raw:: html
 

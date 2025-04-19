@@ -41,6 +41,8 @@
 
 <img src="https://github.com/alexeev-prog/pyEchoNext/actions/workflows/docs.yml/badge.svg">
 
+![](./docs/pallet-0.png)
+
  > EchoNext is a lightweight, fast and scalable web framework for Python
  
  > [!CAUTION]
