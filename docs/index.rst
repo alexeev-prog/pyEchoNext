@@ -1,3 +1,52 @@
+.. pyEchoNext documentation master file, created by
+   sphinx-quickstart on Fri Apr 18 00:12:47 2025.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+pyEchoNext documentation
+========================
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Article Docs:
+   
+   webframework_design
+   webapp_creation
+   routes_and_views
+   requests_responses
+   i18n_locales
+   security
+   mvc
+   permissions
+   
+
+------------------
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Source code docs:
+   
+   pyechonext
+   pyechonext.app
+   pyechonext.middleware
+   pyechonext.permissions
+   pyechonext.request
+   pyechonext.response
+   pyechonext.static
+   pyechonext.urls
+   pyechonext.cache
+   pyechonext.config
+   pyechonext.apidoc_ui
+   pyechonext.auth
+   pyechonext.docsgen
+   pyechonext.i18n_l10n
+   pyechonext.logging
+   pyechonext.template_engine
+   pyechonext.utils
+
+------------------
+
 🌟 **EchoNext: The Future of Web** 🚀
 =====================================
 
