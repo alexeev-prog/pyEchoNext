@@ -12,7 +12,7 @@ class AbstractPermission(ABC):
 		"""Returns a string representation of the object.
 
 		Raises:
-			NotImplementedError: abstract method
+				NotImplementedError: abstract method
 		"""
 		raise NotImplementedError()
 
@@ -26,7 +26,7 @@ class Permission(AbstractPermission):
 		"""Initialize a permission
 
 		Args:
-			name (str): permission name
+				name (str): permission name
 		"""
 		self.name: str = name
 
@@ -34,7 +34,7 @@ class Permission(AbstractPermission):
 		"""Returns a string representation of the object.
 
 		Returns:
-			str: permission name
+				str: permission name
 		"""
 		return self.name
 
@@ -49,13 +49,13 @@ class AbstractRole(ABC):
 		"""Determines if permission
 
 		Args:
-			permission (AbstractPermission): permission object
+				permission (AbstractPermission): permission object
 
 		Raises:
-			NotImplementedError: abstract method
+				NotImplementedError: abstract method
 
 		Returns:
-			bool: true is has, false otherwise
+				bool: true is has, false otherwise
 		"""
 		raise NotImplementedError()
 
@@ -64,10 +64,10 @@ class AbstractRole(ABC):
 		"""Get list of permissions
 
 		Raises:
-			NotImplementedError: abstract method
+				NotImplementedError: abstract method
 
 		Returns:
-			Set[AbstractPermission]: set with abstract permissions
+				Set[AbstractPermission]: set with abstract permissions
 		"""
 		raise NotImplementedError()
 
@@ -76,10 +76,10 @@ class AbstractRole(ABC):
 		"""Get the role name
 
 		Raises:
-			NotImplementedError: abstract method
+				NotImplementedError: abstract method
 
 		Returns:
-			str: role name
+				str: role name
 		"""
 		raise NotImplementedError()
 
@@ -93,7 +93,7 @@ class Role(AbstractRole):
 		"""Constructs a new instance
 
 		Args:
-			name (str): role name
+				name (str): role name
 		"""
 		self.name = name
 		self.permissions: Set[AbstractPermission] = set()
@@ -102,7 +102,7 @@ class Role(AbstractRole):
 		"""Add a permission
 
 		Args:
-			permission (AbstractPermission): permission object
+				permission (AbstractPermission): permission object
 		"""
 		self.permissions.add(permission)
 
@@ -110,7 +110,7 @@ class Role(AbstractRole):
 		"""Remove a permission
 
 		Args:
-			permission (AbstractPermission): permission object
+				permission (AbstractPermission): permission object
 		"""
 		self.permissions.discard(permission)
 
@@ -118,9 +118,9 @@ class Role(AbstractRole):
 		"""Determines if permission
 
 		Args:
-			permission (AbstractPermission): permission object
+				permission (AbstractPermission): permission object
 
-			bool: true is has, false otherwise
+				bool: true is has, false otherwise
 		"""
 		return permission in self.permissions
 
@@ -128,7 +128,7 @@ class Role(AbstractRole):
 		"""Get list of permissions
 
 		Returns:
-			Set[AbstractPermission]: set with abstract permissions
+				Set[AbstractPermission]: set with abstract permissions
 		"""
 		return self.permissions
 
@@ -136,7 +136,7 @@ class Role(AbstractRole):
 		"""Get the role name
 
 		Returns:
-			str: role name
+				str: role name
 		"""
 		return self.name
 
@@ -150,8 +150,8 @@ class User:
 		"""Constructs a new instance
 
 		Args:
-			username (str): name of user
-			attributes (Dict[str, Any], optional): attributes for user. Defaults to {}.
+				username (str): name of user
+				attributes (Dict[str, Any], optional): attributes for user. Defaults to {}.
 		"""
 		self.username: str = username
 		self.roles: Set[AbstractRole] = set()
@@ -161,7 +161,7 @@ class User:
 		"""Adds a role
 
 		Args:
-			role (AbstractRole): role object
+				role (AbstractRole): role object
 		"""
 		self.roles.add(role)
 
@@ -169,7 +169,7 @@ class User:
 		"""Remove a role
 
 		Args:
-			role (Type[AbstractRole]): role object
+				role (Type[AbstractRole]): role object
 		"""
 		self.roles.discard(role)
 
@@ -177,10 +177,10 @@ class User:
 		"""Determines if permission
 
 		Args:
-			permission (Type[AbstractPermission]): permission object
+				permission (Type[AbstractPermission]): permission object
 
 		Returns:
-			bool: true is has, false otherwise
+				bool: true is has, false otherwise
 		"""
 		perms = [str(perm) for p in self.roles for perm in p.permissions]
 		return str(permission) in perms
@@ -189,7 +189,7 @@ class User:
 		"""Get roles
 
 		Returns:
-			Set[AbstractRole]: roles set
+				Set[AbstractRole]: roles set
 		"""
 		return self.roles
 
@@ -197,7 +197,7 @@ class User:
 		"""Get username
 
 		Returns:
-			str: username
+				str: username
 		"""
 		return self.username
 
@@ -211,7 +211,7 @@ class Resource:
 		"""Constructs a new resource
 
 		Args:
-			name (str): resource name
+				name (str): resource name
 		"""
 		self.name = name
 
@@ -219,7 +219,7 @@ class Resource:
 		"""Returns a string representation of the object.
 
 		Returns:
-			str: resource name
+				str: resource name
 		"""
 		return self.name
 
@@ -239,10 +239,10 @@ class AccessControlRule:
 		"""Constructs a new instance
 
 		Args:
-			role (Type[AbstractRole]): role object
-			permission (Type[AbstractPermission]): permission object
-			resource (Type[Resource]): resource object
-			allowed (bool): allowed status
+				role (Type[AbstractRole]): role object
+				permission (Type[AbstractPermission]): permission object
+				resource (Type[Resource]): resource object
+				allowed (bool): allowed status
 		"""
 		self.role: Type[AbstractRole] = role
 		self.permission: Type[AbstractPermission] = permission
@@ -255,12 +255,12 @@ class AccessControlRule:
 		"""Applies to user
 
 		Args:
-			user (User): user
-			resource (Type[Resource]): resource
-			permission (Type[AbstractPermission]): permissions
+				user (User): user
+				resource (Type[Resource]): resource
+				permission (Type[AbstractPermission]): permissions
 
 		Returns:
-			bool: true if is applies, false otherwise
+				bool: true if is applies, false otherwise
 		"""
 		return (
 			self.role in user.get_roles()
@@ -272,7 +272,7 @@ class AccessControlRule:
 		"""Returns a string representation of the object.
 
 		Returns:
-			str: rule name
+				str: rule name
 		"""
 		return f"Rule {self.role} {self.permission} {self.resource} {self.allowed}"
 
@@ -292,7 +292,7 @@ class Policy:
 		"""Add a new rule
 
 		Args:
-			rule (AccessControlRule): new rule
+				rule (AccessControlRule): new rule
 		"""
 		self.rules.append(rule)
 
@@ -302,12 +302,12 @@ class Policy:
 		"""Evaluate policty access
 
 		Args:
-			user (User): user object
-			resource (Resource): resource
-			permission (AbstractPermission): permission
+				user (User): user object
+				resource (Resource): resource
+				permission (AbstractPermission): permission
 
 		Returns:
-			bool: true is allowed, false otherwise
+				bool: true is allowed, false otherwise
 		"""
 		for rule in self.rules:
 			if rule.applies_to(user, resource, permission):
@@ -325,7 +325,7 @@ class AttributeBasedPolicy(Policy):
 		"""Constructs a new instance
 
 		Args:
-			conditions (Dict[str, Any]): conditions dictionary
+				conditions (Dict[str, Any]): conditions dictionary
 		"""
 		super().__init__()
 		self.conditions = conditions
@@ -336,12 +336,12 @@ class AttributeBasedPolicy(Policy):
 		"""Evaluate policy access
 
 		Args:
-			user (User): user model
-			resource (Resource): resource model
-			permission (AbstractPermission): permission model
+				user (User): user model
+				resource (Resource): resource model
+				permission (AbstractPermission): permission model
 
 		Returns:
-			bool: evaluation status
+				bool: evaluation status
 		"""
 		for condition, value in self.conditions.items():
 			if user.attributes.get(condition, None) is None:
@@ -359,8 +359,8 @@ class AgeRestrictionsABP(Policy):
 		"""Initialize a Age Policy
 
 		Args:
-			conditions (Dict[str, Any]): conditions
-			rules (List[AccessControlRule]): rules list
+				conditions (Dict[str, Any]): conditions
+				rules (List[AccessControlRule]): rules list
 		"""
 		super().__init__()
 		self.conditions = conditions
@@ -372,12 +372,12 @@ class AgeRestrictionsABP(Policy):
 		"""Evaluate policy access
 
 		Args:
-			user (User): user object
-			resource (Resource): resource object
-			permission (AbstractPermission): permission object
+				user (User): user object
+				resource (Resource): resource object
+				permission (AbstractPermission): permission object
 
 		Returns:
-			bool: evaluation status
+				bool: evaluation status
 		"""
 		for condition, value in self.conditions.items():
 			if user.attributes.get(condition, 0) < value:
@@ -398,15 +398,15 @@ class PermissionChecker(ABC):
 		"""Check permissions for user
 
 		Args:
-			user (User): user object
-			resource (Resource): resource object
-			permission (AbstractPermission): permission object
+				user (User): user object
+				resource (Resource): resource object
+				permission (AbstractPermission): permission object
 
 		Raises:
-			NotImplementedError: abstract method
+				NotImplementedError: abstract method
 
 		Returns:
-			bool: true is valid, false otherwise
+				bool: true is valid, false otherwise
 		"""
 		raise NotImplementedError()
 
@@ -420,7 +420,7 @@ class DefaultPermissionChecker(PermissionChecker):
 		"""Initialize a checker
 
 		Args:
-			policy (Policy): policy for checkr
+				policy (Policy): policy for checkr
 		"""
 		self.policy: Policy = policy
 
@@ -430,12 +430,12 @@ class DefaultPermissionChecker(PermissionChecker):
 		"""Check user permissions
 
 		Args:
-			user (User): user object
-			resource (Resource): resource object
-			permission (AbstractPermission): permissions object
+				user (User): user object
+				resource (Resource): resource object
+				permission (AbstractPermission): permissions object
 
 		Returns:
-			bool: true is valid, false otherwise
+				bool: true is valid, false otherwise
 		"""
 		if user.has_permission(permission):
 			return self.policy.evaluate(user, resource, permission)
@@ -453,7 +453,7 @@ class AbstractController(ABC):
 		"""Constructs a new instance
 
 		Args:
-			permission_checker (PermissionChecker): permission checker class
+				permission_checker (PermissionChecker): permission checker class
 		"""
 		pass
 
@@ -464,15 +464,15 @@ class AbstractController(ABC):
 		"""Check permissions for user
 
 		Args:
-			current_user (User): user object
-			resource (Resource): resource object
-			permission (Permission): permission object
+				current_user (User): user object
+				resource (Resource): resource object
+				permission (Permission): permission object
 
 		Raises:
-			NotImplementedError: abstractmethod
+				NotImplementedError: abstractmethod
 
 		Returns:
-			bool: true is valid, otherwise false
+				bool: true is valid, otherwise false
 		"""
 		raise NotImplementedError()
 
@@ -486,7 +486,7 @@ class UserController(AbstractController):
 		"""Constructs a new instance
 
 		Args:
-			permission_checker (PermissionChecker): permission checker class
+				permission_checker (PermissionChecker): permission checker class
 		"""
 		self.permission_checker = permission_checker
 
@@ -496,12 +496,12 @@ class UserController(AbstractController):
 		"""Check permissions for user
 
 		Args:
-			current_user (User): current user object
-			resource (Resource): resource object
-			permission (Permission): user permission
+				current_user (User): current user object
+				resource (Resource): resource object
+				permission (Permission): user permission
 
 		Returns:
-			bool: True is valid, false otherwise
+				bool: True is valid, false otherwise
 		"""
 		return self.permission_checker.check(current_user, resource, permission)
 
@@ -509,11 +509,11 @@ class UserController(AbstractController):
 		"""View users by current user and resource
 
 		Args:
-			current_user (User): current user object
-			resource (Resource): resource object
+				current_user (User): current user object
+				resource (Resource): resource object
 
 		Returns:
-			Tuple[str]: data
+				Tuple[str]: data
 		"""
 		if not self.permission_checker.check(
 			current_user, resource, Permission("view_users")
@@ -526,11 +526,11 @@ class UserController(AbstractController):
 		"""Edit users with current user and resource
 
 		Args:
-			current_user (User): user object
-			resource (Resource): resource object
+				current_user (User): user object
+				resource (Resource): resource object
 
 		Returns:
-			Tuple[str]: data
+				Tuple[str]: data
 		"""
 		if not self.permission_checker.check(
 			current_user, resource, Permission("edit_users")

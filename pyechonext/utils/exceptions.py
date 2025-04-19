@@ -1,4 +1,4 @@
-from loguru import logger
+from pyechonext.logging import logger
 
 
 class pyEchoNextException(Exception):

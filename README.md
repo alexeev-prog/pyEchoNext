@@ -8,8 +8,6 @@
     <a href="https://alexeev-prog.github.io/pyEchoNext/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="#-comparison-with-alternatives">Comparison with Alternatives</a>
-    .
     <a href="#-why-choose-pyechonext">Why Choose pyEchoNext</a>
     ·
     <a href="#-key-features">Key Features</a>
@@ -33,9 +31,13 @@
     <img src="https://img.shields.io/github/stars/alexeev-prog/pyEchoNext?style=for-the-badge">
     <img src="https://img.shields.io/github/issues/alexeev-prog/pyEchoNext?style=for-the-badge">
     <img src="https://img.shields.io/github/last-commit/alexeev-prog/pyEchoNext?style=for-the-badge">
-    
-   <img src="https://img.shields.io/pypi/wheel/uvolution?style=for-the-badge">
-   <img src="https://img.shields.io/badge/coverage-54%25-54%25?style=for-the-badge" alt="">
+    <img src="https://github.com/alexeev-prog/pyEchoNext/actions/workflows/docs.yml/badge.svg">
+    <img src="https://img.shields.io/pypi/wheel/uvolution?style=for-the-badge">
+    <img src="https://img.shields.io/badge/coverage-54%25-54%25?style=for-the-badge" alt="">
+    <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/pyEchoNext?style=for-the-badge">
+    <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/pyEchoNext?style=for-the-badge">
+    <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/pyEchoNext?style=for-the-badge">
+    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/alexeev-prog/pyEchoNext?style=for-the-badge">
 </p>
 
  > EchoNext is a lightweight, fast and scalable web framework for Python
@@ -87,27 +89,6 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🌟 Comparison with Alternatives
-
-| Feature                   | **pyEchoNext**      | Flask        | FastAPI      | Django        | Starlette    |
-|---------------------------|---------------------|--------------|--------------|---------------|--------------|
-| Asynchronous Capabilities | COMING SOON         | ❌           | ✔️           | ❌            | ✔️           |
-| Performance               | 🔥 High             | 🐢 Moderate  | 🚀 Very High | 🐢 Moderate   | 🚀 Very High |
-| Framework Weight          | ✔️                  | ✔️           | ✔️           | ❌ Heavy      | ✔️           |
-| Ecosystem                 | 🛠️ Flexible         | 🎨 Flexible  | 🎨 Modular   | ⚙️ Monolithic | ⚙️ Modular   |
-| Ease of Use               | ✔️                  | ✔️           | ✔️           | ❌            | ✔️           |
-| Configurability           | ✔️                  | ✔️           | ✔️           | ✔️            | ✔️           |
-| Documentation Quality     | 📚 Excellent        | 📚 Good      | 📚 Excellent | 📚 Very Good  | 📚 Good      |
-| Flexible Deployments      | 🌍 Flexible         | 🌍 Standard  | 🌍 Standard  | 🌍 Standard   | 🌍 Flexible  |
-| Testing Support           | ✔️                  | ✔️           | ✔️           | ✔️            | ✔️           |
-| Community Size            | 📢 Growing          | 📢 Large     | 📢 Growing   | 📢 Large      | 📢 Emerging  |
-| Built-in Template Engine  | ✔️ Jinja2 & builtin | ✔️ Jinja2    | ✔️ Jinja2    | ✔️ Django     | ✔️ Jinja2    |
-| Task Queue Integration    | ❌                  | ✔️ Celery    | ✔️ Celery    | ✔️ Celery     | ✔️ Celery    |
-| Static File Serving       | 🚀 Built-in         | 🌍 Manual    | 🚀 Built-in  | 🚀 Built-in   | 🚀 Built-in  |
-| Analytics Integration     | ✔️ Easy             | 🛠️ Manual    | ✔️ Easy      | ❌            | ✔️ Easy      |
-
-📈 Note: Echonext excels in performance while staying lightweight, making it a top-notch choice for your next project!
-
 ## 📚 Key Features
 
 - Intuitive API: Pythonic, object-oriented interface for interacting with routes and views.
@@ -148,7 +129,7 @@ Once installed, you can start using the library in your Python projects. Check o
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## ⚙️ Depends Injection
+## ⚙️ Dependency Injection
 pyEchoNext is universal, and you are free to use any Dependency-Injection framework. But we recommend using the specially developed [echonextdi](https://github.com/alexeev-prog/echonext_di). It is simple and fast to use.
 
 Install:

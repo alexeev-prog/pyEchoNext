@@ -4,8 +4,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from loguru import logger
-
+from pyechonext.logging import logger
 from pyechonext.utils.exceptions import LocalizationNotFound
 
 

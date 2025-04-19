@@ -292,7 +292,7 @@ detailed usage examples and API reference.
 
    </p>
 
-⚙️ Depends Injection
+⚙️ Dependency Injection
 --------------------
 
 pyEchoNext is universal, and you are free to use any

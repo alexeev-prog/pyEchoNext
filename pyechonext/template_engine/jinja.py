@@ -1,8 +1,8 @@
 from os.path import exists, getmtime, join
 
 from jinja2 import BaseLoader, Environment, TemplateNotFound, select_autoescape
-from loguru import logger
 
+from pyechonext.logging import logger
 from pyechonext.request import Request
 
 

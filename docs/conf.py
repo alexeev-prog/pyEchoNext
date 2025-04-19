@@ -1,11 +1,11 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath("."))
+sys.path.insert(0, os.path.abspath(".."))
 sys.path.insert(0, os.path.abspath(os.path.join("..", "..")))
-sys.path.insert(0, os.path.abspath('../pyechonext'))
-sys.path.insert(0, os.path.abspath('pyechonext'))
+sys.path.insert(0, os.path.abspath("../pyechonext"))
+sys.path.insert(0, os.path.abspath("pyechonext"))
 
 project = "pyEchoNext"
 author = "name"
@@ -20,12 +20,12 @@ extensions = [
     "sphinx.ext.todo",  # support TODO
     "sphinx.ext.coverage",  # check docs coverage
     "sphinx.ext.ifconfig",  # directives in docs
-    'sphinx.ext.autosummary', # generating summary for code
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.githubpages'
+    "sphinx.ext.autosummary",  # generating summary for code
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.githubpages",
 ]
 
-pygments_style = 'gruvbox-dark'
+pygments_style = "gruvbox-dark"
 
 html_theme = "furo"  # theme
 html_static_path = ["_static"]  # static dir
@@ -39,7 +39,7 @@ def skip(app, what, name, obj, would_skip, options):
     if name == "__init__":
         return False
     return would_skip
-    
+
 
 def setup(app):
     app.connect("autodoc-skip-member", skip)

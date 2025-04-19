@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Callable, Iterable, List, Optional, Tuple, Type
 
-from loguru import logger
 from requests import Session as RequestsSession
 from socks import method
 from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
@@ -11,7 +10,7 @@ from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
 from pyechonext.cache import InMemoryCache
 from pyechonext.config import Settings
 from pyechonext.i18n_l10n import JSONi18nLoader, JSONLocalizationLoader
-from pyechonext.logging import setup_logger
+from pyechonext.logging import logger
 from pyechonext.middleware import BaseMiddleware
 from pyechonext.mvc.controllers import PageController
 from pyechonext.mvc.routes import Route, Router, RoutesTypes
@@ -22,6 +21,7 @@ from pyechonext.urls import URL
 from pyechonext.utils import _prepare_url
 from pyechonext.utils.exceptions import (
 	MethodNotAllow,
+	RoutePathExistsError,
 	TeapotError,
 	URLNotFound,
 	WebError,
@@ -59,6 +59,7 @@ class EchoNext:
 		"urls",
 		"router",
 		"i18n_loader",
+		"_included_routers",
 		"l10n_loader",
 		"history",
 		"main_cache",
@@ -78,15 +79,15 @@ class EchoNext:
 		"""Initialize a WSGI
 
 		Args:
-				app_name (str): application name
-				settings (Settings): settings of app
-				middlewares (List[Type[BaseMiddleware]]): list of middlewares
-				urls (Optional[List[URL]], optional): basic URLs list. Defaults to [].
-				application_type (Optional[ApplicationType], optional): application type. Defaults to ApplicationType.JSON.
-				static_files (Optional[List[StaticFile]], optional): static files list. Defaults to [].
+						app_name (str): application name
+						settings (Settings): settings of app
+						middlewares (List[Type[BaseMiddleware]]): list of middlewares
+						urls (Optional[List[URL]], optional): basic URLs list. Defaults to [].
+						application_type (Optional[ApplicationType], optional): application type. Defaults to ApplicationType.JSON.
+						static_files (Optional[List[StaticFile]], optional): static files list. Defaults to [].
 
 		Raises:
-				TeapotError: Easter Egg
+						TeapotError: Easter Egg
 		"""
 		self.app_name: str = app_name
 		self.settings: Settings = settings
@@ -98,6 +99,7 @@ class EchoNext:
 		)
 		self.urls: List[URL] = urls
 		self.router: Router = Router(self.urls)
+		self._included_routers: List[Router] = []
 		self.main_cache: InMemoryCache = InMemoryCache(timeout=60 * 10)
 		self.history: List[HistoryEntry] = []
 		self.i18n_loader: JSONi18nLoader = JSONi18nLoader(
@@ -107,36 +109,19 @@ class EchoNext:
 			self.settings.LOCALE, self.settings.LOCALE_DIR
 		)
 
-		self._validate_arguments()	# Validate arguments
-
 		if self.application_type == ApplicationType.TEAPOT:
 			raise TeapotError("Where's my coffie?")
 
-		setup_logger(self.app_name)
-
 		logger.debug(f"Application {self.application_type.value}: {self.app_name}")
-
-	def _validate_arguments(self):
-		"""Validate arguments and params at app initialization
-
-		Raises:
-				ValueError: _description_
-		"""
-		# Check URLs
-		for url in self._urls:
-			if not isinstance(url.controller, PageController):
-				raise ValueError(
-					f"URL Controller {url.path} must be PageController, not {type(url.controller)}"
-				)
 
 	def test_session(self, host: str = "echonext") -> RequestsSession:
 		"""Test Session
 
 		Args:
-						host (str, optional): hostname of session. Defaults to "echonext".
+										host (str, optional): hostname of session. Defaults to "echonext".
 
 		Returns:
-						RequestsSession: request session for tests
+										RequestsSession: request session for tests
 		"""
 		session = RequestsSession()
 		session.mount(prefix=f"http://{host}", adapter=RequestsWSGIAdapter(self))
@@ -146,10 +131,10 @@ class EchoNext:
 		"""Get request object
 
 		Args:
-				environ (dict): environ info
+						environ (dict): environ info
 
 		Returns:
-				Request: request object
+						Request: request object
 		"""
 		return Request(environ, self.settings)
 
@@ -157,54 +142,65 @@ class EchoNext:
 		"""Get response object
 
 		Args:
-				request (Request): basic request
+						request (Request): basic request
 
 		Returns:
-				Response: response object
+						Response: response object
 		"""
 		return Response(request, content_type=self.application_type.value)
 
 	def add_route(
-		self, page_path: str, handler: Callable, summary: Optional[str] = None
+		self,
+		page_path: str,
+		handler: Callable,
+		methods: list = ["GET"],
+		summary: Optional[str] = None,
 	):
 		"""Add page route without decorator
 
 		Args:
-				page_path (str): page path url
-				handler (Callable): handler of route
-				summary (Optional[str], optional): summary documentation. Defaults to None.
+						page_path (str): page path url
+						handler (Callable): handler of route
+						summary (Optional[str], optional): summary documentation. Defaults to None.
 		"""
 		if inspect.isclass(handler):
 			self.router.add_url(URL(path=page_path, controller=handler))
 		else:
-			self.router.add_page_route(page_path, handler, summary)
+			self.router.add_page_route(page_path, handler, methods, summary)
 
-	def route_page(self, page_path: str, summary: Optional[str] = None) -> Callable:
+	def route_page(
+		self, page_path: str, methods: list = ["GET"], summary: Optional[str] = None
+	) -> Callable:
 		"""Route page decorator
 
 		Args:
-				page_path (str): page path url
-				summary (Optional[str], optional): summary documentation. Defaults to None.
+						page_path (str): page path url
+						summary (Optional[str], optional): summary documentation. Defaults to None.
 
 		Returns:
-				Callable: wrapper
+						Callable: wrapper
 		"""
 
 		def wrapper(handler):
 			"""Decoration for page routing.
 
 			Args:
-					handler (_type_): handler function
+							handler (_type_): handler function
 
 			Returns:
-					_type_: handler function
+							_type_: handler function
 			"""
 			if inspect.isclass(handler):
 				self.router.add_url(
 					URL(path=page_path, controller=handler, summary=summary)
 				)
 			else:
-				self.router.add_page_route(page_path, handler, summary)
+				self.router.add_page_route(
+					page_path,
+					handler,
+					methods,
+					summary,
+				)
 
 			return handler
 
@@ -214,7 +210,7 @@ class EchoNext:
 		"""Apply middlewares to request
 
 		Args:
-				request (Request): request for applying middlewares
+						request (Request): request for applying middlewares
 		"""
 		stack = LIFOStack()
 
@@ -230,7 +226,7 @@ class EchoNext:
 		"""Apply middlewares to response
 
 		Args:
-				response (Response): request for applying middlewares
+						response (Response): request for applying middlewares
 		"""
 		stack = LIFOStack()
 
@@ -246,7 +242,7 @@ class EchoNext:
 		"""Process exceptions from middlewares
 
 		Args:
-				exception (Exception): exception class
+						exception (Exception): exception class
 		"""
 		stack = LIFOStack()
 
@@ -262,20 +258,45 @@ class EchoNext:
 		"""Get default response (HTTP 404)
 
 		Args:
-				response (Response): Response object
-				error (WebError): web error
+						response (Response): Response object
+						error (WebError): web error
 		"""
 		response.status_code = str(error.code)
 		response.body = str(error)
+
+	def include_router(self, new_router: Router):
+		"""Include new router to additional routers list
+
+		Args:
+				new_router (Router): new router object
+		"""
+		new_router_routes = [path for path, _ in new_router.routes.items()]
+		old_router_routes = [path for path, _ in self.router.routes.items()]
+
+		if len(set(old_router_routes).intersection(new_router_routes)) == 0:
+			for included_router in self._included_routers:
+				if set(
+					[path for path, _ in included_router.routes.items()]
+				).intersection(new_router_routes):
+					raise RoutePathExistsError(
+						f"Next router paths already exists: {set(included_router.routes).intersection(new_router_routes)}"
+					)
+
+			self._included_routers.append(new_router)
+			return
+
+		raise RoutePathExistsError(
+			f"Next router paths already exists: {set(old_router_routes).intersection(new_router_routes)}"
+		)
 
 	def _find_handler(self, request: Request) -> Tuple[Callable, str]:
 		"""Find handler by request
 
 		Args:
-				request (Request): Request object
+						request (Request): Request object
 
 		Returns:
-				Tuple[Callable, str]: handlers tuple
+						Tuple[Callable, str]: handlers tuple
 		"""
 		url = _prepare_url(request.path)
 
@@ -287,18 +308,30 @@ class EchoNext:
 				{},
 			)
 
-		return self.router.resolve(request)
+		route, parse_result = self.router.resolve(request, raise_404=False)
+
+		if route is None and parse_result is None:
+			for router in self._included_routers:
+				route, parse_result = router.resolve(request, raise_404=False)
+				if route is not None and parse_result is not None:
+					return route, parse_result
+
+		if route is None and parse_result is None:
+			raise URLNotFound(f'URL "{url}" not found')
+		
+		return route, parse_result
 
 	def get_and_save_cache_item(self, key: str, value: Any) -> Any:
 		"""Set and save item to cache
 
 		Args:
-				key (str): key
-				value (Any): value
+						key (str): key
+						value (Any): value
 
 		Returns:
-				Any: item from cache
+						Any: item from cache
 		"""
+		key = str(key)
 		item = self.main_cache.get(key)
 
 		if item is None:
@@ -316,11 +349,11 @@ class EchoNext:
 		"""Serve static files
 
 		Args:
-				request (Request): request object
-				response (Response): response object
+						request (Request): request object
+						response (Response): response object
 
 		Returns:
-				Response: served response object
+						Response: served response object
 		"""
 		logger.debug(f"Serve static file by path: {request.path}")
 		response.content_type = self.static_files_manager.get_file_type(request.path)
@@ -329,23 +362,32 @@ class EchoNext:
 		)
 		return response
 
-	def _check_handler(self, request: Request, handler: Callable) -> Callable:
+	def _check_handler(self, request: Request, route: Route) -> Callable:
 		"""Check handler
 
 		Args:
-				request (Request): request object
-				handler (Callable): handler
+						request (Request): request object
+						handler (Callable): handler
 
 		Raises:
-				MethodNotAllow: handler request method is None, method not allowed
+						MethodNotAllow: handler request method is None, method not allowed
 
 		Returns:
-				Callable: _description_
+						Callable: _description_
 		"""
+		handler = route.handler
+
 		if isinstance(handler, PageController) or inspect.isclass(handler):
 			handler = getattr(handler, request.method.lower(), None)
 
 			if handler is None:
+				raise MethodNotAllow(
+					f'Method "{request.method.lower()}" don\'t allowed: {request.path}'
+				)
+		elif route.route_type == RoutesTypes.PAGE:
+			method = request.method.upper()
+
+			if method not in route.methods:
 				raise MethodNotAllow(
 					f'Method "{request.method.lower()}" don\'t allowed: {request.path}'
 				)
@@ -363,11 +405,11 @@ class EchoNext:
 		"""Filling response
 
 		Args:
-				route (Route): route
-				response (Response): response object
-				request (Request): request object
-				result (Any): result data
-				handler (Callable): handler object
+						route (Route): route
+						response (Response): response object
+						request (Request): request object
+						result (Any): result data
+						handler (Callable): handler object
 		"""
 		if route.route_type == RoutesTypes.URL_BASED:
 			view = route.handler.get_rendered_view(request, result, self)
@@ -380,13 +422,13 @@ class EchoNext:
 		"""Handle request
 
 		Args:
-				request (Request): request object
+						request (Request): request object
 
 		Raises:
-				URLNotFound: URL for request not found
+						URLNotFound: URL for request not found
 
 		Returns:
-				Response: response object
+						Response: response object
 		"""
 		logger.debug(f"Handle request: {request.path}")
 		response = self._get_response(request)
@@ -396,7 +438,7 @@ class EchoNext:
 		handler = route.handler
 
 		if handler is not None:
-			handler = self._check_handler(request, handler)
+			handler = self._check_handler(request, route)
 
 			result = handler(request, response, **kwargs)
 
@@ -415,8 +457,8 @@ class EchoNext:
 		"""Switch locale
 
 		Args:
-				locale (str): locale name
-				locale_dir (str): directory with locales
+						locale (str): locale name
+						locale_dir (str): directory with locales
 		"""
 		logger.info(f"Switch to another locale: {locale_dir}/{locale}")
 		self.i18n_loader.locale = locale
@@ -434,11 +476,11 @@ class EchoNext:
 		"""Makes the application object callable
 
 		Args:
-				environ (dict): environ dictionary
-				start_response (method): the start response
+						environ (dict): environ dictionary
+						start_response (method): the start response
 
 		Returns:
-				Iterable: iterable response
+						Iterable: iterable response
 		"""
 		request = self._get_request(environ)
 		self._apply_middlewares_to_request(request)

@@ -1,6 +1,7 @@
 from pyechonext.apidoc_ui import APIDocUI, APIDocumentation
 from pyechonext.app import ApplicationType, EchoNext
 from pyechonext.config import SettingsConfigType, SettingsLoader
+from pyechonext.logging import logger
 from pyechonext.middleware import middlewares
 from pyechonext.mvc.controllers import PageController
 from pyechonext.template_engine.jinja import render_template
@@ -10,6 +11,7 @@ from pyechonext.utils.exceptions import MethodNotAllow
 
 class UsersView(PageController):
 	def get(self, request, response, **kwargs):
+		logger.info("BOB USERS ANAN")
 		return render_template(
 			request,
 			"index.html",

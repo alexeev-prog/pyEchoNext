@@ -1,10 +1,9 @@
 import json
 import os
 from abc import ABC, abstractmethod
-from typing import Dict
+from typing import Any, Dict
 
-from loguru import logger
-
+from pyechonext.logging import logger
 from pyechonext.utils.exceptions import InternationalizationNotFound
 
 
@@ -97,7 +96,7 @@ class JSONi18nLoader(i18nInterface):
 				f"[i18n] i18n file at {file_path} not found"
 			)
 
-	def get_string(self, key: str, **kwargs) -> str:
+	def get_string(self, key: Any, **kwargs) -> str:
 		"""
 		Gets the string.
 
@@ -111,8 +110,11 @@ class JSONi18nLoader(i18nInterface):
 		"""
 		result = ""
 
-		for word in key.split(" "):
-			result += f"{self.translations.get(word, word)} "
+		if isinstance(key, str):
+			for word in key.split(" "):
+				result += f"{self.translations.get(word, word)} "
+		else:
+			return key
 
 		if kwargs:
 			for name, value in kwargs.items():

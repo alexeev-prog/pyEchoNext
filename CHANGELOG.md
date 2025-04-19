@@ -1,3 +1,189 @@
+commit 49ce678e2b66659829c44305be96bebb207d0c88
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:38:28 2025 +0700
+
+    docs: fix docs
+
+commit 1a52eb86933faa3aab4ca0391bdbb3ccaa60e399
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:36:18 2025 +0700
+
+    docs: fix docs
+
+commit 001f03b1d0bd9512205f017a3cf6ff0bc4e62f61
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:35:53 2025 +0700
+
+    docs: fix docs
+
+commit 4b280dbdadb94b101025a1c4cd1debcb40682f9e
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:35:20 2025 +0700
+
+    docs: fix docs
+
+commit 4fcfbed820c6a7f4d06299480a2b65cd61ff8474
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:33:13 2025 +0700
+
+    docs: fix docs
+
+commit 041cc01fcd57c027729cd51c34078b7b79f45cf9
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:29:43 2025 +0700
+
+    docs: fix docs
+
+commit cc525f956175b1bd06d776c44697183945a0d687
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:27:46 2025 +0700
+
+    docs: fix docs
+
+commit db1eddf4a9ad33e740f3760c38fc3d31b8e22cad
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:26:10 2025 +0700
+
+    docs: fix docs
+
+commit d87bf6dbd029b68d4efbce97dc7beb83f0d8a60e
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:24:31 2025 +0700
+
+    docs: fix docs
+
+commit 1ed6c5f9a3d37a8000d76a49db5a24925e6d25e2
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:16:08 2025 +0700
+
+    docs: fix docs
+
+commit 24398a84bc2382dd7b0e6b419ee00d88c803b27f
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:10:34 2025 +0700
+
+    docs: fix docs
+
+commit 476f066124fe17555b3dc57f52c645e10dd2fee4
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 05:05:57 2025 +0700
+
+    docs: fix docs
+
+commit 0ff329dfccd1cc02bebdea7b8c88f108132d62c6
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:59:05 2025 +0700
+
+    docs: fix docs
+
+commit 979ed16a4958c7d3db8c10349e2cb9fecc646084
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:57:09 2025 +0700
+
+    docs: fix docs
+
+commit 3d7a089eb7cead889f4d5eeb6c6cc8e23492ebf4
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:55:24 2025 +0700
+
+    docs: fix docs
+
+commit 614b39b01b3058c487a25efbd4d2a5376263d5fd
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:53:47 2025 +0700
+
+    docs: fix docs
+
+commit 13d501facb667ab00a136b334409a9ae2896baaf
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:47:42 2025 +0700
+
+    docs: fix docs
+
+commit 9e74c8ade2dea095684654da8b6e675e8be17d73
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:46:32 2025 +0700
+
+    docs: fix docs
+
+commit 4b846ef2b9d606c336e34aec93bb4da856bf7b99
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:44:18 2025 +0700
+
+    docs: fix docs
+
+commit f5e361ec9b7fcf010e06428b2acd1db53baeb234
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:40:10 2025 +0700
+
+    docs: fix docs
+
+commit 96dfdc7378e1eb3ef55ca49e261e21f3664d5129
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:26:28 2025 +0700
+
+    docs: fix docs
+
+commit 2ab8d904550924fc7fa56c15a04f38700eface97
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:18:48 2025 +0700
+
+    docs: fix docs
+
+commit 67f7b0c500f3f0e459380bfd533af4ff72d000a1
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:14:03 2025 +0700
+
+    docs: fix docs
+
+commit 5f965583ebd04823c571131493dbaa17cc45745e
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:12:08 2025 +0700
+
+    docs: fix docs
+
+commit 41dac6ce8a95bd16cade3eb720a36254046bf69d
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:12:00 2025 +0700
+
+    docs: fix docs
+
+commit 3b5f5b1270377ba2692adafa38fc171eee94ff69
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:01:13 2025 +0700
+
+    docs: fix docs
+
+commit 6ddbe7fd2160469b4b9dd922430fea45874f26fd
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 04:01:01 2025 +0700
+
+    docs: fix docs
+
+commit 1a9457e3bdb441f1434c992efd88be99fb3ef9ea
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 03:53:59 2025 +0700
+
+    docs: fix docs
+
+commit 5cc25cb35159d8a7b3bcc58f4de69331597d4c11
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 03:38:29 2025 +0700
+
+    docs: improve docs, fix docstring
+
+commit 1c14d452d47cccba45c538e4eb7038d6eaee13e3
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 03:38:22 2025 +0700
+
+    docs: improve docs, fix docstring
+
+commit 0b318f1c43676f9cd687611146638617ca367063
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Apr 19 00:20:51 2025 +0700
+
+    docs: fix and improve docs
+
 commit b1d06ac4f498392c61dc0e12fccafccdf3aea127
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Sat Apr 19 00:14:56 2025 +0700

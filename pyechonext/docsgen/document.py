@@ -3,8 +3,7 @@ from abc import ABC
 from enum import Enum
 from typing import Any, Dict, List
 
-from loguru import logger
-
+from pyechonext.logging import logger
 from pyechonext.utils import get_current_datetime
 
 

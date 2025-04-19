@@ -2,8 +2,7 @@ from abc import ABC, abstractmethod
 from urllib.parse import parse_qs
 from uuid import uuid4
 
-from loguru import logger
-
+from pyechonext.logging import logger
 from pyechonext.request import Request
 from pyechonext.response import Response
 from pyechonext.utils.exceptions import WebError, pyEchoNextException
@@ -19,10 +18,10 @@ class BaseMiddleware(ABC):
 		"""Apply actions to request
 
 		Args:
-			request (Request): request object
+				request (Request): request object
 
 		Raises:
-			NotImplementedError: abstract method
+				NotImplementedError: abstract method
 		"""
 		raise NotImplementedError
 
@@ -31,10 +30,10 @@ class BaseMiddleware(ABC):
 		"""Apply actions to response
 
 		Args:
-			response (Response): response object
+				response (Response): response object
 
 		Raises:
-			NotImplementedError: abstract method
+				NotImplementedError: abstract method
 		"""
 		raise NotImplementedError
 
@@ -42,7 +41,7 @@ class BaseMiddleware(ABC):
 		"""Process template with middleware
 
 		Raises:
-			NotImplementedError: abstract method
+				NotImplementedError: abstract method
 		"""
 		raise NotImplementedError
 
@@ -50,10 +49,10 @@ class BaseMiddleware(ABC):
 		"""Process exception with middleware
 
 		Args:
-			exception (Exception): exception class
+				exception (Exception): exception class
 
 		Raises:
-			exception: exception from arguments
+				exception: exception from arguments
 		"""
 		if not isinstance(exception, pyEchoNextException) or not isinstance(
 			exception, WebError
@@ -70,7 +69,7 @@ class SessionMiddleware(BaseMiddleware):
 		"""Apply cookies to request
 
 		Args:
-			request (Request): request object
+				request (Request): request object
 		"""
 		cookie = request.environ.get("HTTP_COOKIE", None)
 
@@ -87,7 +86,7 @@ class SessionMiddleware(BaseMiddleware):
 		"""Get session uuid by response
 
 		Args:
-			response (Response): response
+				response (Response): response
 		"""
 		if not response.request.session_id:
 			session_id = uuid4()

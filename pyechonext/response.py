@@ -1,9 +1,9 @@
+import json
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
-import orjson as json
-from loguru import logger
 from socks import method
 
+from pyechonext.logging import logger
 from pyechonext.request import Request
 
 
@@ -32,14 +32,14 @@ class Response:
 		"""Initialize new response
 
 		Args:
-			request (Request, optional): request object. Defaults to None.
-			use_i18n (bool, optional): i18n using status. Defaults to False.
-			status_code (Optional[int], optional): default status code. Defaults to 200.
-			body (Optional[str], optional): response body. Defaults to None.
-			headers (Optional[Dict[str, str]], optional): http headers. Defaults to {}.
-			content_type (Optional[str], optional): content type. Defaults to None.
-			charset (Optional[str], optional): charset. Defaults to None.
-			i18n_params (Optional[dict], optional): params for i18n. Defaults to {}.
+				request (Request, optional): request object. Defaults to None.
+				use_i18n (bool, optional): i18n using status. Defaults to False.
+				status_code (Optional[int], optional): default status code. Defaults to 200.
+				body (Optional[str], optional): response body. Defaults to None.
+				headers (Optional[Dict[str, str]], optional): http headers. Defaults to {}.
+				content_type (Optional[str], optional): content type. Defaults to None.
+				charset (Optional[str], optional): charset. Defaults to None.
+				i18n_params (Optional[dict], optional): params for i18n. Defaults to {}.
 		"""
 		if status_code == 200:
 			self.status_code: str = "200 OK"
@@ -57,7 +57,7 @@ class Response:
 			self.charset: str = charset
 
 		if body is not None:
-			self.body: str = body
+			self.body: Any = body
 		else:
 			self.body: str = ""
 
@@ -75,18 +75,18 @@ class Response:
 		"""Magic method for get attrs (from extra)
 
 		Args:
-			item (Any): item key
+				item (Any): item key
 
 		Returns:
-			Union[Any, None]: value
+				Union[Any, None]: value
 		"""
 		return self.extra.get(item, None)
 
 	def _structuring_headers(self, environ: dict):
-		"""Structurize headers 
+		"""Structurize headers
 
 		Args:
-			environ (dict): environ dictionary
+				environ (dict): environ dictionary
 		"""
 		headers = {
 			"Host": environ.get("HTTP_HOST"),
@@ -101,8 +101,7 @@ class Response:
 			self._headerslist.append(header_tuple)
 
 	def _update_headers(self) -> None:
-		"""Update headers by response data
-		"""
+		"""Update headers by response data"""
 		self._headerslist = [
 			("Content-Type", f"{self.content_type}; charset={self.charset}"),
 			("Content-Length", str(len(self.body))),
@@ -112,7 +111,7 @@ class Response:
 		"""Adds new headers
 
 		Args:
-			headers (List[Tuple[str, str]]): new headers
+				headers (List[Tuple[str, str]]): new headers
 		"""
 		for header in headers:
 			self._added_headers.append(header)
@@ -121,8 +120,8 @@ class Response:
 		"""
 		Encodes a body.
 		"""
-		if self.content_type.split("/")[-1] == "json":
-			self.body = str(self.json)
+		if self.content_type == "application/json":
+			self.body = self.json
 
 		try:
 			self.body = self.body.encode("UTF-8")
@@ -131,15 +130,15 @@ class Response:
 
 	def __call__(self, environ: dict, start_response: method) -> Iterable:
 		"""Makes the response callable.
-		
+
 		This method calling another methods for encode body, fill headers and starting response.
 
 		Args:
-			environ (dict): environ data
-			start_response (method): start response method
+				environ (dict): environ data
+				start_response (method): start response method
 
 		Returns:
-			Iterable: iterable encoded body
+				Iterable: iterable encoded body
 		"""
 		self._encode_body()
 
@@ -159,13 +158,10 @@ class Response:
 		"""Get response body as JSON
 
 		Returns:
-			dict: _description_
+				dict: _description_
 		"""
 		if self.body:
-			if self.content_type == "application/json":
-				return json.loads(self.body)
-			else:
-				return json.loads(json.dumps(self.body))
+			return json.dumps(self.body)
 
 		return {}
 
@@ -173,6 +169,6 @@ class Response:
 		"""Returns a unambiguous string representation of the object (for debug...).
 
 		Returns:
-			str: unambiguous string representation
+				str: unambiguous string representation
 		"""
 		return f"<{self.__class__.__name__} at 0x{abs(id(self)):x} {self.status_code}>"

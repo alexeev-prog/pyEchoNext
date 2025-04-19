@@ -1,9 +1,10 @@
+import json
 from pyechonext.response import Response
 
 
 def test_response():
 	response = Response(
-		body='{"test": true, "testlib": "pytest"}', content_type="application/json"
+		body={"test": True, "testlib": "pytest"}, content_type="application/json"
 	)
 
 	assert response.status_code == "200 OK"
@@ -12,4 +13,4 @@ def test_response():
 
 	response_json = response.json
 
-	assert response_json == {"test": True, "testlib": "pytest"}
+	assert response_json == json.dumps({"test": True, "testlib": "pytest"})

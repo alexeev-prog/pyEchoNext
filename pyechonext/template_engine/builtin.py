@@ -1,8 +1,7 @@
 import os
 import re
 
-from loguru import logger
-
+from pyechonext.logging import logger
 from pyechonext.request import Request
 from pyechonext.utils.exceptions import TemplateNotFileError
 

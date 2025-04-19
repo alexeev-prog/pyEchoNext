@@ -1,9 +1,9 @@
+import json
 from typing import Any, Dict, Union
 from urllib.parse import parse_qs
 
-from loguru import logger
-
 from pyechonext.config import Settings
+from pyechonext.logging import logger
 
 
 class Request:
@@ -15,8 +15,8 @@ class Request:
 		"""Constructs a new request
 
 		Args:
-			environ (dict, optional): environ info. Defaults to {}.
-			settings (Settings, optional): settings of app. Defaults to None.
+				environ (dict, optional): environ info. Defaults to {}.
+				settings (Settings, optional): settings of app. Defaults to None.
 		"""
 		self.environ: Dict[str, Any] = environ
 		self.settings: Settings = settings
@@ -37,10 +37,10 @@ class Request:
 		"""Magic method for get attrs (from extra)
 
 		Args:
-			item (Any): item key
+				item (Any): item key
 
 		Returns:
-			Union[Any, None]: value
+				Union[Any, None]: value
 		"""
 		return self.extra.get(item, None)
 
@@ -48,10 +48,10 @@ class Request:
 		"""Build GET params dictionary
 
 		Args:
-			raw_params (str): raw params string
+				raw_params (str): raw params string
 
 		Returns:
-			dict: GET params
+				dict: GET params
 		"""
 		return parse_qs(raw_params)
 
@@ -59,9 +59,15 @@ class Request:
 		"""Build POST params dictionary
 
 		Args:
-			raw_params (bytes): raw parameters
+				raw_params (bytes): raw parameters
 
 		Returns:
-			dict: POST params
+				dict: POST params
 		"""
-		return parse_qs(raw_params.decode())
+		try:
+			raw_params = json.loads(raw_params)
+			return raw_params
+		except Exception:
+			raw_params = raw_params.decode()
+
+		return parse_qs(raw_params)

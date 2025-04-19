@@ -3,9 +3,8 @@ import os
 from pathlib import Path
 from typing import List
 
-from loguru import logger
-
 from pyechonext.config import Settings
+from pyechonext.logging import logger
 from pyechonext.utils.exceptions import StaticFileNotFoundError
 
 
