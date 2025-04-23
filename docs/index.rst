@@ -39,7 +39,6 @@ pyEchoNext documentation
    pyechonext.apidoc_ui
    pyechonext.auth
    pyechonext.docsgen
-   pyechonext.i18n_l10n
    pyechonext.logging
    pyechonext.template_engine
    pyechonext.utils
@@ -71,9 +70,17 @@ pyEchoNext documentation
 
    </p>
 
-   EchoNext is a lightweight, fast and scalable web framework for Python
+.. raw:: html
+
+   <p align="center">
+
+.. raw:: html
+
+   </p>
 
 ..
+
+   EchoNext is a lightweight, fast and scalable web framework for Python
 
    [!CAUTION] At the moment, EchoNext is under active development, many
    things may not work, and this version is not recommended for use (all
@@ -101,7 +108,7 @@ your agile companion in the world of web development!
 web applications with lightning speed and flexibility. With EchoNext,
 you’re not just coding; you’re building a masterpiece!
 
-   Last stable version: 0.7.14 alpha
+   Last stable version: 0.7.15 alpha
 
 ..
 
@@ -196,7 +203,8 @@ Check Other My Projects
 ⚙️ Functionality
 ----------------
 
--  i18n/l10n localization
+-  i18n/l10n localization with
+   `hermes-langlib <https://github.com/alexeev-prog/hermes_langlib>`__.
 -  basic project documentation generator
 -  request/response
 -  middlewares (with basic session cookie middleware)
@@ -292,6 +300,113 @@ Example code:
 -----------------
 
 You can view examples at `examples directory <./examples>`__.
+
+i18n with hermes-langlib
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Hermes LangLib - a fast and light python library for translating,
+localizing and internationalizing your applications. The library is
+aimed at high speed and stability; it can be used in highly loaded
+projects.
+
+Directory tree:
+
+::
+
+   ├── example.toml
+   └── locales
+       └── default.json
+
+Example config-file ``example.toml``:
+
+.. code:: toml
+
+   locale_directory="locales"
+   default_locale_file="default.json"
+   default_language="RU_RU"
+   translator="google"
+
+Example locale file ``locales/default.json``:
+
+.. code:: json
+
+   {
+     "locales": {
+       "RU": ["RU_RU"],
+       "EN": ["EN_EN", "EN_US"]
+     },
+     "RU": {
+       "RU_RU": {
+         "title": "Библиотека для интернационализации",
+         "description": "Библиотека, которая позволит переводить ваши приложения",
+         "mails_message": {
+           "plural": "count",
+           "^0$": "У вас нет ни одного письма",
+           "11": "У вас есть {count} писем",
+           "1$|1$": "У вас есть {count} письмо",
+           "^(2|3|4)$|(2|3|4)$": "У вас есть {count} письма",
+           "other": "У вас есть {count} писем"
+         }
+       }
+     },
+     "EN": {
+       "EN_EN": {
+         "title": "Library for internationalization",
+         "description": "A library that will allow you to translate your applications",
+         "mails_message": {
+           "plural": "count",
+           "^0$": "You do not have any mail.",
+           "^1$": "You have a new mail.",
+           "other": "You have {count} new mails."
+         }
+       },
+       "EN_US": {
+         "title": "Library for internationalization",
+         "description": "A library that will allow you to translate your applications",
+         "mails_message": {
+           "plural": "count",
+           "^0$": "You do not have any mail.",
+           "^1$": "You have a new mail.",
+           "other": "You have {count} new mails."
+         }
+       }
+     }
+   }
+
+Example usage:
+
+.. code:: python
+
+   from hermes_langlib.locales import LocaleManager
+   from hermes_langlib.storage import load_config
+
+   config = load_config('example.toml')
+
+   locale_manager = LocaleManager(config)
+   print(locale_manager.get('title - {version}', 'default', 'RU_RU', version="0.1.0"))
+   print(locale_manager.get('title - {version}', 'default', 'RU', version="0.1.0"))
+   print(locale_manager.get('mails_message.', 'default', 'RU_RU', count=0))
+   print(locale_manager.get('mails_message', 'default', 'RU_RU', count=1))
+   print(locale_manager.get('mails_message', 'default', 'RU_RU', count=11))
+   print(locale_manager.get('mails_message', 'default', 'RU_RU', count=2))
+   print(locale_manager.get('mails_message', 'default', 'RU_RU', count=22))
+   print(locale_manager.get('mails_message', 'default', 'RU_RU', count=46))
+   print(locale_manager.get('mails_message', 'default', 'RU_RU', count=100000001))
+   print(locale_manager.translate("You have only three mails", "en", 'ru'))
+   print(locale_manager.translate("У вас всего три письма", "ru", 'en'))
+
+You can read `Hermes-Langlib Specification at this
+link <https://github.com/alexeev-prog/hermes_langlib/tree/main?tab=readme-ov-file#-specifications>`__.
+
+.. raw:: html
+
+   <p align="right">
+
+
+
+.. raw:: html
+
+   </p>
 
 Basic With Depends Injection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -447,142 +562,6 @@ Permissions
 
    if __name__ == "__main__":
        main()
-
-FullApp with locale, static files, docs generation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Also see in `examples <./examples/example_locale.py>`__
-
-.. code:: python
-
-   from pyechonext.apidoc_ui import APIDocUI, APIDocumentation
-   from pyechonext.app import ApplicationType, EchoNext
-   from pyechonext.config import SettingsConfigType, SettingsLoader
-   from pyechonext.middleware import middlewares
-   from pyechonext.mvc.controllers import PageController
-   from pyechonext.static import StaticFile
-   from pyechonext.template_engine.jinja import render_template
-   from pyechonext.urls import URL
-   from pyechonext.utils.exceptions import MethodNotAllow
-
-
-   class UsersView(PageController):
-       def get(self, request, response, *args, **kwargs):
-           return render_template(
-               request,
-               "index.html",
-               user_name="User",
-               session_id=request.session_id,
-               friends=["Bob", "Anna", "John"],
-           )
-
-       def post(self, request, response, *args, **kwargs):
-           raise MethodNotAllow(f"Request {request.path}: method not allow")
-
-
-   url_patterns = [URL(path="/users", controller=UsersView)]
-   config_loader = SettingsLoader(SettingsConfigType.PYMODULE, "el_config.py")
-   settings = config_loader.get_settings()
-   static_files = [StaticFile(settings, "styles.css")]
-   echonext = EchoNext(
-       __name__,
-       settings,
-       middlewares,
-       urls=url_patterns,
-       application_type=ApplicationType.HTML,
-       static_files=static_files,
-   )
-   apidoc = APIDocumentation(echonext)
-
-
-   @echonext.route_page("/api-docs")
-   def api_docs(request, response):
-       ui = APIDocUI(apidoc.generate_spec())
-       return ui.generate_html_page()
-
-
-   @echonext.route_page("/book")
-   class BooksResource(PageController):
-       """
-       This class describes a books resource.
-       """
-
-       def get(self, request, response, **kwargs):
-           """
-           get queries
-
-           :param      request:   The request
-           :type       request:   Request
-           :param      response:  The response
-           :type       response:  Response
-           :param      kwargs:    The keywords arguments
-           :type       kwargs:    dictionary
-
-           :returns:   result
-           :rtype:     str
-           """
-           return echonext.i18n_loader.get_string("title %{name}", name=str(request.GET))
-
-       def post(self, request, response, **kwargs):
-           """
-           post queries
-
-           :param      request:   The request
-           :type       request:   Request
-           :param      response:  The response
-           :type       response:  Response
-           :param      kwargs:    The keywords arguments
-           :type       kwargs:    dictionary
-
-           :returns:   result
-           :rtype:     str
-           """
-           return echonext.l10n_loader.format_currency(1305.50)
-
-Create file ``static/styles.css``:
-
-.. code:: css
-
-   body {
-       color: #f8f2f2;
-       background: #1f1f1f;
-       font-family: monospace;
-   }
-
-Create file ``el_config.py``:
-
-.. code:: python
-
-   import os
-
-   BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-   TEMPLATES_DIR = 'templates'
-   SECRET_KEY = 'secret-key'
-   LOCALE = 'RU_RU'
-   LOCALE_DIR = 'locales'
-   VERSION = "0.1.0"
-   DESCRIPTION = 'Example echonext webapp'
-   STATIC_DIR = 'static'
-
-Create file ``locales/RU_RU.json``:
-
-.. code:: python
-
-   {
-       "i18n": {
-           "title": "pyEchoNext Веб-приложение с локалью",
-           "example one": "пример один"
-       },
-       "l10n": {
-           "date_format": "%Y-%m-%d",
-           "time_format": "%H:%M",
-           "date_time_fromat": "%Y-%m-%d %H:%M",
-           "thousands_separator": ",",
-           "decimal_separator": ".",
-           "currency_symbol": "$",
-           "currency_format": "{symbol}{amount}"
-       }
-   }
 
 .. raw:: html
 
@@ -828,12 +807,6 @@ Tests coverage
 
 To test the web framework, PyTest with the pytest-cov plugin is used.
 You can look at the tests in `tests directory <./tests>`__
-
-========== ==== ========
-Statements Miss Coverage
-========== ==== ========
-1553       720  54%
-========== ==== ========
 
 Documentation 🌍
 ----------------

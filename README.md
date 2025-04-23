@@ -636,10 +636,6 @@ class IndexView(View):
 ## Tests coverage
 To test the web framework, PyTest with the pytest-cov plugin is used. You can look at the tests in [tests directory](./tests)
 
-| Statements | Miss       | Coverage |
-|------------|------------|----------|
-| 1553       | 720        | 54%      |
-
 ## Documentation 🌍
 The main documentation is [here](https://alexeev-prog.github.io/pyEchoNext/).
 
