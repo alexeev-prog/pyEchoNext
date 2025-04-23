@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Type
+from typing import Optional
 
 from pyechonext.mvc.controllers import PageController
 
@@ -11,7 +11,7 @@ class URL:
     """
 
     path: str
-    controller: Type[PageController]
+    controller: PageController
     summary: Optional[str] = None
 
 

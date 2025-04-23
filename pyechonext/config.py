@@ -1,7 +1,7 @@
 import importlib
 import json
 import os
-from configparser import ConfigParser
+from configparser import ConfigParser, SectionProxy
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -69,10 +69,11 @@ class SettingsLoader:
         Raises:
                         FileNotFoundError: _description_
         """
+        self.config = None
         self.config_type: SettingsConfigType = config_type
         self.filename: str = filename
 
-        self.filename: Path = Path(self.filename)
+        self.filename: str = Path(self.filename)
 
         if not self.filename.exists():
             raise FileNotFoundError(f'Config file "{self.filename}" don\'t exists.')
@@ -110,7 +111,7 @@ class SettingsLoader:
 
         return data
 
-    def _load_ini_config(self) -> dict:
+    def _load_ini_config(self) -> SectionProxy:
         """Loads a config data from INI file
 
         Returns:

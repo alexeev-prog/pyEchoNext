@@ -6,17 +6,9 @@ class pyEchoNextException(Exception):
     Exception for signaling pyechonext errors.
     """
 
-    def __init__(self, *args):
-        """
-        Constructs a new instance.
-
-        :param		args:  The arguments
-        :type		args:  list
-        """
-        if args:
-            self.message = args[0]
-        else:
-            self.message = None
+    def __init__(self, message: str, *args):
+        self.message = message
+        self.args = args
 
     def get_explanation(self) -> str:
         """

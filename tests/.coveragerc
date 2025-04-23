@@ -1,0 +1,11 @@
+[run]
+omit = 
+    */migrations/*
+    */legacy_code/*
+    */third_party/*
+    ../pyechonext/apidoc_ui/*
+    ../pyechonext/utils/*
+    ../pyechonext/docsgen/*
+
+[report]
+omit = ./venv/*,*tests*,*apps.py,*manage.py,*__init__.py,*migrations*,*asgi*,*wsgi*,*admin.py,*urls.py,*apidoc_ui*,../pyechonext/apidoc_ui

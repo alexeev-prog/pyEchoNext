@@ -15,7 +15,6 @@ pyEchoNext documentation
    webapp_creation
    routes_and_views
    requests_responses
-   i18n_locales
    security
    mvc
    permissions

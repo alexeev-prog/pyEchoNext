@@ -59,5 +59,5 @@ def test_controller():
 
 def test_age_policy():
     """Test Age Policy"""
-    assert age_policy.evaluate(young_user, user_resource, view_users_perm) == False
-    assert age_policy.evaluate(admin_user, user_resource, view_users_perm) == True
+    assert age_policy.evaluate(young_user, user_resource, view_users_perm) is False
+    assert age_policy.evaluate(admin_user, user_resource, view_users_perm) is True

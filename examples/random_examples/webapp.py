@@ -7,6 +7,7 @@ from pyechonext.mvc.controllers import PageController
 from pyechonext.template_engine.jinja import render_template
 from pyechonext.urls import URL
 from pyechonext.utils.exceptions import MethodNotAllow
+from pyechonext.static import StaticFile
 
 
 class UsersView(PageController):
@@ -33,6 +34,7 @@ echonext = EchoNext(
     __name__,
     settings,
     middlewares,
+    static_files=[StaticFile(settings, 'styles.css')],
     urls=url_patterns,
     application_type=ApplicationType.HTML,
 )

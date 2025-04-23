@@ -8,7 +8,7 @@ from parse import parse
 from pyechonext.mvc.controllers import PageController
 from pyechonext.request import Request
 from pyechonext.urls import URL
-from pyechonext.utils import _prepare_url
+from pyechonext.utils import prepare_url
 from pyechonext.utils.exceptions import RoutePathExistsError, URLNotFound
 
 
@@ -208,7 +208,7 @@ class Router:
         Returns:
                 Union[Tuple[Callable, Dict], None]: route and parse result or None
         """
-        url = _prepare_url(request.path)
+        url = prepare_url(request.path)
 
         url = url if self.prefix is None else f"{self.prefix}{url}"
 

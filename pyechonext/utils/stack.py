@@ -13,7 +13,7 @@ class LIFOStack:
         self._items: List[Any] = []
 
     @property
-    def items(self) -> map:
+    def items(self) -> Any:
         """
         Get items (reversed)
 

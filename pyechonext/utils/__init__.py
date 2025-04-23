@@ -147,7 +147,7 @@ def get_current_datetime() -> str:
     return date.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def _prepare_url(url: str) -> str:
+def prepare_url(url: str) -> str:
     """
     Prepare URL (remove ending /)
 

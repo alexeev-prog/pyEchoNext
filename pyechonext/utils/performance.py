@@ -132,20 +132,20 @@ class PerformanceCacheFactory(object):
     """
 
     @staticmethod
-    def create_PerformanceCache(
-        PerformanceCache_type: Type[PerformanceCacheBase], *args, **kwargs
+    def create_performance_cache(
+        performance_cache_type: Type[PerformanceCacheBase], *args, **kwargs
     ) -> PerformanceCacheBase:
         """
         Create a new PerformanceCache instance of the specified type.
 
-        Args: PerformanceCache_type (Type[PerformanceCacheBase]): The type of PerformanceCache to create. *args:
+        Args: performance_cache_type (Type[PerformanceCacheBase]): The type of PerformanceCache to create. *args:
         Positional arguments to pass to the PerformanceCache constructor. **kwargs: Keyword
         arguments to pass to the PerformanceCache constructor.
 
         Returns: PerformanceCacheBase: A new instance of the specified PerformanceCache type.
 
-        :param		PerformanceCache_type:	 The PerformanceCache type
-        :type		PerformanceCache_type:	 Type[PerformanceCacheBase]
+        :param		performance_cache_type:	 The PerformanceCache type
+        :type		performance_cache_type:	 Type[PerformanceCacheBase]
         :param		args:		 The arguments
         :type		args:		 list
         :param		kwargs:		 The keywords arguments
@@ -154,7 +154,7 @@ class PerformanceCacheFactory(object):
         :returns:	The PerformanceCache base.
         :rtype:		PerformanceCacheBase
         """
-        return PerformanceCache_type(*args, **kwargs)
+        return performance_cache_type(*args, **kwargs)
 
 
 class SingletonPerformanceCache(PerformanceCacheBase, metaclass=Singleton):
@@ -168,20 +168,20 @@ class SingletonPerformanceCache(PerformanceCacheBase, metaclass=Singleton):
     """
 
     def __init__(
-        self, PerformanceCache_type: Type[PerformanceCacheBase], *args, **kwargs
+        self, performance_cache_type: Type[PerformanceCacheBase], *args, **kwargs
     ) -> None:
         """
         Constructs a new instance.
 
-        :param		PerformanceCache_type:	 The PerformanceCache type
-        :type		PerformanceCache_type:	 Type[PerformanceCacheBase]
+        :param		performance_cache_type:	 The PerformanceCache type
+        :type		performance_cache_type:	 Type[PerformanceCacheBase]
         :param		args:		 The arguments
         :type		args:		 list
         :param		kwargs:		 The keywords arguments
         :type		kwargs:		 dictionary
         """
-        self.PerformanceCache = PerformanceCacheFactory.create_PerformanceCache(
-            PerformanceCache_type, *args, **kwargs
+        self.PerformanceCache = PerformanceCacheFactory.create_performance_cache(
+            performance_cache_type, *args, **kwargs
         )
 
     def get(self, key: str) -> Any:
@@ -217,7 +217,7 @@ class SingletonPerformanceCache(PerformanceCacheBase, metaclass=Singleton):
 
 
 def performance_cached(
-    PerformanceCache: SingletonPerformanceCache,
+    performancecache: SingletonPerformanceCache,
     key_func: Callable[[Any, Any], str] = lambda *args, **kwargs: str(args)
     + str(kwargs),
 ) -> Callable:
@@ -235,8 +235,8 @@ def performance_cached(
 
     Returns: Callable: A new function or method that PerformanceCaches the results.
 
-    :param		PerformanceCache:	   The PerformanceCache
-    :type		PerformanceCache:	   SingletonPerformanceCache
+    :param		performancecache:	   The PerformanceCache
+    :type		performancecache:	   SingletonPerformanceCache
     :param		key_func:  The key function
     :type		key_func:  (Callable[[Any, Any], str])
     :param		kwargs:	   The keywords arguments
@@ -250,12 +250,12 @@ def performance_cached(
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             key = key_func(*args, **kwargs)
-            PerformanceCached_value = PerformanceCache.get(key)
-            if PerformanceCached_value is not None:
-                return PerformanceCached_value
+            cached_value = performancecache.get(key)
+            if cached_value is not None:
+                return cached_value
             else:
                 result = func(*args, **kwargs)
-                PerformanceCache.set(key, result, time.time())
+                performancecache.set(key, result, time.time())
                 return result
 
         return wrapper

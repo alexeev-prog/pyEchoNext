@@ -40,6 +40,19 @@ CYRILLIC_TO_LATIN: Dict[str, str] = {
 SLUG_MAX_LENGTH = 512
 
 
+def _transliterate_cyrillic(text: str) -> str:
+    """
+    Transliterate cyrillic to latinic
+
+    :param		text:  The text
+    :type		text:  str
+
+    :returns:	transliterated phrase
+    :rtype:		str
+    """
+    return "".join(CYRILLIC_TO_LATIN.get(char.lower(), char) for char in text)
+
+
 class SlugGenerator:
     """
     This class describes a slug generator.
@@ -70,27 +83,15 @@ class SlugGenerator:
         """
         slug = phrase.lower()
         slug = self._replace_spaces_with_hyphens(slug)
-        slug = self._transliterate_cyrillic(slug)
+        slug = _transliterate_cyrillic(slug)
         slug = self._remove_non_alphanumeric_chars(slug)
         slug = self._remove_consecutive_hyphens(slug)
         slug = self._limit_length(slug)
         return slug
 
-    def _transliterate_cyrillic(self, text: str) -> str:
-        """
-        Transliterate cyrillic to latinic
-
-        :param		text:  The text
-        :type		text:  str
-
-        :returns:	transliterated phrase
-        :rtype:		str
-        """
-        return "".join(CYRILLIC_TO_LATIN.get(char.lower(), char) for char in text)
-
     def _remove_non_alphanumeric_chars(self, text: str) -> str:
         """
-        Removes non alphanumeric characters.
+        Removes non-alphanumeric characters.
 
         :param		text:  The text
         :type		text:  str

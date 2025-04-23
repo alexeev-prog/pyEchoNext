@@ -37,6 +37,7 @@ class BaseMiddleware(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def process_template(self, *args, **kwargs):
         """Process template with middleware
 
@@ -45,6 +46,7 @@ class BaseMiddleware(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def process_exception(self, exception: Exception):
         """Process exception with middleware
 
@@ -54,10 +56,7 @@ class BaseMiddleware(ABC):
             Raises:
         exception: exception from arguments
         """
-        if not isinstance(exception, pyEchoNextException) or not isinstance(
-            exception, WebError
-        ):
-            raise exception
+        raise NotImplementedError
 
 
 class SessionMiddleware(BaseMiddleware):
@@ -98,6 +97,28 @@ class SessionMiddleware(BaseMiddleware):
                     ("Set-Cookie", f"session_id={session_id}"),
                 ]
             )
+
+    def process_template(self, *args, **kwargs):
+        """Process template with middleware
+
+            Raises:
+        NotImplementedError: abstract method
+        """
+        raise NotImplementedError
+
+    def process_exception(self, exception: Exception):
+        """Process exception with middleware
+
+            Args:
+        exception (Exception): exception class
+
+            Raises:
+        exception: exception from arguments
+        """
+        if not isinstance(exception, pyEchoNextException) or not isinstance(
+            exception, WebError
+        ):
+            raise exception
 
 
 middlewares = [SessionMiddleware]
