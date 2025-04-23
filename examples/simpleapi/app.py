@@ -10,7 +10,6 @@ from pyechonext.response import Response
 from pyechonext.urls import URL
 
 
-
 class UsersPageController(PageController):
     def get(self, request, response, **kwargs):
         return Response(request, body={"users": "get"})

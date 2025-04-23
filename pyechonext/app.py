@@ -306,7 +306,9 @@ class EchoNext:
             f"Next router paths already exists: {set(old_router_routes).intersection(new_router_routes)}"
         )
 
-    def _find_handler(self, request: Request) -> tuple[Any, Any] | tuple[Route, dict[Any, Any]]:
+    def _find_handler(
+        self, request: Request
+    ) -> tuple[Any, Any] | tuple[Route, dict[Any, Any]]:
         """Find handler by request
 
         Args:
@@ -352,7 +354,9 @@ class EchoNext:
         item = self.main_cache.get(key)
 
         if item is None:
-            logger.info(f"Save item to cache: '{key[:16].strip().replace('\n', '')}...'")
+            logger.info(
+                f"Save item to cache: '{key[:16].strip().replace('\n', '')}...'"
+            )
             self.main_cache.set(key, value)
             item = self.main_cache.get(key)
 

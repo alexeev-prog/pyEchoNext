@@ -3,11 +3,11 @@ import os
 from pathlib import Path
 from typing import List, Optional
 
-from pyechonext.utils import prepare_url
+from pyechonext.cache import InMemoryCache
 from pyechonext.config import Settings
 from pyechonext.logging import logger
+from pyechonext.utils import prepare_url
 from pyechonext.utils.exceptions import StaticFileNotFoundError
-from pyechonext.cache import InMemoryCache
 
 
 class StaticFile:
@@ -15,7 +15,13 @@ class StaticFile:
     This class describes a static file.
     """
 
-    def __init__(self, settings: Settings, filename: str, update_timeout: Optional[int] = 3600, precache: Optional[bool] = False):
+    def __init__(
+        self,
+        settings: Settings,
+        filename: str,
+        update_timeout: Optional[int] = 3600,
+        precache: Optional[bool] = False,
+    ):
         """Constructs a Static File
 
         Args:
@@ -37,29 +43,28 @@ class StaticFile:
             raise StaticFileNotFoundError(
                 f'Static file "{self.abs_filename}" not found.'
             )
-            
+
         self.content_cache: InMemoryCache = InMemoryCache(timeout=update_timeout)
-        
+
         self.precache: bool = precache
         self.preloaded_value: Optional[str] = None
-        
+
         if self.precache:
             self.preloaded_value = self.caching_static_file()
 
     def caching_static_file(self):
-        """Set and save static file to cache
-        """
+        """Set and save static file to cache"""
         content = self._load_content()
-        
+
         item = self.content_cache.get(self.filename)
-        
+
         if item is None:
-            logger.debug(f'Caching static file: {self.filename}')
+            logger.debug(f"Caching static file: {self.filename}")
             self.content_cache.set(self.filename, content)
             item = content
         else:
-            logger.debug(f'Load static file from cache: {self.filename}')
-        
+            logger.debug(f"Load static file from cache: {self.filename}")
+
         return item
 
     def _load_content(self) -> str:
@@ -146,12 +151,12 @@ class StaticFilesManager:
         :rtype:		str
         """
         url = prepare_url(url)
-        
+
         for static_file in self.static_files:
             if static_file.filename == url:
                 logger.info(f"Found static file: {static_file.filename}")
                 if static_file.precache:
-                    logger.debug(f'Use preloaded value of static file {static_file}')
+                    logger.debug(f"Use preloaded value of static file {static_file}")
                     return static_file.preloaded_value
                 else:
                     return static_file.caching_static_file()

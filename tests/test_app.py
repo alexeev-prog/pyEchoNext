@@ -40,7 +40,7 @@ def test_basic_route(echonext, client):
 
     @echonext.route_page("/title")
     def title(request, response):
-        return 'pyEchoNext Example Website Test'
+        return "pyEchoNext Example Website Test"
 
     @echonext.route_page("/books")
     class BooksController(PageController):

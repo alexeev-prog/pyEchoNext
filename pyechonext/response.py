@@ -26,19 +26,19 @@ class Response:
         body: Optional[str | Dict] = None,
         headers=None,
         content_type: Optional[str] = None,
-        charset: Optional[str] = None
+        charset: Optional[str] = None,
     ):
         """Initialize new response
 
-            Args:
-                request (Request, optional): request object. Defaults to None.
-                use_i18n (bool, optional): i18n using status. Defaults to False.
-                status_code (Optional[int], optional): default status code. Defaults to 200.
-                body (Optional[str], optional): response body. Defaults to None.
-                headers (Optional[Dict[str, str]], optional): http headers. Defaults to {}.
-                content_type (Optional[str], optional): content type. Defaults to None.
-                charset (Optional[str], optional): charset. Defaults to None.
-                i18n_params (Optional[dict], optional): params for i18n. Defaults to {}.
+        Args:
+            request (Request, optional): request object. Defaults to None.
+            use_i18n (bool, optional): i18n using status. Defaults to False.
+            status_code (Optional[int], optional): default status code. Defaults to 200.
+            body (Optional[str], optional): response body. Defaults to None.
+            headers (Optional[Dict[str, str]], optional): http headers. Defaults to {}.
+            content_type (Optional[str], optional): content type. Defaults to None.
+            charset (Optional[str], optional): charset. Defaults to None.
+            i18n_params (Optional[dict], optional): params for i18n. Defaults to {}.
         """
         if headers is None:
             headers = {}
@@ -165,7 +165,7 @@ class Response:
                     self.body = literal_eval(self.body)
                 except SyntaxError:
                     return self.body
-                    
+
             return json.dumps(self.body)
 
         return {}
