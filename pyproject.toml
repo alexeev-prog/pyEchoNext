@@ -30,8 +30,6 @@ pytest-cov = "^6.0.0"
 furo = "^2024.8.6"
 mypy = "^1.15.0"
 wemake-python-styleguide = "^1.1.0"
-pyright = "^1.1.400"
-monkeytype = "^23.3.0"
 
 [build-system]
 requires = ["poetry-core"]
