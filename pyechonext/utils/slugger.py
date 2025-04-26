@@ -41,14 +41,13 @@ SLUG_MAX_LENGTH = 512
 
 
 def _transliterate_cyrillic(text: str) -> str:
-    """
-    Transliterate cyrillic to latinic
+    """Transliterate cyrillic to latin
 
-    :param		text:  The text
-    :type		text:  str
+    Args:
+        text (str): text
 
-    :returns:	transliterated phrase
-    :rtype:		str
+    Returns:
+        str: transliterated text
     """
     return "".join(CYRILLIC_TO_LATIN.get(char.lower(), char) for char in text)
 
@@ -59,27 +58,25 @@ class SlugGenerator:
     """
 
     def generate_slug(self, phrase: str) -> str:
-        """
-        Generate slug
+        """Generate slug
 
-        :param		phrase:	 The phrase
-        :type		phrase:	 str
+        Args:
+            phrase (str): phrase
 
-        :returns:	slug phrase
-        :rtype:		str
+        Returns:
+            str: slug
         """
         slug = self._convert_to_slug(phrase)
         return slug
 
     def _convert_to_slug(self, phrase: str) -> str:
-        """
-        Convert phrase to slug
+        """Convert phrase to slug
 
-        :param		phrase:	 The phrase
-        :type		phrase:	 str
+        Args:
+            phrase (str): phrase for converting
 
-        :returns:	phrase
-        :rtype:		str
+        Returns:
+            str: converted slug
         """
         slug = phrase.lower()
         slug = self._replace_spaces_with_hyphens(slug)
@@ -90,49 +87,45 @@ class SlugGenerator:
         return slug
 
     def _remove_non_alphanumeric_chars(self, text: str) -> str:
-        """
-        Removes non-alphanumeric characters.
+        """Removes non alphanumeric chars
 
-        :param		text:  The text
-        :type		text:  str
+        Args:
+            text (str): text
 
-        :returns:	phrase
-        :rtype:		str
+        Returns:
+            str: cleaned text
         """
         return re.sub(r"[^a-z0-9_-]", "", text, flags=re.UNICODE)
 
     def _replace_spaces_with_hyphens(self, text: str) -> str:
-        """
-        Replace spaces in phrase
+        """Replace space with hyphens
 
-        :param		text:  The text
-        :type		text:  str
+        Args:
+            text (str): text
 
-        :returns:	phrase
-        :rtype:		str
+        Returns:
+            str: cleaned text
         """
         return text.replace(" ", "-")
 
     def _remove_consecutive_hyphens(self, text: str) -> str:
-        """
-        Removes consecutive hyphens.
+        """Remove consecutive hyphens
 
-        :param		text:  The text
-        :type		text:  str
+        Args:
+            text (str): text of slug
 
-        :returns:	phrase
-        :rtype:		str
+        Returns:
+            str: cleaned text
         """
         return re.sub(r"-+", "-", text)
 
     def _limit_length(self, slug: str) -> str:
-        """
-        Split phrase by limit length
+        """Split slug by length limit
 
-        :param		slug:  The slug
-        :type		slug:  str
+        Args:
+            slug (str): slug phrase
 
-        :returns:	phrase
-        :rtype:		str
+        Returns:
+            str: splitted slug
         """
         return slug[:SLUG_MAX_LENGTH]

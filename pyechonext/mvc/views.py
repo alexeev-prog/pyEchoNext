@@ -9,12 +9,14 @@ class BaseView(ABC):
     """
 
     @abstractmethod
-    def render(self, model: PageModel):
-        """
-        Render data
+    def render(self, model: PageModel) -> str | dict:
+        """Render the given model
 
-        :param		model:	The model
-        :type		model:	PageModel
+        Args:
+            model (PageModel): model for render
+
+        Returns:
+            str: rendered content
         """
         raise NotImplementedError
 
@@ -24,14 +26,13 @@ class PageView(BaseView):
     Page visualization of the data that model contains.
     """
 
-    def render(self, model: PageModel) -> str:
-        """
-        Renders the given model.
+    def render(self, model: PageModel) -> str | dict:
+        """Render the given model
 
-        :param		model:	The model
-        :type		model:	PageModel
+        Args:
+            model (PageModel): model for render
 
-        :returns:	model response body content
-        :rtype:		str
+        Returns:
+            str: rendered content
         """
-        return str(model.response.body)
+        return model.response.body

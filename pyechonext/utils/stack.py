@@ -10,80 +10,71 @@ class LIFOStack:
         """
         Constructs a new instance.
         """
-        self._items: List[Any] = []
+        self._stack_items: List[Any] = []
 
     @property
-    def items(self) -> Any:
-        """
-        Get items (reversed)
+    def items(self) -> List:
+        """Get reversed stack items
 
-        :returns:	mapped items
-        :rtype:		map
+        Returns:
+            Any: reversed stack items
         """
-        return reversed(self._items)
+        return reversed(self._stack_items)
 
     def is_empty(self) -> bool:
-        """
-        Determines if empty.
+        """Determines is empty
 
-        :returns:	True if empty, False otherwise.
-        :rtype:		bool
+        Returns:
+            bool: true is empty, false otherwise
         """
-        return len(self._items) == 0
+        return len(self._stack_items) == 0
 
     def push(self, *args):
+        """Push item to stack items
         """
-        Push to stack
-
-        :param		args:  The arguments
-        :type		args:  list
-        """
-        for arg in args:
-            self._items.append(arg)
-
+        self._stack_items += args
+        
     def pop(self) -> Any:
-        """
-        Pops the object.
+        """Pop the object
 
-        :returns:	popped object
-        :rtype:		Any
+        Raises:
+            IndexError: stack if empty
 
-        :raises		IndexError:	 stack is empty
+        Returns:
+            Any: stack items with popped item
         """
         if self.is_empty():
             raise IndexError("LIFO Stack is empty")
 
-        return self._items.pop()
+        return self._stack_items.pop()
 
     def peek(self) -> Any:
-        """
-        Peek the last item
+        """Peek the last item
 
-        :returns:	last item
-        :rtype:		Any
+        Raises:
+            IndexError: stack is empty
 
-        :raises		IndexError:	 stack is empty
+        Returns:
+            Any: stack item
         """
         if self.is_empty():
             raise IndexError("LIFO Stack is empty")
 
-        return self._items[-1]
+        return self._stack_items[-1]
 
     @property
     def size(self) -> int:
-        """
-        Get items list length
+        """Get stack length
 
-        :returns:	list length
-        :rtype:		int
+        Returns:
+            int: length of stack items
         """
-        return len(self._items)
+        return len(self._stack_items)
 
     def __str__(self) -> str:
-        """
-        Returns a string representation of the object.
+        """String representation of object
 
-        :returns:	String representation of the object.
-        :rtype:		str
+        Returns:
+            str: string representation
         """
-        return " -> ".join(map(str, reversed(self._items)))
+        return " -> ".join(map(str, reversed(self._stack_items)))

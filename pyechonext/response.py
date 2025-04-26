@@ -12,6 +12,18 @@ class Response:
     """
     This dataclass describes a response.
     """
+    
+    __slots__ = (
+        'headers',
+        'status_code',
+        'content_type',
+        'body',
+        'charset',
+        'request',
+        'extra',
+        '_headerslist',
+        '_added_headers',
+    )
 
     default_content_type: str = "text/html"
     default_charset: str = "UTF-8"

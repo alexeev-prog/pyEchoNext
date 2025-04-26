@@ -209,11 +209,11 @@ class EchoNext:
         """Route page decorator
 
         Args:
-                page_path (str): page path url
-                summary (Optional[str], optional): summary documentation. Defaults to None.
+            page_path (str): page path url
+            summary (Optional[str], optional): summary documentation. Defaults to None.
 
         Returns:
-                Callable: wrapper
+            Callable: wrapper
         """
 
         def wrapper(handler: Callable | PageController):
@@ -237,7 +237,7 @@ class EchoNext:
         """Apply middlewares to request
 
         Args:
-                request (Request): request for applying middlewares
+            request (Request): request for applying middlewares
         """
         stack = LIFOStack()
 
@@ -253,7 +253,7 @@ class EchoNext:
         """Apply middlewares to response
 
         Args:
-                response (Response): request for applying middlewares
+            response (Response): request for applying middlewares
         """
         stack = LIFOStack()
 
@@ -269,7 +269,7 @@ class EchoNext:
         """Process exceptions from middlewares
 
         Args:
-                exception (Exception): exception class
+            exception (Exception): exception class
         """
         stack = LIFOStack()
 
@@ -285,7 +285,7 @@ class EchoNext:
         """Include new router to additional routers list
 
         Args:
-                        new_router (Router): new router object
+            new_router (Router): new router object
         """
         new_router_routes = [path for path, _ in new_router.routes.items()]
         old_router_routes = [path for path, _ in self.router.routes.items()]
@@ -312,10 +312,10 @@ class EchoNext:
         """Find handler by request
 
         Args:
-                request (Request): Request object
+            request (Request): Request object
 
         Returns:
-                Tuple[Callable, str]: handlers tuple
+            Tuple[Callable, str]: handlers tuple
         """
         url = prepare_url(request.path)
 
@@ -344,11 +344,11 @@ class EchoNext:
         """Set and save item to cache
 
         Args:
-                key (str): key
-                value (Any): value
+            key (str): key
+            value (Any): value
 
         Returns:
-                Any: item from cache
+            Any: item from cache
         """
         key = str(key)
         item = self.main_cache.get(key)
@@ -370,11 +370,11 @@ class EchoNext:
         """Serve static files
 
         Args:
-                request (Request): request object
-                response (Response): response object
+            request (Request): request object
+            response (Response): response object
 
         Returns:
-                Response: served response object
+            Response: served response object
         """
         logger.debug(f"Serve static file by path: {request.path}")
         response.content_type = self.static_files_manager.get_file_type(request.path)
@@ -394,14 +394,14 @@ class EchoNext:
         """Filling response
 
         Args:
-                route (Route): route
-                response (Response): response object
-                request (Request): request object
-                result (Any): result data
-                handler (Callable): handler object
+            route (Route): route
+            response (Response): response object
+            request (Request): request object
+            result (Any): result data
+            handler (Callable): handler object
         """
         if route.route_type == RoutesTypes.URL_BASED:
-            view = route.handler.get_rendered_view(request, result, self)
+            view = route.handler.get_rendered_view(request, result)
             response.body = view
         else:
             response.body = self.get_and_save_cache_item(result, result)
@@ -410,13 +410,13 @@ class EchoNext:
         """Handle request
 
         Args:
-                request (Request): request object
+            request (Request): request object
 
         Raises:
-                URLNotFound: URL for request not found
+            URLNotFound: URL for request not found
 
         Returns:
-                Response: response object
+            Response: response object
         """
         logger.debug(f"Handle request: {request.path}")
         response = self._get_response(request)
@@ -445,11 +445,11 @@ class EchoNext:
         """Makes the application object callable
 
         Args:
-                environ (dict): environ dictionary
-                start_response (method): the start response
+            environ (dict): environ dictionary
+            start_response (method): the start response
 
         Returns:
-                Iterable: iterable response
+            Iterable: iterable response
         """
         request = self._get_request(environ)
         self._apply_middlewares_to_request(request)

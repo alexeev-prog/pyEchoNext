@@ -13,6 +13,3 @@ class URL:
     path: str
     controller: PageController
     summary: Optional[str] = None
-
-
-url_patterns = []

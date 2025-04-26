@@ -17,10 +17,10 @@ def dynamic_import(module: str):
     """Dynamic import with importlib
 
     Args:
-                    module (str): module name
+        module (str): module name
 
     Returns:
-                    module: imported module
+        module: imported module
     """
     return importlib.import_module(str(module))
 
@@ -63,11 +63,11 @@ class SettingsLoader:
         """Initialize a basic settings info
 
         Args:
-                config_type (SettingsConfigType): file config type
-                filename (str, optional): config filename. Defaults to None.
+            config_type (SettingsConfigType): file config type
+            filename (str, optional): config filename. Defaults to None.
 
         Raises:
-                        FileNotFoundError: _description_
+            FileNotFoundError: _description_
         """
         self.config = None
         self.config_type: SettingsConfigType = config_type
@@ -82,7 +82,7 @@ class SettingsLoader:
         """Loads a config data from YAML file
 
         Returns:
-                        dict: config data
+            dict: config data
         """
         with open(self.filename, "r") as fh:
             data = yaml.load(fh, Loader=yaml.FullLoader)
@@ -93,7 +93,7 @@ class SettingsLoader:
         """Loads a config data from TOML file
 
         Returns:
-                        dict: config data
+            dict: config data
         """
         with open(self.filename, "r") as fh:
             data = toml.loads(fh)
@@ -104,7 +104,7 @@ class SettingsLoader:
         """Loads a config data from JSON file
 
         Returns:
-                        dict: config data
+            dict: config data
         """
         with open(self.filename, "r") as fh:
             data = json.load(fh)
@@ -115,7 +115,7 @@ class SettingsLoader:
         """Loads a config data from INI file
 
         Returns:
-                        dict: config data
+            dict: config data
         """
         config = ConfigParser()
         config.read(self.filename)
@@ -126,7 +126,7 @@ class SettingsLoader:
         """Loads a config data from ENV file
 
         Returns:
-                dict: config data
+            dict: config data
         """
         load_dotenv(self.filename)
 
@@ -147,7 +147,7 @@ class SettingsLoader:
         """Loads configuration from python module
 
         Returns:
-                dict: _description_
+            dict: _description_
         """
         config_module = dynamic_import(str(self.filename).replace(".py", ""))
 
@@ -166,7 +166,7 @@ class SettingsLoader:
         """Get the settings dataclass
 
         Returns:
-                Settings: settings object
+            Settings: settings object
         """
         if self.config_type == SettingsConfigType.INI:
             self.config = self._load_ini_config()

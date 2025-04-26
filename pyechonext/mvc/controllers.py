@@ -15,37 +15,27 @@ class BaseController(ABC):
 
     @abstractmethod
     def get(self, request: Request, response: Response, *args, **kwargs):
-        """
-        Get method
+        """Get method of route
 
-        :param		request:			  The request
-        :type		request:			  Request
-        :param		response:			  The response
-        :type		response:			  Response
-        :param		args:				  The arguments
-        :type		args:				  list
-        :param		kwargs:				  The keywords arguments
-        :type		kwargs:				  dictionary
+        Args:
+            request (Request): request object
+            response (Response): response object
 
-        :raises		NotImplementedError:  abstract method
+        Raises:
+            NotImplementedError: abstract method
         """
         raise NotImplementedError()
 
     @abstractmethod
     def post(self, request: Request, response: Response, *args, **kwargs):
-        """
-        Post method
+        """Post method of route
 
-        :param		request:			  The request
-        :type		request:			  Request
-        :param		response:			  The response
-        :type		response:			  Response
-        :param		args:				  The arguments
-        :type		args:				  list
-        :param		kwargs:				  The keywords arguments
-        :type		kwargs:				  dictionary
+        Args:
+            request (Request): request object
+            response (Response): response object
 
-        :raises		NotImplementedError:  abstract method
+        Raises:
+            NotImplementedError: abstract method
         """
         raise NotImplementedError()
 
@@ -55,79 +45,59 @@ class PageController(BaseController):
     Controls the data flow into a page object and updates the view whenever data changes.
     """
 
-    def _create_model(
-        self, request: Request, data: Union[Response, Any], app: "EchoNext"
-    ) -> PageModel:
-        """
-        Creates a model.
+    def _create_model(self, request: Request, data: Union[Response, Any]) -> PageModel:
+        """Create model for page controller
 
-        :param		request:  The request
-        :type		request:  Request
-        :param		data:	  The data
-        :type		data:	  Union[Response, Any]
-        :param		app:	  The application
-        :type		app:	  EchoNext
+        Args:
+            request (Request): request object
+            data (Union[Response, Any]): response object or any data
 
-        :returns:	The page model.
-        :rtype:		PageModel
+        Returns:
+            PageModel: page model
         """
         model = PageModel(request)
-        model.response = model.get_response(data, app)
+        model.response = model.get_response(data)
 
         return model
 
     def get_rendered_view(
-        self, request: Request, data: Union[Response, Any], app: "EchoNext"
-    ) -> str:
-        """
-        Gets the rendered view.
+        self, request: Request, data: Union[Response, Any]
+    ) -> str | dict:
+        """Get the rendered view
 
-        :param		request:  The request
-        :type		request:  Request
-        :param		data:	  The data
-        :type		data:	  Union[Response, Any]
-        :param		app:	  The application
-        :type		app:	  EchoNext
+        Args:
+            request (Request): request object
+            data (Union[Response, Any]): response object or any data
 
-        :returns:	The rendered view.
-        :rtype:		str
+        Returns:
+            str | dict: rendered view
         """
-        model = self._create_model(request, data, app)
+        model = self._create_model(request, data)
 
         view = PageView()
 
         return view.render(model)
 
     def get(self, request: Request, response: Response, *args, **kwargs):
-        """
-        Get Method
+        """Get method
 
-        :param		request:		 The request
-        :type		request:		 Request
-        :param		response:		 The response
-        :type		response:		 Response
-        :param		args:			 The arguments
-        :type		args:			 list
-        :param		kwargs:			 The keywords arguments
-        :type		kwargs:			 dictionary
+        Args:
+            request (Request): request object
+            response (Response): response object
 
-        :raises		MethodNotAllow:	 get method not allowed
+        Raises:
+            MethodNotAllow: this method not modified in child class
         """
         raise MethodNotAllow("Method Not Allow: GET")
 
     def post(self, request: Request, response: Response, *args, **kwargs):
-        """
-        Post Method
+        """Post method
 
-        :param		request:		 The request
-        :type		request:		 Request
-        :param		response:		 The response
-        :type		response:		 Response
-        :param		args:			 The arguments
-        :type		args:			 list
-        :param		kwargs:			 The keywords arguments
-        :type		kwargs:			 dictionary
+        Args:
+            request (Request): request object
+            response (Response): response object
 
-        :raises		MethodNotAllow:	 post method not allowed
+        Raises:
+            MethodNotAllow: this method not modified in child class
         """
         raise MethodNotAllow("Method Not Allow: Post")

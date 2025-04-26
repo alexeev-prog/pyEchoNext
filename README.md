@@ -43,7 +43,6 @@
     <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/pallet-0.png">
 </p>
 
-
  > EchoNext is a lightweight, fast and scalable web framework for Python
  
  > [!CAUTION]

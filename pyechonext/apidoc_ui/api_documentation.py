@@ -7,30 +7,30 @@ class APIDocumentation:
     """
 
     def __init__(self, app: EchoNext):
-        """
-        Constructs a new instance.
+        """Constructs a new instance
 
-        :param		app:  The application
-        :type		app:  EchoNext
+        Args:
+            app (Optional[EchoNext]): echonext WSGI app. Defaults to None.
         """
-        self._app = app
+        self._app: EchoNext = app
 
     def init_app(self, app: EchoNext):
-        """
-        Initializes the application.
+        """Initialize application
 
-        :param		app:  The application
-        :type		app:  EchoNext
+        Args:
+            app (EchoNext): echonext WSGI app
         """
         self._app = app
 
-    def generate_spec(self) -> str:
-        """
-        Generate OpenAPI specficiation from app routes&views
+    def generate_spec(self) -> dict:
+        """Generate simple OpenAPI configuration from routes
 
-        :returns:	jsonfied openAPI API specification
-        :rtype:		str
+        Returns:
+            dict: openapi configuration
         """
+        if not isinstance(self._app, EchoNext):
+            raise AttributeError(f"Unknown application type: {type(self._app)}")
+
         spec = {
             "openapi": "3.0.0",
             "info": {

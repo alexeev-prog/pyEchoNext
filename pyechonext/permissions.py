@@ -98,7 +98,7 @@ class Role(AbstractRole):
         self.name = name
         self.permissions: Set[AbstractPermission] = set()
 
-    def add_permission(self, permission: Type[AbstractPermission]):
+    def add_permission(self, permission: AbstractPermission):
         """Add a permission
 
             Args:
@@ -106,7 +106,7 @@ class Role(AbstractRole):
         """
         self.permissions.add(permission)
 
-    def remove_permission(self, permission: Type[AbstractPermission]):
+    def remove_permission(self, permission: AbstractPermission):
         """Remove a permission
 
             Args:
@@ -114,7 +114,7 @@ class Role(AbstractRole):
         """
         self.permissions.discard(permission)
 
-    def has_permission(self, permission: Type[AbstractPermission]) -> bool:
+    def has_permission(self, permission: AbstractPermission) -> bool:
         """Determines if permission
 
             Args:
@@ -157,7 +157,7 @@ class User:
         self.roles: Set[AbstractRole] = set()
         self.attributes: Dict[str, Any] = attributes
 
-    def add_role(self, role: Type[AbstractRole]):
+    def add_role(self, role: AbstractRole):
         """Adds a role
 
             Args:
@@ -165,7 +165,7 @@ class User:
         """
         self.roles.add(role)
 
-    def remove_role(self, role: Type[AbstractRole]):
+    def remove_role(self, role: AbstractRole):
         """Remove a role
 
             Args:
@@ -173,7 +173,7 @@ class User:
         """
         self.roles.discard(role)
 
-    def has_permission(self, permission: Type[AbstractPermission]) -> bool:
+    def has_permission(self, permission: AbstractPermission) -> bool:
         """Determines if permission
 
             Args:

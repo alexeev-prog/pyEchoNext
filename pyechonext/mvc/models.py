@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Union
+from typing import Any, Optional, Union
 
 from pyechonext.request import Request
 from pyechonext.response import Response
@@ -12,31 +12,25 @@ class BaseModel(ABC):
 
     @abstractmethod
     def get_response(self, *args, **kwargs) -> Response:
-        """
-        Creates a response.
+        """Create a Response object
 
-        :param		args:	 The arguments
-        :type		args:	 list
-        :param		kwargs:	 The keywords arguments
-        :type		kwargs:	 dictionary
+        Raises:
+            NotImplementedError: abstract method
 
-        :returns:	response object
-        :rtype:		Response
+        Returns:
+            Response: response object
         """
         raise NotImplementedError
 
     @abstractmethod
     def get_request(self, *args, **kwargs) -> Request:
-        """
-        Creates a request.
+        """Create a Request object
 
-        :param		args:	 The arguments
-        :type		args:	 list
-        :param		kwargs:	 The keywords arguments
-        :type		kwargs:	 dictionary
+        Raises:
+            NotImplementedError: abstract method
 
-        :returns:	request object
-        :rtype:		Request
+        Returns:
+            Request: request object
         """
         raise NotImplementedError
 
@@ -46,31 +40,26 @@ class PageModel(BaseModel):
     This class describes a page model.
     """
 
-    def __init__(self, request: Request = None, response: Response = None):
-        """
-        Constructs a new instance.
+    def __init__(
+        self, request: Optional[Request] = None, response: Optional[Response] = None
+    ):
+        """Initializie a Page Model
 
-        :param		request:   The request
-        :type		request:   Request
-        :param		response:  The response
-        :type		response:  Response
+        Args:
+            request (Request, optional): request object. Defaults to None.
+            response (Response, optional): response object. Defaults to None.
         """
         self.request = request
         self.response = response
 
-    def get_response(
-        self, data: Union[Response, Any], app, *args, **kwargs
-    ) -> Response:
-        """
-        Creates a response.
+    def get_response(self, data: Union[Response, Any], *args, **kwargs) -> Response:
+        """Get a response
 
-        :param		args:	 The arguments
-        :type		args:	 list
-        :param		kwargs:	 The keywords arguments
-        :type		kwargs:	 dictionary
+        Args:
+            data (Union[Response, Any]): response object or any data
 
-        :returns:	response object
-        :rtype:		Response
+        Returns:
+            Response: response object
         """
 
         if isinstance(data, Response):
@@ -78,23 +67,12 @@ class PageModel(BaseModel):
         else:
             response = Response(body=str(data), *args, **kwargs)
 
-        if response.use_i18n:
-            response.body = app.i18n_loader.get_string(response.body)
-
-        response.body = app.get_and_save_cache_item(response.body, response.body)
-
         return response
 
     def get_request(self, *args, **kwargs) -> Request:
-        """
-        Creates a request.
+        """Create a request
 
-        :param		args:	 The arguments
-        :type		args:	 list
-        :param		kwargs:	 The keywords arguments
-        :type		kwargs:	 dictionary
-
-        :returns:	request object
-        :rtype:		Request
+        Returns:
+            Request: request object
         """
         return Request(*args, **kwargs)

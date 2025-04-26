@@ -38,10 +38,10 @@ def _create_url_route(url: URL) -> Route:
     """Create URL Route
 
     Args:
-            url (URL): URL instance
+        url (URL): URL instance
 
     Returns:
-            Route: route instance
+        Route: route instance
     """
     return Route(
         page_path=url.path,
@@ -60,12 +60,12 @@ def _create_page_route(
     """Create page route
 
     Args:
-            page_path (str): _description_
-            handler (Callable): _description_
-            summary (Optional[str], optional): _description_. Defaults to None.
+        page_path (str): _description_
+        handler (Callable): _description_
+        summary (Optional[str], optional): _description_. Defaults to None.
 
     Returns:
-            Route: route
+        Route: route
     """
     return Route(
         page_path=page_path,
@@ -85,7 +85,7 @@ class Router:
         """Initialize a router with urls and routes
 
         Args:
-                urls (Optional[List[URL]], optional): urls list. Defaults to [].
+            urls (Optional[List[URL]], optional): urls list. Defaults to [].
         """
         self.prefix = prefix
         self.urls = urls
@@ -99,9 +99,9 @@ class Router:
         """Route a page
 
         Args:
-                page_path (str): page path
-                methods (list, optional): methods list. Defaults to ["GET"].
-                summary (Optional[str], optional): summary docstring. Defaults to None.
+            page_path (str): page path
+            methods (list, optional): methods list. Defaults to ["GET"].
+            summary (Optional[str], optional): summary docstring. Defaults to None.
 
         Returns:
                 Callable: route page wrapper
@@ -142,12 +142,12 @@ class Router:
         """Add page route
 
         Args:
-                page_path (str): page path URL
-                handler (Callable): handler object
-                summary (Optional[str], optional): summary docstring. Defaults to None.
+            page_path (str): page path URL
+            handler (Callable): handler object
+            summary (Optional[str], optional): summary docstring. Defaults to None.
 
         Raises:
-                RoutePathExistsError: route with this path already exists
+            RoutePathExistsError: route with this path already exists
         """
         if page_path in self.routes:
             raise RoutePathExistsError(
@@ -169,12 +169,12 @@ class Router:
         """Generate page route
 
         Args:
-                page_path (str): page path url
-                handler (Callable): handler object
-                summary (Optional[str], optional): summary docstring. Defaults to None.
+            page_path (str): page path url
+            handler (Callable): handler object
+            summary (Optional[str], optional): summary docstring. Defaults to None.
 
         Returns:
-                Route: created route
+            Route: created route
         """
         return _create_page_route(page_path, handler)
 
@@ -182,10 +182,10 @@ class Router:
         """Add an url
 
         Args:
-                url (URL): URL class instance
+            url (URL): URL class instance
 
         Raises:
-                RoutePathExistsError: route with url.path already exists
+            RoutePathExistsError: route with url.path already exists
         """
         url_path = url.path if self.prefix is None else f"{self.prefix}{url.path}"
         if url_path in self.routes:
@@ -199,14 +199,14 @@ class Router:
         """Resolve path from request
 
         Args:
-                request (Request): request object
-                raise_404 (Optional[bool], optional): Raise 404 error if url not found or not. Defaults to True.
+            request (Request): request object
+            raise_404 (Optional[bool], optional): Raise 404 error if url not found or not. Defaults to True.
 
         Raises:
-                URLNotFound: URL Not found, error 404
+            URLNotFound: URL Not found, error 404
 
         Returns:
-                Union[Tuple[Callable, Dict], None]: route and parse result or None
+            Union[Tuple[Callable, Dict], None]: route and parse result or None
         """
         url = prepare_url(request.path)
 
