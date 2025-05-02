@@ -12,7 +12,7 @@ from pyechonext.config import Settings
 from pyechonext.logging import logger
 from pyechonext.middleware import BaseMiddleware
 from pyechonext.mvc.controllers import PageController
-from pyechonext.mvc.routes import Route, Router, RoutesTypes
+from pyechonext.mvc.routes import Route, Router, RoutesTypes, generate_page_route
 from pyechonext.request import Request
 from pyechonext.response import Response
 from pyechonext.static import StaticFile, StaticFilesManager
@@ -49,8 +49,8 @@ def _default_response(response: Response, error: WebError) -> None:
     """Get default response (HTTP 404)
 
     Args:
-            response (Response): Response object
-            error (WebError): web error
+        response (Response): Response object
+        error (WebError): web error
     """
     response.status_code = str(error.code)
     response.body = str(error)
@@ -60,14 +60,14 @@ def _check_handler(request: Request, route: Route) -> Callable:
     """Check handler
 
     Args:
-            request (Request): request object
-            handler (Callable): handler
+        request (Request): request object
+        route (Route): route
 
     Raises:
-            MethodNotAllow: handler request method is None, method not allowed
+        MethodNotAllow: handler request method is None, method not allowed
 
     Returns:
-            Callable: handler object
+        Callable: handler object
     """
     handler = route.handler
 
@@ -188,7 +188,7 @@ class EchoNext:
         self,
         page_path: str,
         handler: Callable | PageController,
-        methods: List[str] = ["GET"],
+        methods: Optional[List[str]] = None,
         summary: Optional[str] = None,
     ):
         """Add page route without decorator
@@ -196,25 +196,35 @@ class EchoNext:
         Args:
             page_path (str): page path url
             handler (Callable): handler of route
+            methods (Optional[List[str]]): supported methods of handler. Defaults to None.
             summary (Optional[str], optional): summary documentation. Defaults to None.
         """
+        if methods is None:
+            methods = ["GET"]
         if inspect.isclass(handler):
             self.router.add_url(URL(path=page_path, controller=handler))
         else:
             self.router.add_page_route(page_path, handler, methods, summary)
 
     def route_page(
-        self, page_path: str, methods: list = ["GET"], summary: Optional[str] = None
+        self,
+        page_path: str,
+        methods: Optional[List[str]] = None,
+        summary: Optional[str] = None,
     ) -> Callable:
         """Route page decorator
 
         Args:
             page_path (str): page path url
+            methods (Optional[List[str]]): supported methods of handler. Defaults to None.
             summary (Optional[str], optional): summary documentation. Defaults to None.
 
         Returns:
             Callable: wrapper
         """
+
+        if methods is None:
+            methods = ["GET"]
 
         def wrapper(handler: Callable | PageController):
             if inspect.isclass(handler):
@@ -321,8 +331,8 @@ class EchoNext:
 
         if self.static_files_manager.serve_static_file(url):
             return (
-                self.router.generate_page_route(
-                    url, self._serve_static_file, f"Serving static file: {url}"
+                generate_page_route(
+                    url, self._serve_static_file, None, f"Serving static file: {url}"
                 ),
                 {},
             )

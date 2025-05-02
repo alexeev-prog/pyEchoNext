@@ -76,7 +76,7 @@ class InMemoryPerformanceCache(PerformanceCacheBase):
         """
         self.max_size = max_size
         self.ttl = ttl
-        self.PerformanceCache = {}
+        self.performance_cache = {}
         self.timestamps = {}
 
     def get(self, key: str) -> Any:
@@ -89,11 +89,11 @@ class InMemoryPerformanceCache(PerformanceCacheBase):
         :returns:	Any value
         :rtype:		Any
         """
-        if key in self.PerformanceCache:
+        if key in self.performance_cache:
             if time.time() - self.timestamps[key] <= self.ttl:
-                return self.PerformanceCache[key]
+                return self.performance_cache[key]
             else:
-                del self.PerformanceCache[key]
+                del self.performance_cache[key]
                 del self.timestamps[key]
         return None
 
@@ -108,18 +108,18 @@ class InMemoryPerformanceCache(PerformanceCacheBase):
         :param		timestamp:	The timestamp
         :type		timestamp:	float
         """
-        if len(self.PerformanceCache) >= self.max_size:
+        if len(self.performance_cache) >= self.max_size:
             oldest_key = min(self.timestamps, key=self.timestamps.get)
-            del self.PerformanceCache[oldest_key]
+            del self.performance_cache[oldest_key]
             del self.timestamps[oldest_key]
-        self.PerformanceCache[key] = value
+        self.performance_cache[key] = value
         self.timestamps[key] = timestamp
 
     def clear(self) -> None:
         """
         Clears the PerformanceCache
         """
-        self.PerformanceCache.clear()
+        self.performance_cache.clear()
         self.timestamps.clear()
 
 
@@ -180,7 +180,7 @@ class SingletonPerformanceCache(PerformanceCacheBase, metaclass=Singleton):
         :param		kwargs:		 The keywords arguments
         :type		kwargs:		 dictionary
         """
-        self.PerformanceCache = PerformanceCacheFactory.create_performance_cache(
+        self.performance_cache = PerformanceCacheFactory.create_performance_cache(
             performance_cache_type, *args, **kwargs
         )
 
@@ -194,7 +194,7 @@ class SingletonPerformanceCache(PerformanceCacheBase, metaclass=Singleton):
         :returns:	Any value
         :rtype:		Any
         """
-        return self.PerformanceCache.get(key)
+        return self.performance_cache.get(key)
 
     def set(self, key: str, value: Any, timestamp: float) -> None:
         """
@@ -207,17 +207,17 @@ class SingletonPerformanceCache(PerformanceCacheBase, metaclass=Singleton):
         :param		timestamp:	The timestamp
         :type		timestamp:	float
         """
-        self.PerformanceCache.set(key, value, timestamp)
+        self.performance_cache.set(key, value, timestamp)
 
     def clear(self) -> None:
         """
         Clear PerformanceCache
         """
-        self.PerformanceCache.clear()
+        self.performance_cache.clear()
 
 
 def performance_cached(
-    performancecache: SingletonPerformanceCache,
+    performance_cache: SingletonPerformanceCache,
     key_func: Callable[[Any, Any], str] = lambda *args, **kwargs: str(args)
     + str(kwargs),
 ) -> Callable:
@@ -235,12 +235,10 @@ def performance_cached(
 
     Returns: Callable: A new function or method that PerformanceCaches the results.
 
-    :param		performancecache:	   The PerformanceCache
-    :type		performancecache:	   SingletonPerformanceCache
+    :param		performance_cache:	   The PerformanceCache
+    :type		performance_cache:	   SingletonPerformanceCache
     :param		key_func:  The key function
     :type		key_func:  (Callable[[Any, Any], str])
-    :param		kwargs:	   The keywords arguments
-    :type		kwargs:	   dictionary
 
     :returns:	decorator
     :rtype:		Callable
@@ -250,12 +248,12 @@ def performance_cached(
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             key = key_func(*args, **kwargs)
-            cached_value = performancecache.get(key)
+            cached_value = performance_cache.get(key)
             if cached_value is not None:
                 return cached_value
             else:
                 result = func(*args, **kwargs)
-                performancecache.set(key, result, time.time())
+                performance_cache.set(key, result, time.time())
                 return result
 
         return wrapper

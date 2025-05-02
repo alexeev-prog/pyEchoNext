@@ -4,12 +4,12 @@ from typing import Optional
 from pyechonext.mvc.controllers import PageController
 
 
-@dataclass
+@dataclass(frozen=True)
 class URL:
     """
     This dataclass describes an url.
     """
 
     path: str
-    controller: PageController
+    controller: PageController | type
     summary: Optional[str] = None

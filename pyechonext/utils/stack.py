@@ -6,6 +6,8 @@ class LIFOStack:
     This class describes a LIFO-stack.
     """
 
+    __slots__ = "_stack_items"
+
     def __init__(self):
         """
         Constructs a new instance.
@@ -13,7 +15,7 @@ class LIFOStack:
         self._stack_items: List[Any] = []
 
     @property
-    def items(self) -> List:
+    def items(self) -> reversed[Any]:
         """Get reversed stack items
 
         Returns:
@@ -30,10 +32,9 @@ class LIFOStack:
         return len(self._stack_items) == 0
 
     def push(self, *args):
-        """Push item to stack items
-        """
+        """Push item to stack items"""
         self._stack_items += args
-        
+
     def pop(self) -> Any:
         """Pop the object
 

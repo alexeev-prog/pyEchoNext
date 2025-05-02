@@ -41,16 +41,16 @@ class Request:
     """
     This class describes a request.
     """
-    
+
     __slots__ = (
-        'environ',
-        'settings',
-        'method',
-        'path',
-        'GET',
-        'POST',
-        'user_agent',
-        'extra'
+        "environ",
+        "settings",
+        "method",
+        "path",
+        "GET",
+        "POST",
+        "user_agent",
+        "extra",
     )
 
     def __init__(self, environ: dict = {}, settings: Settings = None):

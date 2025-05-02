@@ -161,5 +161,4 @@ class StaticFilesManager:
                 else:
                     return static_file.caching_static_file()
 
-        logger.warning(f'Static file "{url}" not found.')
         return False

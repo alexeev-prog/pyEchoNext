@@ -31,8 +31,8 @@
     <img src="https://img.shields.io/github/stars/alexeev-prog/pyEchoNext?style=for-the-badge">
     <img src="https://img.shields.io/github/issues/alexeev-prog/pyEchoNext?style=for-the-badge">
     <img src="https://img.shields.io/github/last-commit/alexeev-prog/pyEchoNext?style=for-the-badge">
-    <img src="https://img.shields.io/pypi/wheel/uvolution?style=for-the-badge">
-    <img src="https://img.shields.io/badge/coverage-73%25-73%25?style=for-the-badge" alt="">
+    <img src="https://img.shields.io/pypi/wheel/pyechonext?style=for-the-badge">
+    <img src="https://img.shields.io/badge/coverage-73%25-73%25?style=for-the-badge" alt="Coverage">
     <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/pyEchoNext?style=for-the-badge">
     <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/pyEchoNext?style=for-the-badge">
     <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/pyEchoNext?style=for-the-badge">
@@ -171,6 +171,35 @@ calculate(4) # Output: 16
 
 ## 💻 Usage Examples
 You can view examples at [examples directory](./examples).
+
+### Prefix Tree (Trie)
+Prefix Tree data structure (this structure also used in pyechonext routing system)
+
+```python
+from pyechonext.utils.trie import  PrefixTree
+
+if __name__ == '__main__':
+    trie = PrefixTree()
+    trie.insert('apple')
+    trie.insert('app')
+    trie.insert('aposematic')
+    trie.insert('appreciate')
+    trie.insert('book')
+    trie.insert('bad')
+    trie.insert('bear')
+    trie.insert('bat')
+    print(trie.starts_with('app'))
+
+    router_tree = PrefixTree()
+    router_tree.insert('index')
+    router_tree.insert('users')
+    router_tree.insert('transactions')
+    router_tree.insert('wallets')
+    router_tree.insert('wallets/create')
+
+    print(router_tree.starts_with('wa'))
+
+```
 
 ### i18n with hermes-langlib
 Hermes LangLib - a fast and light python library for translating, localizing and internationalizing your applications. The library is aimed at high speed and stability; it can be used in highly loaded projects.

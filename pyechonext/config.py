@@ -25,7 +25,7 @@ def dynamic_import(module: str):
     return importlib.import_module(str(module))
 
 
-@dataclass
+@dataclass(frozen=True)
 class Settings:
     """
     This class describes settings.
@@ -59,6 +59,12 @@ class SettingsLoader:
     This class describes a settings loader.
     """
 
+    __slots__ = (
+        'config',
+        'config_type',
+        'filename'
+    )
+
     def __init__(self, config_type: SettingsConfigType, filename: str = None):
         """Initialize a basic settings info
 
@@ -71,9 +77,7 @@ class SettingsLoader:
         """
         self.config = None
         self.config_type: SettingsConfigType = config_type
-        self.filename: str = filename
-
-        self.filename: str = Path(self.filename)
+        self.filename: Path = Path(self.filename)
 
         if not self.filename.exists():
             raise FileNotFoundError(f'Config file "{self.filename}" don\'t exists.')

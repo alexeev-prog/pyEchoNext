@@ -3,13 +3,14 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
-from parse import parse
+import parse
 
 from pyechonext.mvc.controllers import PageController
 from pyechonext.request import Request
 from pyechonext.urls import URL
 from pyechonext.utils import prepare_url
 from pyechonext.utils.exceptions import RoutePathExistsError, URLNotFound
+from pyechonext.utils.trie import PrefixTree
 
 
 class RoutesTypes(Enum):
@@ -21,7 +22,7 @@ class RoutesTypes(Enum):
     PAGE = 1
 
 
-@dataclass
+@dataclass(frozen=True)
 class Route:
     """
     This class describes a route.
@@ -54,19 +55,23 @@ def _create_url_route(url: URL) -> Route:
 def _create_page_route(
     page_path: str,
     handler: Callable,
-    methods: list = ["GET"],
+    methods: Optional[List[str]] = None,
     summary: Optional[str] = None,
 ) -> Route:
     """Create page route
 
     Args:
-        page_path (str): _description_
-        handler (Callable): _description_
-        summary (Optional[str], optional): _description_. Defaults to None.
+        page_path (str): path of page
+        handler (Callable): handler object
+        methods (Optional[List[str]]): supported methods. Defaults to None.
+        summary (Optional[str], optional): summary docstring. Defaults to None.
 
     Returns:
         Route: route
     """
+    if methods is None:
+        methods = ["GET"]
+
     return Route(
         page_path=page_path,
         handler=handler,
@@ -76,25 +81,55 @@ def _create_page_route(
     )
 
 
+def generate_page_route(
+    page_path: str,
+    handler: Callable,
+    methods: Optional[List[str]] = None,
+    summary: Optional[str] = None,
+) -> Route:
+    """Generate page route
+
+    Args:
+        page_path (str): page path url
+        handler (Callable): handler object
+        methods (Optional[List[str]]): supported methods. Defaults to None.
+        summary (Optional[str], optional): summary docstring. Defaults to None.
+
+    Returns:
+        Route: created route
+    """
+    return _create_page_route(page_path, handler, methods, summary)
+
+
 class Router:
     """
     This class describes a router.
     """
 
-    def __init__(self, urls: Optional[List[URL]] = [], prefix: Optional[str] = None):
+    __slots__ = ("prefix", "urls", "routes", "_trie")
+
+    def __init__(self, urls: Optional[List[URL]] = None, prefix: Optional[str] = None):
         """Initialize a router with urls and routes
 
         Args:
             urls (Optional[List[URL]], optional): urls list. Defaults to [].
         """
+        if urls is None:
+            urls = []
+
         self.prefix = prefix
         self.urls = urls
         self.routes = {}
 
         self._prepare_urls()
 
+        self._trie = PrefixTree()
+
     def route_page(
-        self, page_path: str, methods: list = ["GET"], summary: Optional[str] = None
+        self,
+        page_path: str,
+        methods: Optional[List[str]] = None,
+        summary: Optional[str] = None,
     ) -> Callable:
         """Route a page
 
@@ -107,7 +142,10 @@ class Router:
                 Callable: route page wrapper
         """
 
-        def wrapper(handler):
+        if methods is None:
+            methods = ["GET"]
+
+        def wrapper(handler: PageController | callable):
             nonlocal page_path
 
             page_path = (
@@ -136,7 +174,7 @@ class Router:
         self,
         page_path: str,
         handler: Callable,
-        methods: list = ["GET"],
+        methods: Optional[List[str]] = None,
         summary: Optional[str] = None,
     ):
         """Add page route
@@ -144,39 +182,27 @@ class Router:
         Args:
             page_path (str): page path URL
             handler (Callable): handler object
+            methods (Optional[List[str]]): supported methods of handler. Defaults to None.
             summary (Optional[str], optional): summary docstring. Defaults to None.
 
         Raises:
             RoutePathExistsError: route with this path already exists
         """
-        if page_path in self.routes:
-            raise RoutePathExistsError(
-                f'Route "{page_path if self.prefix is None else f"{self.prefix}{page_path}"}" already exists.'
-            )
+        if methods is None:
+            methods = ["GET"]
 
-        self.routes[
-            page_path if self.prefix is None else f"{self.prefix}{page_path}"
-        ] = _create_page_route(
-            page_path if self.prefix is None else f"{self.prefix}{page_path}",
+        page_path = page_path if self.prefix is None else f"{self.prefix}{page_path}"
+        if page_path in self.routes:
+            raise RoutePathExistsError(f'Route "{page_path}" already exists.')
+
+        self._trie.insert(page_path)
+
+        self.routes[page_path] = _create_page_route(
+            page_path,
             handler,
             methods,
             summary,
         )
-
-    def generate_page_route(
-        self, page_path: str, handler: Callable, summary: Optional[str] = None
-    ) -> Route:
-        """Generate page route
-
-        Args:
-            page_path (str): page path url
-            handler (Callable): handler object
-            summary (Optional[str], optional): summary docstring. Defaults to None.
-
-        Returns:
-            Route: created route
-        """
-        return _create_page_route(page_path, handler)
 
     def add_url(self, url: URL):
         """Add an url
@@ -192,10 +218,11 @@ class Router:
             raise RoutePathExistsError(f'Route "{url_path}" already exists.')
 
         self.routes[url_path] = _create_url_route(url)
+        self._trie.insert(url_path)
 
     def resolve(
         self, request: Request, raise_404: Optional[bool] = True
-    ) -> Union[Tuple[Callable, Dict], None]:
+    ) -> Union[Tuple[Callable, Dict], tuple[None, None]]:
         """Resolve path from request
 
         Args:
@@ -206,16 +233,21 @@ class Router:
             URLNotFound: URL Not found, error 404
 
         Returns:
-            Union[Tuple[Callable, Dict], None]: route and parse result or None
+            Union[Tuple[Callable, Dict], tuple[None, None]]: route and parse result or none tuple
         """
         url = prepare_url(request.path)
 
         url = url if self.prefix is None else f"{self.prefix}{url}"
 
-        for path, route in self.routes.items():
-            parse_result = parse(path, url)
-            if parse_result is not None:
-                return route, parse_result.named
+        paths = self._trie.starts_with(url)
+
+        for path in paths:
+            route = self.routes.get(path)
+
+            if route is not None:
+                parse_result = parse.parse(path, url)
+                if parse_result is not None:
+                    return route, parse_result.named
 
         if raise_404:
             raise URLNotFound(f'URL "{url}" not found.')
