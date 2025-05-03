@@ -121,8 +121,7 @@ class EchoNext:
 
         Args:
             app_name (str): application name
-            settings (Settings): settings of app
-            middlewares (List[Type[BaseMiddleware]]): list of middlewares
+            settings (Settings): settings of app            middlewares (List[Type[BaseMiddleware]]): list of middlewares
             urls (Optional[List[URL]], optional): basic URLs list. Defaults to [].
             application_type (Optional[ApplicationType], optional): application type. Defaults to ApplicationType.JSON.
             static_files (Optional[List[StaticFile]], optional): static files list. Defaults to [].

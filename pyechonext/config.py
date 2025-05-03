@@ -77,7 +77,7 @@ class SettingsLoader:
         """
         self.config = None
         self.config_type: SettingsConfigType = config_type
-        self.filename: Path = Path(self.filename)
+        self.filename: Path = Path(filename)
 
         if not self.filename.exists():
             raise FileNotFoundError(f'Config file "{self.filename}" don\'t exists.')

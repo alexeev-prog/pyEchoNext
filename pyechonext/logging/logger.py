@@ -40,10 +40,10 @@ class LoggerManager:
         format.
 
         Args:
-                        level (int): The logging level to set for the logger (default: logging.INFO).
-                        stream_handler (bool): Flag to indicate if output to stdout should occur (default: True).
-                        file_handler (Optional[str]): Path to a file where logs will be written (default: None).
-                        formatter (Optional[logging.Formatter]): A formatter instance for custom log message formatting (default: None).
+            level (int): The logging level to set for the logger (default: logging.INFO).
+            stream_handler (bool): Flag to indicate if output to stdout should occur (default: True).
+            file_handler (Optional[str]): Path to a file where logs will be written (default: None).
+            formatter (Optional[logging.Formatter]): A formatter instance for custom log message formatting (default: None).
         """
         self.logger.setLevel(level)
         self.clear_handlers()  # Clear existing handlers before adding new ones
@@ -66,7 +66,7 @@ class LoggerManager:
         'timestamp - logger name - log level - message'.
 
         Returns:
-                        logging.Formatter: The default formatter for log messages.
+            logging.Formatter: The default formatter for log messages.
         """
         return logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
@@ -86,8 +86,8 @@ class LoggerManager:
         logger and sets its message format.
 
         Args:
-                        handler (logging.Handler): The logging handler to add (e.g., StreamHandler).
-                        formatter (logging.Formatter): The formatter to set for the handler.
+            handler (logging.Handler): The logging handler to add (e.g., StreamHandler).
+            formatter (logging.Formatter): The formatter to set for the handler.
         """
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
@@ -98,7 +98,7 @@ class LoggerManager:
         This method allows dynamic adjustments to the logging level at runtime.
 
         Args:
-                        level (int): The new logging level to set for the logger.
+            level (int): The new logging level to set for the logger.
         """
         self.logger.setLevel(level)
 
@@ -106,7 +106,7 @@ class LoggerManager:
         """Retrieves the configured logger instance.
 
         Returns:
-                        logging.Logger: The logger instance configured for the library.
+            logging.Logger: The logger instance configured for the library.
         """
         return self.logger
 
@@ -123,13 +123,13 @@ def create_logger(
     configuration, and returns the logger for further use.
 
     Args:
-                    level (int): The logging level to set for the logger (default: logging.INFO).
-                    stream_handler (bool): Flag to indicate if output to stdout should occur (default: True).
-                    file_handler (Optional[str]): Path to a file where logs will be written (default: None).
-                    formatter (Optional[logging.Formatter]): A formatter instance for custom log message formatting (default: None).
+        level (int): The logging level to set for the logger (default: logging.INFO).
+        stream_handler (bool): Flag to indicate if output to stdout should occur (default: True).
+        file_handler (Optional[str]): Path to a file where logs will be written (default: None).
+        formatter (Optional[logging.Formatter]): A formatter instance for custom log message formatting (default: None).
 
     Returns:
-                    logging.Logger: The configured logger instance.
+        logging.Logger: The configured logger instance.
     """
     logger_manager = LoggerManager()
     logger_manager.configure_logging(level, stream_handler, file_handler, formatter)

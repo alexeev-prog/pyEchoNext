@@ -15,7 +15,7 @@ class LIFOStack:
         self._stack_items: List[Any] = []
 
     @property
-    def items(self) -> reversed[Any]:
+    def items(self) -> Any:
         """Get reversed stack items
 
         Returns:

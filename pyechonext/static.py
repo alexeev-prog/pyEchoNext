@@ -68,32 +68,29 @@ class StaticFile:
         return item
 
     def _load_content(self) -> str:
-        """
-        Loads a content.
+        """Load content of static file
 
-        :returns:	static file content
-        :rtype:		str
+        Returns:
+            str: content
         """
         with open(self.abs_filename, "r") as file:
             return file.read().strip()
 
     def get_content_type(self) -> str:
-        """
-        Gets the content type.
+        """Get content type
 
-        :returns:	The content type.
-        :rtype:		str
+        Returns:
+            str: get mimetype
         """
         content_type, _ = mimetypes.guess_type(str(self.abs_filename))
 
         return content_type or "application/octet-stream"
 
     def get_file_size(self) -> int:
-        """
-        Gets the file size.
+        """Get file size
 
-        :returns:	The file size.
-        :rtype:		int
+        Returns:
+            int: file st size
         """
         return self.abs_filename.stat().st_size
 
@@ -104,57 +101,54 @@ class StaticFilesManager:
     """
 
     def __init__(self, static_files: List[StaticFile]):
-        """
-        Constructs a new instance.
+        """Initialize manager
 
-        :param		static_files:  The static files
-        :type		static_files:  List[StaticFile]
+        Args:
+            static_files (List[StaticFile]): list of static files.
         """
         self.static_files = static_files
 
     def get_file_type(self, url: str) -> str | None:
-        """
-        Gets the file type.
+        """Get file content type
 
-        :param		url:  The url
-        :type		url:  str
+        Args:
+            url (str): static file url
 
-        :returns:	The file type.
-        :rtype:		str
+        Returns:
+            str | None: content type
         """
         for static_file in self.static_files:
             if static_file.filename == url:
                 return static_file.get_content_type()
 
     def get_file_size(self, url: str) -> int | None:
-        """
-        Gets the file size.
+        """Get file size
 
-        :param		url:  The url
-        :type		url:  str
+        Args:
+            url (str): url of static page
 
-        :returns:	The file size.
-        :rtype:		str
+        Returns:
+            int | None: file size
         """
         for static_file in self.static_files:
             if static_file.filename == url:
                 return static_file.get_file_size()
 
     def serve_static_file(self, url: str) -> str | bool:
-        """
-        Server static file by url
+        """Serve static files
 
-        :param		url:  The url
-        :type		url:  str
+        Args:
+            url (str): URL for serving
 
-        :returns:	static file content
-        :rtype:		str
+        Returns:
+            str | bool: static file content or False if static file not found
         """
         url = prepare_url(url)
 
         for static_file in self.static_files:
             if static_file.filename == url:
                 logger.info(f"Found static file: {static_file.filename}")
+
                 if static_file.precache:
                     logger.debug(f"Use preloaded value of static file {static_file}")
                     return static_file.preloaded_value

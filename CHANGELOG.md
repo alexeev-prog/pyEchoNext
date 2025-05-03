@@ -1,3 +1,9 @@
+commit 8e25c30dcb41d13a213c0e40904f76d0dc015bb2
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat May 3 00:26:30 2025 +0700
+
+    fix/feat: fix codestyle, bugs, docstrings, add PrefixTree and improve routing system
+
 commit e244bff1db90fb0714a0c23f3ffdee3c0192a376
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Sun Apr 27 00:31:31 2025 +0700
