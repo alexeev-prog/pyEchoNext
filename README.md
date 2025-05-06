@@ -59,7 +59,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 
 **Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
 
- > Last stable version: 0.7.16 alpha
+ > Last stable version: 0.7.17 alpha
 
  > Next Big Update: ASYNC & unicorn support
 
@@ -117,6 +117,7 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
  + performance
  + slugger
  + permissions
+ + pyEchoNext Schemas (`pyechonext.schemas`) and pydantic support for validating schemas
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

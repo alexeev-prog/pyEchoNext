@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.abspath("pyechonext"))
 
 project = "pyEchoNext"
 author = "name"
-version = "0.7.16"
+version = "0.7.17"
 release = "0.7"
 project_copyright = "2025, Alexeev Bronislaw"
 
