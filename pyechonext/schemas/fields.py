@@ -1,5 +1,5 @@
 # дай угадаю, кто то украл твой сладкий рулет?
-from typing import Any, Optional, Dict, Optional, Callable, Union, Type, List
+from typing import Any, Callable, Dict, List, Optional, Type
 
 
 class BaseField:
@@ -16,16 +16,18 @@ class BaseField:
     8. name - name of field
     """
 
-    def __init__(self,
-                 name: str,
-                 datatype: Type,
-                 nullable: bool = False,
-                 default: Optional[Any] = None,
-                 max_length: Optional[int] = None,
-                 desc: Optional[str] = None,
-                 exclude: bool = False,
-                 transformer: Optional[Callable[[Any], Any]] = None,
-                 dependencies: Optional[List[str]] = None) -> None:
+    def __init__(
+        self,
+        name: str,
+        datatype: Type,
+        nullable: bool = False,
+        default: Optional[Any] = None,
+        max_length: Optional[int] = None,
+        desc: Optional[str] = None,
+        exclude: bool = False,
+        transformer: Optional[Callable[[Any], Any]] = None,
+        dependencies: Optional[List[str]] = None,
+    ) -> None:
         self.name = name
         self.nullable = nullable
         self.datatype: Type = datatype
@@ -45,16 +47,11 @@ class BaseField:
         Returns:
             bool: True if all conditions is right, otherwise False
         """
-        conditions = [
-            isinstance(value, self.datatype),
-            len(value) <= max_length
-        ]
+        conditions = [isinstance(value, self.datatype), len(value) <= max_length]
 
         return all(conditions)
-    
-    def validate(self,
-                 value: Any,
-                 context: Optional[Dict[str, Any]] = None) -> Any:
+
+    def validate(self, value: Any, context: Optional[Dict[str, Any]] = None) -> Any:
         """Validate field value
 
         Args:
@@ -81,8 +78,11 @@ class BaseField:
 
         if context:
             for dependency in self.dependencies:
-                if dependency in context and not self._validate_dependency(value, context[dependency]):
-                    raise ValueError(f"Field '{self.name}' is invalid based on dependency {dependency}.")
+                if dependency in context and not self._validate_dependency(
+                    value, context[dependency]
+                ):
+                    raise ValueError(
+                        f"Field '{self.name}' is invalid based on dependency {dependency}."
+                    )
 
         return value
-

@@ -59,11 +59,7 @@ class SettingsLoader:
     This class describes a settings loader.
     """
 
-    __slots__ = (
-        'config',
-        'config_type',
-        'filename'
-    )
+    __slots__ = ("config", "config_type", "filename")
 
     def __init__(self, config_type: SettingsConfigType, filename: str = None):
         """Initialize a basic settings info
