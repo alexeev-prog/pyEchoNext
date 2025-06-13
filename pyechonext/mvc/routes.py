@@ -120,10 +120,8 @@ class Router:
         self.prefix = prefix
         self.urls = urls
         self.routes = {}
-
-        self._prepare_urls()
-
         self._trie = PrefixTree()
+        self._prepare_urls()
 
     def route_page(
         self,
@@ -145,7 +143,7 @@ class Router:
         if methods is None:
             methods = ["GET"]
 
-        def wrapper(handler: PageController | callable):
+        def wrapper(handler: PageController | Callable):
             nonlocal page_path
 
             page_path = (
@@ -166,6 +164,9 @@ class Router:
         Prepare URLs (add to routes)
         """
         for url in self.urls:
+            self._trie.insert(
+                url.path if self.prefix is None else f"{self.prefix}{url.path}"
+            )
             self.routes[
                 url.path if self.prefix is None else f"{self.prefix}{url.path}"
             ] = _create_url_route(url)
@@ -240,6 +241,8 @@ class Router:
         url = url if self.prefix is None else f"{self.prefix}{url}"
 
         paths = self._trie.starts_with(url)
+
+        print(f"get {url}: {self._trie.starts_with('')}")
 
         for path in paths:
             route = self.routes.get(path)

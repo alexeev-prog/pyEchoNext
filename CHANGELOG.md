@@ -1,3 +1,15 @@
+commit f4fa41e4ae4bab3a6f945fc1ebe3271713d71557
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri May 23 01:49:04 2025 +0700
+
+    fix codestyle, add getversion script
+
+commit 91e81b89489a176d2e880156ab2e54c04df18a42
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Tue May 6 17:10:42 2025 +0700
+
+    feat: start add schemas support
+
 commit 6c22c1440b0454a8295c637fe1d07d7848d198c8
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Sat May 3 13:11:31 2025 +0700

@@ -6,6 +6,7 @@ from socks import method
 
 from pyechonext.logging import logger
 from pyechonext.request import Request
+from pyechonext.security.defence import Security
 
 
 class Response:
@@ -85,25 +86,27 @@ class Response:
     def __getattr__(self, item: Any) -> Union[Any, None]:
         """Magic method for get attrs (from extra)
 
-            Args:
-        item (Any): item key
+        Args:
+            item (Any): item key
 
-            Returns:
-        Union[Any, None]: value
+        Returns:
+            Union[Any, None]: value
         """
         return self.extra.get(item, None)
 
     def _structuring_headers(self, environ: dict):
         """Structure headers
 
-            Args:
-        environ (dict): environ dictionary
+        Args:
+            environ (dict): environ dictionary
         """
         headers = {
             "Host": environ.get("HTTP_HOST"),
             "Accept": environ.get("HTTP_ACCEPT"),
             "User-Agent": environ.get("HTTP_USER_AGENT"),
         }
+
+        headers.update(Security.get_security_headers())
 
         for name, value in headers.items():
             self._headerslist.append((name, value))
@@ -121,8 +124,8 @@ class Response:
     def add_headers(self, headers: List[Tuple[str, str]]):
         """Adds new headers
 
-            Args:
-        headers (List[Tuple[str, str]]): new headers
+        Args:
+            headers (List[Tuple[str, str]]): new headers
         """
         for header in headers:
             self._added_headers.append(header)
@@ -142,14 +145,14 @@ class Response:
     def __call__(self, environ: dict, start_response: method) -> Iterable:
         """Makes the response callable.
 
-            This method calling another methods for encode body, fill headers and starting response.
+        This method calling another methods for encode body, fill headers and starting response.
 
-            Args:
-        environ (dict): environ data
-        start_response (method): start response method
+         Args:
+             environ (dict): environ data
+             start_response (method): start response method
 
-            Returns:
-        Iterable: iterable encoded body
+         Returns:
+             Iterable: iterable encoded body
         """
         self._encode_body()
 
@@ -168,8 +171,8 @@ class Response:
     def json(self) -> str | dict[Any, Any]:
         """Get response body as JSON
 
-            Returns:
-        dict: _description_
+        Returns:
+            dict: _description_
         """
         if self.body:
             if isinstance(self.body, str):
@@ -185,7 +188,7 @@ class Response:
     def __repr__(self) -> str:
         """Returns a unambiguous string representation of the object (for debug...).
 
-            Returns:
-        str: unambiguous string representation
+        Returns:
+            str: unambiguous string representation
         """
         return f"<{self.__class__.__name__} at 0x{abs(id(self)):x} {self.status_code}>"

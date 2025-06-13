@@ -35,6 +35,11 @@ echonext = EchoNext(
 router = Router(prefix="/users")
 
 
+@echonext.route_page("/home")
+def home(request, response):
+    return {"request": str(request), "response": str(response)}
+
+
 @router.route_page("/create", methods=["POST"], summary="create user")
 def create_user(request, response):
     return {"status": "user created", "username": request.POST.get("username")}
