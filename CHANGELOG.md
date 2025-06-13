@@ -1,3 +1,9 @@
+commit 9c57f2d6177ff658b7838550c052bf28abed7c63
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Jun 14 00:18:47 2025 +0700
+
+    add security, remove reduments, fix routing bugs
+
 commit f4fa41e4ae4bab3a6f945fc1ebe3271713d71557
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Fri May 23 01:49:04 2025 +0700

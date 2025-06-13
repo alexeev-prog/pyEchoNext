@@ -24,6 +24,7 @@ hermes-langlib = "^0.1.4"
 pyjwt = "^2.10.1"
 ty = "^0.0.1a9"
 structlog = "^25.4.0"
+tqdm = "^4.67.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.0"
