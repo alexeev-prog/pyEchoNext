@@ -17,7 +17,9 @@ def test_yaml():
         "metadata": {
             "name": "pyBurnBuild",
             "version": "0.1.0",
-            "description": "build system written in python for projects in C, C++, Python, ASM",
+            "description": (
+                "build system written in python for projects in C, C++, Python, ASM"
+            ),
             "language": "python",
             "use_cmake": True,
             "cache_file": "cache.json",
@@ -34,7 +36,9 @@ def test_toml():
         "metadata": {
             "name": "pyBurnBuild",
             "version": "0.1.0",
-            "description": "build system written in python for projects in C, C++, Python, ASM",
+            "description": (
+                "build system written in python for projects in C, C++, Python, ASM"
+            ),
             "language": "python",
             "use_cmake": True,
             "cache_file": "cache.json",

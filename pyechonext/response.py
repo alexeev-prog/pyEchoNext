@@ -160,7 +160,8 @@ class Response:
         self._structuring_headers(environ)
 
         logger.debug(
-            f"[{environ.get('REQUEST_METHOD')} {self.status_code}] Run response: {self.content_type}"
+            f"[{environ.get('REQUEST_METHOD')} {self.status_code}] Run response:"
+            f" {self.content_type}"
         )
 
         start_response(status=self.status_code, headers=self._headerslist)

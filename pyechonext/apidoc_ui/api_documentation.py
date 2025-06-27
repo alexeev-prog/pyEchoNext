@@ -44,13 +44,15 @@ class APIDocumentation:
         for url in self._app.urls:
             spec["paths"][url.path] = {
                 "get": {
-                    "summary": str(
-                        f"{url.controller.__doc__}: {url.controller.get.__doc__}"
-                        if url.summary is None
-                        else url.summary
-                    )
-                    .replace("\n", "<br>")
-                    .strip(),
+                    "summary": (
+                        str(
+                            f"{url.controller.__doc__}: {url.controller.get.__doc__}"
+                            if url.summary is None
+                            else url.summary
+                        )
+                        .replace("\n", "<br>")
+                        .strip()
+                    ),
                     "responses": {
                         "200": {"description": "Successful response"},
                         "405": {"description": "Method not allow"},

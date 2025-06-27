@@ -141,7 +141,8 @@ class DocumentSection(ABC):
         page = [f"# {self.title}"]
         page.append(f"{self.introduction}\n")
         page.append(
-            f" + *Creation date*: {self.creation_date}\n + *Modification date*: {self.modification_date}\n"
+            f" + *Creation date*: {self.creation_date}\n + *Modification date*:"
+            f" {self.modification_date}\n"
         )
 
         for key, value in self.content.items():

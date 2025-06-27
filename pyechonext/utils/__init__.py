@@ -18,7 +18,8 @@ def print_header(msg_type: str, text: str):
     :type		text:	   str
     """
     print(
-        f"[yellow]{'#' * len(text)}[/yellow]\n[blue]{get_current_datetime()} {msg_type.upper()}][/blue] {text}\n[yellow]{'#' * len(text)}[/yellow]\n"
+        f"[yellow]{'#' * len(text)}[/yellow]\n[blue]{get_current_datetime()} {msg_type.upper()}][/blue]"
+        f" {text}\n[yellow]{'#' * len(text)}[/yellow]\n"
     )
 
 
@@ -32,7 +33,8 @@ def print_step(msg_type: str, text: str):
     :type		text:	   str
     """
     print(
-        f"[yellow]{'=' * 16}[/yellow] [blue][{get_current_datetime()} {msg_type.upper()}][/blue] {text}"
+        f"[yellow]{'=' * 16}[/yellow]"
+        f" [blue][{get_current_datetime()} {msg_type.upper()}][/blue] {text}"
     )
 
 
@@ -46,7 +48,8 @@ def print_substep(msg_type: str, text: str):
     :type		text:	   str
     """
     print(
-        f"[cyan]{'=' * 8}[/cyan]\n[blue][{get_current_datetime()} {msg_type.upper()}][/blue] {text}"
+        f"[cyan]{'=' * 8}[/cyan]\n[blue][{get_current_datetime()} {msg_type.upper()}][/blue]"
+        f" {text}"
     )
 
 
@@ -83,7 +86,8 @@ class CommandManager:
 
         print_message(
             "info",
-            f"[italic] Execute command: [/italic]: [white on black]{command}[/white on black]",
+            f"[italic] Execute command: [/italic]: [white on black]{command}[/white on"
+            " black]",
         )
 
         result = subprocess.run(
@@ -92,7 +96,8 @@ class CommandManager:
 
         if result.returncode != 0:
             raise RuntimeError(
-                f'Command "{command}" failed with exit code {result.returncode}:\n{result.stderr.decode()}'
+                f'Command "{command}" failed with exit code'
+                f" {result.returncode}:\n{result.stderr.decode()}"
             )
         else:
             print(f'[green bold]Successfully run[/green bold] "{command}"'.strip())
@@ -122,7 +127,8 @@ def validate_project_name(project_name: str):
     """
     if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", project_name):
         raise ValueError(
-            "Invalid project name. Must start with a letter or underscore and contain only letters, digits, and underscores."
+            "Invalid project name. Must start with a letter or underscore and contain"
+            " only letters, digits, and underscores."
         )
 
 

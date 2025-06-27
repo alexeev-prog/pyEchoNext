@@ -154,4 +154,7 @@ class TeapotError(WebError):
         :rtype:		str
         """
         logger.error(f"{self.__class__.__name__}: {self.get_explanation()}")
-        return f"The server refuses to make coffee because he is a teapot. {self.get_explanation()}"
+        return (
+            "The server refuses to make coffee because he is a teapot."
+            f" {self.get_explanation()}"
+        )

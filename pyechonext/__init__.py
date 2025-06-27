@@ -42,15 +42,18 @@ def check_for_update():
             message = f"New version of library pyEchoNext available: {latest_version}"
 
             print(
-                f"[red]{'#' * (len(message) + 4)}\n#[/red][bold yellow] {message} [/bold yellow][red]#\n{'#' * (len(message) + 4)}[/red]\n"
+                f"[red]{'#' * (len(message) + 4)}\n#[/red][bold yellow]"
+                f" {message} [/bold yellow][red]#\n{'#' * (len(message) + 4)}[/red]\n"
             )
         elif sum(latest_digits) < sum(current_digits):
             print(
-                f"[yellow]You use [bold]UNSTABLE[/bold] branch of pyEchoNext. Stable version: {latest_version}, your version: {__version__}[/yellow]\n"
+                "[yellow]You use [bold]UNSTABLE[/bold] branch of pyEchoNext. Stable"
+                f" version: {latest_version}, your version: {__version__}[/yellow]\n"
             )
     except requests.RequestException:
         print(
-            f"[dim]Version updates information not available. Your version: {__version__}[/dim]"
+            "[dim]Version updates information not available. Your version:"
+            f" {__version__}[/dim]"
         )
 
 

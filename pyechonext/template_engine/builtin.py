@@ -6,7 +6,8 @@ from pyechonext.request import Request
 from pyechonext.utils.exceptions import TemplateNotFileError
 
 FOR_BLOCK_PATTERN = re.compile(
-    r"{% for (?P<variable>[a-zA-Z]+) in (?P<seq>[a-zA-Z]+) %}(?P<content>[\S\s]+)(?={% endfor %}){% endfor %}"
+    r"{% for (?P<variable>[a-zA-Z]+) in (?P<seq>[a-zA-Z]+) %}(?P<content>[\S\s]+)(?={%"
+    r" endfor %}){% endfor %}"
 )
 VARIABLE_PATTERN = re.compile(r"{{ (?P<variable>[a-zA-Z_]+) }}")
 
@@ -141,7 +142,8 @@ def render_template(request: Request, template_name: str, **kwargs) -> str:
     :raises		AssertionError:	 BASE_DIR and TEMPLATES_DIR is empty
     """
     logger.warn(
-        "Built-in template engine is under development and may be unstable or contain bugs"
+        "Built-in template engine is under development and may be unstable or contain"
+        " bugs"
     )
 
     assert request.settings.BASE_DIR

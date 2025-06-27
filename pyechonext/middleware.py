@@ -90,7 +90,8 @@ class SessionMiddleware(BaseMiddleware):
         if not response.request.session_id:
             session_id = uuid4()
             logger.debug(
-                f"Set session_id={session_id} for response {response.status_code} {response.request.path}"
+                f"Set session_id={session_id} for response"
+                f" {response.status_code} {response.request.path}"
             )
             response.add_headers(
                 [

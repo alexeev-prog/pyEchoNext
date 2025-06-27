@@ -305,14 +305,16 @@ class EchoNext:
                     [path for path, _ in included_router.routes.items()]
                 ).intersection(new_router_routes):
                     raise RoutePathExistsError(
-                        f"Next router paths already exists: {set(included_router.routes).intersection(new_router_routes)}"
+                        "Next router paths already exists:"
+                        f" {set(included_router.routes).intersection(new_router_routes)}"
                     )
 
             self._included_routers.append(new_router)
             return
 
         raise RoutePathExistsError(
-            f"Next router paths already exists: {set(old_router_routes).intersection(new_router_routes)}"
+            "Next router paths already exists:"
+            f" {set(old_router_routes).intersection(new_router_routes)}"
         )
 
     def _find_handler(

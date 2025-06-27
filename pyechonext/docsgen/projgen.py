@@ -83,8 +83,14 @@ class ProjDocumentation:
                 RoutesSubsection(
                     path,
                     {
-                        "Route": f"Methods: {data['methods']}\n\nReturn type: {data['return_type']}",
-                        "Extra": f"Extra: {'\n'.join([f' + {key}: {value}' for key, value in data['extra'].items()])}",
+                        "Route": (
+                            f"Methods: {data['methods']}\n\nReturn type:"
+                            f" {data['return_type']}"
+                        ),
+                        "Extra": (
+                            "Extra:"
+                            f" {'\n'.join([f' + {key}: {value}' for key, value in data['extra'].items()])}"
+                        ),
                     },
                     section,
                 )
