@@ -89,7 +89,14 @@ class ProjDocumentation:
                         ),
                         "Extra": (
                             "Extra:"
-                            f" {'\n'.join([f' + {key}: {value}' for key, value in data['extra'].items()])}"
+                            f" {
+                                '\n'.join(
+                                    [
+                                        f' + {key}: {value}'
+                                        for key, value in data['extra'].items()
+                                    ]
+                                )
+                            }"
                         ),
                     },
                     section,
