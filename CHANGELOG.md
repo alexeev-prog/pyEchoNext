@@ -1,3 +1,9 @@
+commit 5e8bc165eba61837996728bc4171fff43fedffdf
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 05:02:30 2025 +0700
+
+    add tests; detect bag with parsing
+
 commit f9ecca35b7d71e353189b7dce8f6f5eb02b85ad3
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Wed Jul 2 02:46:35 2025 +0700

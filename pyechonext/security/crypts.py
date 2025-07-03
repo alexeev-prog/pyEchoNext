@@ -44,20 +44,26 @@ class PSPCAlgorithm:
         :returns:	crypted password
         :rtype:		str
         """
+        if not password:
+            return ""
+        
         crypted = " ".join(password).split()
         crypted = list(map(ord, crypted))
 
         return ".".join(list(map(lambda x: str(x * self.seed), crypted)))[::-1]
 
-    def decrypt(self, crypted: int) -> str:
+    def decrypt(self, crypted: str) -> str:
         """
         Decrypt password
 
         :param		crypted:  The crypted
-        :type		crypted:  int
+        :type		crypted:  str
 
         :returns:	decrypted value
         :rtype:		str
         """
+        if not crypted:
+            return ""
+        
         password = list(map(lambda x: int(x) // self.seed, crypted[::-1].split(".")))
         return "".join(list(map(chr, password)))

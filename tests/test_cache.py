@@ -5,10 +5,10 @@ from pyechonext.cache import InMemoryCache, CacheEntry, Cacheable
 
 class TestCacheEntry:
     def test_entry_creation(self):
-        entry = CacheEntry(name="test", value=42, expire=1000.0)
+        entry = CacheEntry(name="test", value=42, expiry=1000.0)
         assert entry.name == "test"
         assert entry.value == 42
-        assert entry.expire == 1000.0
+        assert entry.expiry == 1000.0
 
 class TestInMemoryCache:
     @pytest.fixture

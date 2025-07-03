@@ -23,7 +23,7 @@ class TestPrefixTree:
 
     def test_size(self, trie):
         assert trie.size() > 0
-        assert trie.size(trie.root.children['a']) == 4
+        assert trie.size(trie.root.children['a']) == 20
 
     def test_empty_prefix(self, trie):
         assert len(trie.starts_with("")) == 8

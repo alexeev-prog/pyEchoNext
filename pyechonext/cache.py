@@ -76,7 +76,7 @@ class InMemoryCache:
         """
         current_time = time.time()
         keys_to_delete = [
-            key for key, entry in self._cache.items() if entry.expire < current_time
+            key for key, entry in self._cache.items() if entry.expiry < current_time
         ]
 
         for key in keys_to_delete:

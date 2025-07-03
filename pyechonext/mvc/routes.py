@@ -240,17 +240,11 @@ class Router:
 
         url = url if self.prefix is None else f"{self.prefix}{url}"
 
-        paths = self._trie.starts_with(url)
-
-        print(f"get {url}: {self._trie.starts_with('')}")
-
-        for path in paths:
-            route = self.routes.get(path)
-
-            if route is not None:
-                parse_result = parse.parse(path, url)
-                if parse_result is not None:
-                    return route, parse_result.named
+        # Check all routes for pattern matching
+        for path, route in self.routes.items():
+            parse_result = parse.parse(path, url)
+            if parse_result is not None:
+                return route, parse_result.named
 
         if raise_404:
             raise URLNotFound(f'URL "{url}" not found.')
