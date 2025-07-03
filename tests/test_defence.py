@@ -1,5 +1,7 @@
 # tests/test_defence.py
+import pytest
 from pyechonext.security.defence import CSRFTokenManager
+
 
 class TestCSRFTokenManager:
     @pytest.fixture

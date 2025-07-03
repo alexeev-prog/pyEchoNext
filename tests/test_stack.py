@@ -1,6 +1,8 @@
 # tests/test_stack.py
 import pytest
+
 from pyechonext.utils.stack import LIFOStack
+
 
 class TestLIFOStack:
     @pytest.fixture

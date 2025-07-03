@@ -31,7 +31,7 @@ echonext = EchoNext(
 )
 
 
-@echonext.route_page('/{name}/')
+@echonext.route_page("/{name}/")
 def index(request, response, name):
     return name
 

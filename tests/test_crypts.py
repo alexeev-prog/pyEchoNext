@@ -1,6 +1,8 @@
 # tests/test_crypts.py
 import pytest
+
 from pyechonext.security.crypts import PSPCAlgorithm
+
 
 class TestPSPCAlgorithm:
     @pytest.fixture

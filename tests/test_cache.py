@@ -1,7 +1,10 @@
 # tests/test_cache.py
 import time
+
 import pytest
-from pyechonext.cache import InMemoryCache, CacheEntry, Cacheable
+
+from pyechonext.cache import Cacheable, CacheEntry, InMemoryCache
+
 
 class TestCacheEntry:
     def test_entry_creation(self):
@@ -9,6 +12,7 @@ class TestCacheEntry:
         assert entry.name == "test"
         assert entry.value == 42
         assert entry.expiry == 1000.0
+
 
 class TestInMemoryCache:
     @pytest.fixture
@@ -40,6 +44,7 @@ class TestInMemoryCache:
         cache.clear()
         assert not cache._cache
 
+
 class TestCacheable:
     @pytest.fixture
     def cacheable(self):
@@ -49,9 +54,9 @@ class TestCacheable:
     def test_cache_operations(self, cacheable):
         cacheable.save("key1", "value1")
         assert cacheable.cache.get("key1") == "value1"
-        
+
         cacheable.update("key1", "value2")
         assert cacheable.cache.get("key1") == "value2"
-        
+
         cacheable.clear_data("key1")
         assert cacheable.cache.get("key1") is None

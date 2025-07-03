@@ -1,13 +1,13 @@
 # tests/test_hashing.py
 import pytest
-from pyechonext.security.hashing import PlainHasher, SaltedHasher, HashAlgorithm
+
+from pyechonext.security.hashing import HashAlgorithm, PlainHasher, SaltedHasher
+
 
 class TestHashing:
-    @pytest.mark.parametrize("algorithm", [
-        HashAlgorithm.SHA256,
-        HashAlgorithm.SHA512,
-        HashAlgorithm.MD5
-    ])
+    @pytest.mark.parametrize(
+        "algorithm", [HashAlgorithm.SHA256, HashAlgorithm.SHA512, HashAlgorithm.MD5]
+    )
     def test_plain_hasher(self, algorithm):
         hasher = PlainHasher(algorithm)
         data = "password123"
@@ -20,7 +20,7 @@ class TestHashing:
         data = "secure_data"
         hashed = hasher.hash(data)
         assert hasher.verify(data, hashed) is True
-        
+
         # Different salt should produce different hash
         diff_salt_hasher = SaltedHasher(salt="different_salt")
         assert diff_salt_hasher.verify(data, hashed) is False

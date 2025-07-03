@@ -1,3 +1,9 @@
+commit b2657853dd73eec85467e10d690725179af160bd
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 06:21:15 2025 +0700
+
+    fix routing bugs, fix tests
+
 commit 5e8bc165eba61837996728bc4171fff43fedffdf
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Fri Jul 4 05:02:30 2025 +0700
