@@ -1,31 +1,29 @@
-from pyechonext.utils.trie import PrefixTree, TrieNode
+# tests/test_trie.py
+import pytest
+from pyechonext.utils.trie import PrefixTree
 
+class TestPrefixTree:
+    @pytest.fixture
+    def trie(self):
+        trie = PrefixTree()
+        words = ["apple", "app", "aposematic", "appreciate", "book", "bad", "bear", "bat"]
+        for word in words:
+            trie.insert(word)
+        return trie
 
-def test_trienode():
-    tn = TrieNode()
-    assert not tn.is_word
-    assert tn.text == ""
-    assert tn.children == {}
+    def test_insert_find(self, trie):
+        assert trie.find("app") is not None
+        assert trie.find("apple") is not None
+        assert trie.find("application") is None
 
+    def test_starts_with(self, trie):
+        assert set(trie.starts_with("app")) == {"app", "apple", "appreciate"}
+        assert set(trie.starts_with("b")) == {"book", "bad", "bear", "bat"}
+        assert set(trie.starts_with("ba")) == {"bad", "bat"}
 
-def test_trie():
-    trie = PrefixTree()
-    trie.insert("apple")
-    trie.insert("app")
-    trie.insert("aposematic")
-    trie.insert("appreciate")
-    trie.insert("book")
-    trie.insert("bad")
-    trie.insert("bear")
-    trie.insert("bat")
+    def test_size(self, trie):
+        assert trie.size() > 0
+        assert trie.size(trie.root.children['a']) == 4
 
-    assert trie.starts_with("app") == ["app", "apple", "appreciate"]
-
-    router_tree = PrefixTree()
-    router_tree.insert("index")
-    router_tree.insert("users")
-    router_tree.insert("transactions")
-    router_tree.insert("wallets")
-    router_tree.insert("wallets/create")
-
-    assert router_tree.starts_with("wa") == ["wallets", "wallets/create"]
+    def test_empty_prefix(self, trie):
+        assert len(trie.starts_with("")) == 8

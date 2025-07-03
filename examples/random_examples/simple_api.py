@@ -31,6 +31,11 @@ echonext = EchoNext(
 )
 
 
+@echonext.route_page('/{name}/')
+def index(request, response, name):
+    return name
+
+
 @echonext.route_page("/book")
 class BooksResource(PageController):
     def get(self, request, response, **kwargs):

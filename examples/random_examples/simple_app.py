@@ -27,9 +27,9 @@ class User(SessionModel):
         return f"<User {self.pk}>"
 
 
-@echonext.route_page("/")
-def home(request, response):
-    user = User(name="John", cash=100.0)
+@echonext.route_page("/{name}")
+def home(request, response, name):
+    user = User(name=name, cash=100.0)
     session.add(user)
     session.commit()
     return "Hello from the HOME page"

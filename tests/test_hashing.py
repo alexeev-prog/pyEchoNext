@@ -1,19 +1,31 @@
-from pyechonext.security.hashing import HashAlgorithm, PlainHasher, SaltedHasher
+# tests/test_hashing.py
+import pytest
+from pyechonext.security.hashing import PlainHasher, SaltedHasher, HashAlgorithm
 
+class TestHashing:
+    @pytest.mark.parametrize("algorithm", [
+        HashAlgorithm.SHA256,
+        HashAlgorithm.SHA512,
+        HashAlgorithm.MD5
+    ])
+    def test_plain_hasher(self, algorithm):
+        hasher = PlainHasher(algorithm)
+        data = "password123"
+        hashed = hasher.hash(data)
+        assert hasher.verify(data, hashed) is True
+        assert hasher.verify("wrong", hashed) is False
 
-def test_plain_hasher():
-    hasher = PlainHasher(HashAlgorithm.BLAKE2S)
-    old_hash = hasher.hash("TEXT")
-    new_hash = hasher.hash("TEXT")
+    def test_salted_hasher(self):
+        hasher = SaltedHasher(salt="unique_salt")
+        data = "secure_data"
+        hashed = hasher.hash(data)
+        assert hasher.verify(data, hashed) is True
+        
+        # Different salt should produce different hash
+        diff_salt_hasher = SaltedHasher(salt="different_salt")
+        assert diff_salt_hasher.verify(data, hashed) is False
 
-    assert hasher.verify("TEXT", new_hash)
-    assert not hasher.verify("TEXT2", old_hash)
-
-
-def test_salted_hasher():
-    hasher = SaltedHasher(HashAlgorithm.BLAKE2S, salt="bob")
-    old_hash = hasher.hash("TEXT")
-    new_hash = hasher.hash("TEXT")
-
-    assert hasher.verify("TEXT", new_hash)
-    assert not hasher.verify("TEXT2", old_hash)
+    def test_hash_types(self):
+        hasher = PlainHasher()
+        assert isinstance(hasher.hash("text"), bytes)
+        assert isinstance(hasher.hash(b"bytes"), bytes)
