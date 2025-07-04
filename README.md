@@ -45,6 +45,9 @@
 
 **PyEchoNext** is a lightweight, high-performance web framework designed for building scalable Python web applications and APIs. With its modular architecture and focus on developer productivity, it combines Flask-like simplicity with FastAPI-inspired performance features. Built for modern web development challenges.
 
+ > [!NOTE]
+ > Python 3.12+
+
 > [!CAUTION]
 > PyEchoNext is currently in active alpha development. While core functionality is stable, some advanced features are still evolving. Production use requires thorough testing.
 
