@@ -1,3 +1,28 @@
+commit 3042f4491b2734699533ee8785243759c05f9257
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 07:13:42 2025 +0700
+
+    fix workflow
+
+commit 41c92b5c0a983eec5b163ddc4aaec0672ce6d999
+Merge: 7e98e35 e092d62
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 07:12:13 2025 +0700
+
+    Merge branch 'main' into dev
+
+commit 7e98e35db53dbbc2d5a6fcfc61cb12d9d9296aa3
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 07:11:51 2025 +0700
+
+    fix docs and code style
+
+commit e092d62dcddbb65d6e56db0a8e3d5e096a39577c
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 07:07:20 2025 +0700
+
+    Create python-package.yml
+
 commit 6dbeb8a8e2ddef13157443b85ebb3fe337641415
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Fri Jul 4 07:03:26 2025 +0700
