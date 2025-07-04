@@ -104,9 +104,9 @@ class InputValidator:
         Return:
             bool: validating status
         """
-        if expected_type == str:
+        if expected_type is str:
             return isinstance(data, str) and bool(data.strip())
-        elif expected_type == int:
+        elif expected_type is int:
             return isinstance(data, int) and data >= 0
         raise TypeError("Unsupported type")
 

@@ -34,9 +34,11 @@ class StaticFile:
             StaticFileNotFoundError: static file at static dir not found
         """
         self.settings: Settings = settings
-        self.filename: str = f"/{settings.STATIC_DIR}/{filename}".replace("//", "/")
+        self.filename: str = f"/{settings.STATIC_DIR}/{filename}".replace(
+            "//", "/")
         self.abs_filename: Path = Path(
-            os.path.join(self.settings.BASE_DIR, self.settings.STATIC_DIR, filename)
+            os.path.join(self.settings.BASE_DIR,
+                         self.settings.STATIC_DIR, filename)
         )
 
         if not self.abs_filename.exists():
@@ -44,7 +46,8 @@ class StaticFile:
                 f'Static file "{self.abs_filename}" not found.'
             )
 
-        self.content_cache: InMemoryCache = InMemoryCache(timeout=update_timeout)
+        self.content_cache: InMemoryCache = InMemoryCache(
+            timeout=update_timeout)
 
         self.precache: bool = precache
         self.preloaded_value: Optional[str] = None
@@ -150,7 +153,8 @@ class StaticFilesManager:
                 logger.info(f"Found static file: {static_file.filename}")
 
                 if static_file.precache:
-                    logger.debug(f"Use preloaded value of static file {static_file}")
+                    logger.debug(
+                        f"Use preloaded value of static file {static_file}")
                     return static_file.preloaded_value
                 else:
                     return static_file.caching_static_file()

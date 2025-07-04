@@ -79,8 +79,10 @@ def render_template(request: Request, template_name: str, **kwargs) -> str:
     assert request.settings.BASE_DIR
     assert request.settings.TEMPLATES_DIR
 
-    engine = TemplateEngine(request.settings.BASE_DIR, request.settings.TEMPLATES_DIR)
+    engine = TemplateEngine(request.settings.BASE_DIR,
+                            request.settings.TEMPLATES_DIR)
 
-    logger.debug(f"Jinja2 template engine: render {template_name} ({request.path})")
+    logger.debug(
+        f"Jinja2 template engine: render {template_name} ({request.path})")
 
     return engine.build(template_name, **kwargs)

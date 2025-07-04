@@ -115,7 +115,8 @@ class DocumentSection(ABC):
         :param		new_description:  The new description
         :type		new_description:  str
         """
-        logger.debug(f"Description modified: {self.description} -> {new_description}")
+        logger.debug(
+            f"Description modified: {self.description} -> {new_description}")
         self.description = new_description
         self.modification_date = get_current_datetime()
 
@@ -159,7 +160,8 @@ class DocumentSection(ABC):
                     page.append(f"#### {key}\n{value}\n")
 
         page.append("---\n")
-        page.append("Created by [JustProj](https://github.com/alexeev-prog/JustProj)")
+        page.append(
+            "Created by [JustProj](https://github.com/alexeev-prog/JustProj)")
 
         logger.info(f"Document section [{self.title}] successfully generated!")
 
@@ -352,7 +354,8 @@ DocumentFolders (is not directories):\n
                 section_filename = os.path.join(
                     folder.folderpath, section.get_filename()
                 )
-                logger.debug(f'Generating page "{section.title}" [{section_filename}]')
+                logger.debug(
+                    f'Generating page "{section.title}" [{section_filename}]')
                 page = section.get_markdown_page()
 
                 with open(section_filename, "w") as file:

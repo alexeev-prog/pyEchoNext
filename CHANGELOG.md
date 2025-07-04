@@ -1,3 +1,9 @@
+commit 003ddcabbb77957942c5b90efe89ee9ef67753ff
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 06:28:01 2025 +0700
+
+    add test for defence, fix code style
+
 commit b2657853dd73eec85467e10d690725179af160bd
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Fri Jul 4 06:21:15 2025 +0700

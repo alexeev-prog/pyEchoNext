@@ -1,27 +1,27 @@
-from typing import Optional
+from typing import List, Optional
 
 
 class TrieNode:
-    def __init__(self, text: str = ""):
+    def __init__(self, text: str = "") -> None:
         self.text = text
         self.children = dict()
         self.is_word = False
 
 
 class PrefixTree:
-    def __init__(self):
+    def __init__(self) -> None:
         self.root = TrieNode()
 
-    def insert(self, word: str):
+    def insert(self, word: str) -> None:
         current = self.root
         for i, char in enumerate(word):
             if char not in current.children:
-                prefix = word[0 : i + 1]
+                prefix = word[0: i + 1]
                 current.children[char] = TrieNode(prefix)
             current = current.children[char]
         current.is_word = True
 
-    def find(self, word: str):
+    def find(self, word: str) -> Optional[str]:
         current = self.root
 
         for char in word:
@@ -32,14 +32,16 @@ class PrefixTree:
         if current.is_word:
             return current
 
-    def _child_words_for(self, node: TrieNode, words: list):
+        return None
+
+    def _child_words_for(self, node: TrieNode, words: list) -> None:
         if node.is_word:
             words.append(node.text)
 
         for letter in node.children:
             self._child_words_for(node.children[letter], words)
 
-    def starts_with(self, prefix: str):
+    def starts_with(self, prefix: str) -> List[str]:
         words = list()
         current = self.root
 
@@ -52,7 +54,7 @@ class PrefixTree:
 
         return words
 
-    def size(self, current: Optional[TrieNode] = None):
+    def size(self, current: Optional[TrieNode] = None) -> int:
         if not current:
             current = self.root
 
@@ -62,25 +64,3 @@ class PrefixTree:
             count += self.size(current.children[letter])
 
         return count
-
-
-if __name__ == "__main__":
-    trie = PrefixTree()
-    trie.insert("apple")
-    trie.insert("app")
-    trie.insert("aposematic")
-    trie.insert("appreciate")
-    trie.insert("book")
-    trie.insert("bad")
-    trie.insert("bear")
-    trie.insert("bat")
-    print(trie.starts_with("app"))
-
-    router_tree = PrefixTree()
-    router_tree.insert("index")
-    router_tree.insert("users")
-    router_tree.insert("transactions")
-    router_tree.insert("wallets")
-    router_tree.insert("wallets/create")
-
-    print(router_tree.starts_with("wa"))

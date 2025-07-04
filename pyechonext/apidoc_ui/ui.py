@@ -351,19 +351,17 @@ hue-6-2: #c18401
             "{{info_title}}": self.specification["info"]["title"],
             "{{info_version}}": self.specification["info"]["version"],
             "{{info_description}}": self.specification["info"]["description"],
-            "{{sections}}": "\n".join(
-                [
-                    self.generate_section(
-                        path,
-                        value["get"]["summary"],
-                        value["post"]["summary"],
-                        value["get"]["responses"],
-                        value["post"]["responses"],
-                        value,
-                    )
-                    for path, value in self.specification["paths"].items()
-                ]
-            ),
+            "{{sections}}": "\n".join([
+                self.generate_section(
+                    path,
+                    value["get"]["summary"],
+                    value["post"]["summary"],
+                    value["get"]["responses"],
+                    value["post"]["responses"],
+                    value,
+                )
+                for path, value in self.specification["paths"].items()
+            ]),
         }
 
         for key, value in content.items():

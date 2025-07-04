@@ -1,7 +1,8 @@
 # tests/test_hashing.py
 import pytest
 
-from pyechonext.security.hashing import HashAlgorithm, PlainHasher, SaltedHasher
+from pyechonext.security.hashing import (HashAlgorithm, PlainHasher,
+                                         SaltedHasher)
 
 
 class TestHashing:

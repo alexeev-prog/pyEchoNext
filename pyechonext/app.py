@@ -12,19 +12,15 @@ from pyechonext.config import Settings
 from pyechonext.logging import logger
 from pyechonext.middleware import BaseMiddleware
 from pyechonext.mvc.controllers import PageController
-from pyechonext.mvc.routes import Route, Router, RoutesTypes, generate_page_route
+from pyechonext.mvc.routes import (Route, Router, RoutesTypes,
+                                   generate_page_route)
 from pyechonext.request import Request
 from pyechonext.response import Response
 from pyechonext.static import StaticFile, StaticFilesManager
 from pyechonext.urls import URL
 from pyechonext.utils import prepare_url
-from pyechonext.utils.exceptions import (
-    MethodNotAllow,
-    RoutePathExistsError,
-    TeapotError,
-    URLNotFound,
-    WebError,
-)
+from pyechonext.utils.exceptions import (MethodNotAllow, RoutePathExistsError,
+                                         TeapotError, URLNotFound, WebError)
 from pyechonext.utils.stack import LIFOStack
 
 
@@ -146,7 +142,8 @@ class EchoNext:
         if self.application_type == ApplicationType.TEAPOT:
             raise TeapotError("Where's my coffee?")
 
-        logger.debug(f"Application {self.application_type.value}: {self.app_name}")
+        logger.debug(
+            f"Application {self.application_type.value}: {self.app_name}")
 
     def test_session(self, host: str = "echonext") -> RequestsSession:
         """Test Session
@@ -158,7 +155,8 @@ class EchoNext:
             RequestsSession: request session for tests
         """
         session = RequestsSession()
-        session.mount(prefix=f"http://{host}", adapter=RequestsWSGIAdapter(self))
+        session.mount(prefix=f"http://{host}",
+                      adapter=RequestsWSGIAdapter(self))
         return session
 
     def _get_request(self, environ: dict) -> Request:
@@ -371,7 +369,8 @@ class EchoNext:
             self.main_cache.set(key, value)
             item = self.main_cache.get(key)
 
-        logger.info(f"Get item from cache: '{key[:16].strip().replace('\n', '')}...'")
+        logger.info(
+            f"Get item from cache: '{key[:16].strip().replace('\n', '')}...'")
 
         return item
 
@@ -388,7 +387,8 @@ class EchoNext:
             Response: served response object
         """
         logger.debug(f"Serve static file by path: {request.path}")
-        response.content_type = self.static_files_manager.get_file_type(request.path)
+        response.content_type = self.static_files_manager.get_file_type(
+            request.path)
         response.body = self.static_files_manager.serve_static_file(
             prepare_url(request.path)
         )

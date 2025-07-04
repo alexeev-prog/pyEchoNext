@@ -43,7 +43,8 @@ class TemplateEngine:
         template_name = os.path.join(self.templates_dir, template_name)
 
         if not os.path.isfile(template_name):
-            raise TemplateNotFileError(f'Template "{template_name}" is not a file')
+            raise TemplateNotFileError(
+                f'Template "{template_name}" is not a file')
 
         with open(template_name, "r") as file:
             content = file.read()
@@ -120,7 +121,8 @@ class TemplateEngine:
         """
         raw_template = self._get_template_as_string(template_name)
 
-        processed_template = self._build_statement_for_block(context, raw_template)
+        processed_template = self._build_statement_for_block(
+            context, raw_template)
 
         return self._build_block_of_template(context, processed_template)
 
@@ -149,10 +151,12 @@ def render_template(request: Request, template_name: str, **kwargs) -> str:
     assert request.settings.BASE_DIR
     assert request.settings.TEMPLATES_DIR
 
-    engine = TemplateEngine(request.settings.BASE_DIR, request.settings.TEMPLATES_DIR)
+    engine = TemplateEngine(request.settings.BASE_DIR,
+                            request.settings.TEMPLATES_DIR)
 
     context = kwargs
 
-    logger.debug(f"Built-in template engine: render {template_name} ({request.path})")
+    logger.debug(
+        f"Built-in template engine: render {template_name} ({request.path})")
 
     return engine.build(context, template_name)

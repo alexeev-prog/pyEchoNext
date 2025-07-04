@@ -1,4 +1,5 @@
-from pyechonext.security.hashing import HashAlgorithm, PlainHasher, SaltedHasher
+from pyechonext.security.hashing import (HashAlgorithm, PlainHasher,
+                                         SaltedHasher)
 
 hasher = PlainHasher(HashAlgorithm.BLAKE2S)
 old_hash = hasher.hash("TEXT")

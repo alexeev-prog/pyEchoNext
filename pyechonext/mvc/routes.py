@@ -33,6 +33,7 @@ class Route:
     route_type: RoutesTypes
     methods: list = field(default_factory=list)
     summary: Optional[str] = None
+    is_dynamic: bool = False  # New flag to indicate dynamic route
 
 
 def _create_url_route(url: URL) -> Route:
@@ -44,11 +45,13 @@ def _create_url_route(url: URL) -> Route:
     Returns:
         Route: route instance
     """
+    is_dynamic = "{" in url.path and "}" in url.path
     return Route(
         page_path=url.path,
         handler=url.controller(),
         route_type=RoutesTypes.URL_BASED,
         summary=url.summary,
+        is_dynamic=is_dynamic,
     )
 
 
@@ -72,12 +75,14 @@ def _create_page_route(
     if methods is None:
         methods = ["GET"]
 
+    is_dynamic = "{" in page_path and "}" in page_path
     return Route(
         page_path=page_path,
         handler=handler,
         route_type=RoutesTypes.PAGE,
         methods=methods,
         summary=summary,
+        is_dynamic=is_dynamic,
     )
 
 
@@ -106,7 +111,7 @@ class Router:
     This class describes a router.
     """
 
-    __slots__ = ("prefix", "urls", "routes", "_trie")
+    __slots__ = ("prefix", "urls", "routes", "_trie", "dynamic_routes")
 
     def __init__(self, urls: Optional[List[URL]] = None, prefix: Optional[str] = None):
         """Initialize a router with urls and routes
@@ -121,6 +126,7 @@ class Router:
         self.urls = urls
         self.routes = {}
         self._trie = PrefixTree()
+        self.dynamic_routes = []  # Separate storage for dynamic routes
         self._prepare_urls()
 
     def route_page(
@@ -151,7 +157,8 @@ class Router:
             )
 
             if inspect.isclass(handler):
-                self.add_url(URL(path=page_path, controller=handler, summary=summary))
+                self.add_url(
+                    URL(path=page_path, controller=handler, summary=summary))
             else:
                 self.add_page_route(page_path, handler, methods, summary)
 
@@ -164,12 +171,15 @@ class Router:
         Prepare URLs (add to routes)
         """
         for url in self.urls:
-            self._trie.insert(
-                url.path if self.prefix is None else f"{self.prefix}{url.path}"
-            )
-            self.routes[
-                url.path if self.prefix is None else f"{self.prefix}{url.path}"
-            ] = _create_url_route(url)
+            path = url.path if self.prefix is None else f"{self.prefix}{url.path}"
+            route = _create_url_route(url)
+
+            if route.is_dynamic:
+                self.dynamic_routes.append(route)
+            else:
+                self._trie.insert(path)
+
+            self.routes[path] = route
 
     def add_page_route(
         self,
@@ -196,17 +206,22 @@ class Router:
         if page_path in self.routes:
             raise RoutePathExistsError(f'Route "{page_path}" already exists.')
 
-        self._trie.insert(page_path)
-
-        self.routes[page_path] = _create_page_route(
+        route = _create_page_route(
             page_path,
             handler,
             methods,
             summary,
         )
 
+        if route.is_dynamic:
+            self.dynamic_routes.append(route)
+        else:
+            self._trie.insert(page_path)
+
+        self.routes[page_path] = route
+
     def add_url(self, url: URL):
-        """Add an url
+        """Add a url
 
         Args:
             url (URL): URL class instance
@@ -218,8 +233,14 @@ class Router:
         if url_path in self.routes:
             raise RoutePathExistsError(f'Route "{url_path}" already exists.')
 
-        self.routes[url_path] = _create_url_route(url)
-        self._trie.insert(url_path)
+        route = _create_url_route(url)
+
+        if route.is_dynamic:
+            self.dynamic_routes.append(route)
+        else:
+            self._trie.insert(url_path)
+
+        self.routes[url_path] = route
 
     def resolve(
         self, request: Request, raise_404: Optional[bool] = True
@@ -237,12 +258,20 @@ class Router:
             Union[Tuple[Callable, Dict], tuple[None, None]]: route and parse result or none tuple
         """
         url = prepare_url(request.path)
-
         url = url if self.prefix is None else f"{self.prefix}{url}"
 
-        # Check all routes for pattern matching
-        for path, route in self.routes.items():
-            parse_result = parse.parse(path, url)
+        # First try static routes using Trie
+        if self._trie.find(url):
+            if url in self.routes:
+                return self.routes[url], {}
+
+        # Check for static routes that might not be in Trie (fallback)
+        elif url in self.routes and not self.routes[url].is_dynamic:
+            return self.routes[url], {}
+
+        # Then try dynamic routes
+        for route in self.dynamic_routes:
+            parse_result = parse.parse(route.page_path, url)
             if parse_result is not None:
                 return route, parse_result.named
 

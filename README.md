@@ -43,25 +43,17 @@
     <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/pallet-0.png">
 </p>
 
- > EchoNext is a lightweight, fast and scalable web framework for Python
- 
- > [!CAUTION]
-> At the moment, EchoNext is under active development, many things may not work, and this version is not recommended for use (all at your own risk)
+**PyEchoNext** is a lightweight, high-performance web framework designed for building scalable Python web applications and APIs. With its modular architecture and focus on developer productivity, it combines Flask-like simplicity with FastAPI-inspired performance features. Built for modern web development challenges.
 
-Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the sluggishness of traditional web frameworks? Want a solution that keeps pace with your ambitious apps? Look no further. EchoNext is your agile companion in the world of web development!
+> [!CAUTION]
+> PyEchoNext is currently in active alpha development. While core functionality is stable, some advanced features are still evolving. Production use requires thorough testing.
 
 > [!NOTE]
 > Versions below 0.7.14a are not recommended for use with gunicorn <23.0 due to the fact that they used an older version of gunicorn (<23.0), which was [vulnerable](https://deps.dev/advisory/osv/GHSA-hc5x-x2vx-497g).
 
-<p align="center">
-    <img src="https://raw.githubusercontent.com/alexeev-prog/pyEchoNext/refs/heads/main/docs/logo.jpg" width="70%" height="70%" >
-</p>
+ > Next big update: 0.8.0 - Hybrid Performance Core: async + multithread + multiprocess
 
-**Imagine** a lightweight framework that empowers you to create modern web applications with lightning speed and flexibility. With EchoNext, you're not just coding; you're building a masterpiece!
-
- > Last stable version: 0.7.18 alpha
-
- > Next Big Update: ASYNC & unicorn support
+You want see hybrid core before release? See [DevGuide Specs for HybridCore](./devguide/hybrid_core.md).
 
 ## Check Other My Projects
 
@@ -99,6 +91,69 @@ Welcome to **EchoNext**, where innovation meets simplicity! Are you tired of the
 - Comprehensive Documentation: Detailed usage examples and API reference to help you get started.
 - Modular Design: Clean, maintainable codebase that follows best software engineering practices.
 - Extensive Test Coverage: Robust test suite to ensure the library's reliability and stability.
+
+```mermaid
+graph TD
+    A[Router] --> B[Middleware]
+    B --> C[Controllers]
+    C --> D[Models]
+    C --> E[Views]
+    D --> F[Data]
+    E --> G[Templates]
+    A --> H[Static Files]
+```
+
+
+### Intelligent Routing System
+- **Trie-based URL dispatch** - O(m) lookup complexity
+- **Dynamic path parameters** - Type-annotated parameter handling
+- **Nested routers** - Modular application organization
+
+```python
+# Hierarchical routing example
+main_router = Router()
+admin_router = Router(prefix="/admin")
+
+@admin_router.route_page("/dashboard")
+def admin_dashboard(request, response):
+    return render_template("admin.html")
+
+main_router.include_router(admin_router)
+```
+
+### Security Framework
+- **Multi-layer protection**:
+  - CSRF tokens with session binding
+  - XSS double-escaping (content + attributes)
+  - SQL injection pattern filtering
+  - Rate limiting (sliding window algorithm)
+- **Cryptographic modules**:
+  - PSPCAlgorithm for lightweight encryption
+  - SHA3/BLAKE3 hashing support
+  - Salted password handling
+
+```python
+# Security implementation example
+token = Security.generate_csrf_token(session_id)
+filtered_query = Security.filter_sql_query("SELECT * FROM users; DROP TABLE users")
+```
+
+### ⚡ Performance Optimization
+- **Multi-layer caching**:
+  - LRU in-memory cache
+  - Performance-optimized memoization
+  - Static file preloading
+- **JIT-friendly design**:
+  - Numba-compatible critical paths
+  - Zero-copy request processing
+  - Async-ready architecture (in development)
+
+```python
+# Performance-cached view
+@performance_cached(perf_cache)
+def compute_intensive_view():
+    return calculate_fibonacci(1000)
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -693,27 +748,47 @@ If you find Echonext valuable and want to support the project:
 
 Connect with fellow Echonext users: [Join our Telegram Chat](https://t.me/pyEchoNext_Forum)
 
-## 🔮 Roadmap
-Our future goals for pyEchoNext include:
+## Roadmap & Future Development
 
-- 📚 Improve middlewares
-- 🚀 Add async support
-- ✅ Improve logging
-- 🌍 Add authentication, JWT tokens
-- 💻 Depedency Injection
-- 🌐 More stability and scalablity
+### Q2-Q3 2025
+- [x] **0.8.0**: Hybrid core: async + multithread + multiprocess
+- [ ] Database ORM integration
+- [ ] OpenAPI 3.1 schema generation
+- [ ] Built-in monitoring dashboard
+
+### Q3-Q4 2025
+- [ ] JWT authentication module
+- [ ] Websocket support
+- [ ] Distributed task queue
+- [ ] GRPC integration
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🌟 Get Started Today!
-Unlock your potential as a developer with Echonext. Don’t just build applications—craft experiences that resonate with your users! The possibilities are limitless when you harness the power of Echonext. 
+## Contributor Guidelines
 
-**Happy Coding!** 💻✨
+We welcome PRs addressing:
+- Security enhancements
+- Performance optimization
+- Documentation improvements
+- Test coverage expansion
+- ASGI migration path
 
-This README is designed to grab attention from the very first lines. It emphasizes the framework's strengths and makes a compelling case for why developers should choose Echonext for their projects. Feel free to adjust any specific links or images to fit your project!
+**Before contributing**:
+1. Review [docs](https://alexeev-prog.github.io/pyEchoNext/)
+2. Maintain 100% test coverage for new code
+3. Follow PEP8 and SOLID, DRY, KISS principles
+4. Include type annotations
 
-## License
-Distributed under the GNU LGPL 2.1 License. See [LICENSE](https://github.com/alexeev-prog/pyEchoNext/blob/main/LICENSE) for more information.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### License & Support
+This project operates under **GNU LGPL 2.1** - see [LICENSE](https://github.com/alexeev-prog/pyEchoNext/blob/main/LICENSE). For enterprise support, contact [alexeev.dev@mail.ru](mailto:alexeev.dev@mail.ru).
+
+**PyEchoNext** - Build robust web applications with Pythonic elegance.  
+
+[Explore Documentation](https://alexeev-prog.github.io/pyEchoNext) | 
+[Report Issue](https://github.com/alexeev-prog/pyEchoNext/issues) | 
+[View Examples](/examples)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

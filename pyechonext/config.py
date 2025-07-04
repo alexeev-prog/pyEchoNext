@@ -76,7 +76,8 @@ class SettingsLoader:
         self.filename: Path = Path(filename)
 
         if not self.filename.exists():
-            raise FileNotFoundError(f'Config file "{self.filename}" don\'t exists.')
+            raise FileNotFoundError(
+                f'Config file "{self.filename}" don\'t exists.')
 
     def _load_yaml_config(self) -> dict:
         """Loads a config data from YAML file

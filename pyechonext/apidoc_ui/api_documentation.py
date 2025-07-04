@@ -29,7 +29,8 @@ class APIDocumentation:
             dict: openapi configuration
         """
         if not isinstance(self._app, EchoNext):
-            raise AttributeError(f"Unknown application type: {type(self._app)}")
+            raise AttributeError(
+                f"Unknown application type: {type(self._app)}")
 
         spec = {
             "openapi": "3.0.0",

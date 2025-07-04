@@ -1,14 +1,9 @@
 from typing import Any, Callable
 
 from pyechonext.app import EchoNext
-from pyechonext.docsgen.document import (
-    DocumentFolder,
-    DocumentSection,
-    InitiationSection,
-    ProjectManager,
-    ProjectTemplate,
-    RoutesSubsection,
-)
+from pyechonext.docsgen.document import (DocumentFolder, DocumentSection,
+                                         InitiationSection, ProjectManager,
+                                         ProjectTemplate, RoutesSubsection)
 
 
 class ProjDocumentation:
@@ -87,17 +82,14 @@ class ProjDocumentation:
                             f"Methods: {data['methods']}\n\nReturn type:"
                             f" {data['return_type']}"
                         ),
-                        "Extra": (
-                            "Extra:"
-                            f" {
-                                '\n'.join(
-                                    [
-                                        f' + {key}: {value}'
-                                        for key, value in data['extra'].items()
-                                    ]
-                                )
-                            }"
-                        ),
+                        "Extra": f"Extra: {
+                            '\n'.join(
+                                [
+                                    f' + {key}: {value}'
+                                    for key, value in data['extra'].items()
+                                ]
+                            )
+                        }",
                     },
                     section,
                 )
