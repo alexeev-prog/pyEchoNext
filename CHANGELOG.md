@@ -1,3 +1,34 @@
+commit ee9599d0e084a1339435277de4ae4003d6840198
+Merge: 50841cf fa3067c
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 07:28:44 2025 +0700
+
+    Merge branch 'main' of github.com:alexeev-prog/pyEchoNext
+
+commit 50841cffe80235aa8a5bc86381b1c842aa259ca2
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 07:21:15 2025 +0700
+
+    fix workflow
+
+commit fa3067c61623e48ca43a5b6dcf8a2054cef53ce4
+Merge: 239bc8b 5e1fb65
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 07:19:24 2025 +0700
+
+    Merge pull request #4 from alexeev-prog/dependabot/github_actions/actions/setup-python-5
+    
+    build(deps): bump actions/setup-python from 2 to 5
+
+commit 239bc8b5d85037035fb2a9a339cda18c3b1779cd
+Merge: b31548c 985c092
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 07:19:06 2025 +0700
+
+    Merge pull request #5 from alexeev-prog/dependabot/github_actions/actions/checkout-4
+    
+    build(deps): bump actions/checkout from 2 to 4
+
 commit b31548c24cdeceade5c6a5d786e0dc2ef3f13bb5
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Fri Jul 4 07:18:45 2025 +0700
@@ -34,6 +65,47 @@ Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Fri Jul 4 07:07:20 2025 +0700
 
     Create python-package.yml
+
+commit 5e1fb65315bd714ae919f5849ee3f667ebb2d3b3
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Fri Jul 4 00:04:13 2025 +0000
+
+    build(deps): bump actions/setup-python from 2 to 5
+    
+    Bumps [actions/setup-python](https://github.com/actions/setup-python) from 2 to 5.
+    - [Release notes](https://github.com/actions/setup-python/releases)
+    - [Commits](https://github.com/actions/setup-python/compare/v2...v5)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: actions/setup-python
+      dependency-version: '5'
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 985c09262e63e478a6a72b7cc09c571a32308cb3
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Fri Jul 4 00:03:40 2025 +0000
+
+    build(deps): bump actions/checkout from 2 to 4
+    
+    Bumps [actions/checkout](https://github.com/actions/checkout) from 2 to 4.
+    - [Release notes](https://github.com/actions/checkout/releases)
+    - [Changelog](https://github.com/actions/checkout/blob/main/CHANGELOG.md)
+    - [Commits](https://github.com/actions/checkout/compare/v2...v4)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: actions/checkout
+      dependency-version: '4'
+      dependency-type: direct:production
+      update-type: version-update:semver-major
+    ...
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
 
 commit 6dbeb8a8e2ddef13157443b85ebb3fe337641415
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>

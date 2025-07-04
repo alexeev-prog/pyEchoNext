@@ -12,15 +12,19 @@ from pyechonext.config import Settings
 from pyechonext.logging import logger
 from pyechonext.middleware import BaseMiddleware
 from pyechonext.mvc.controllers import PageController
-from pyechonext.mvc.routes import (Route, Router, RoutesTypes,
-                                   generate_page_route)
+from pyechonext.mvc.routes import Route, Router, RoutesTypes, generate_page_route
 from pyechonext.request import Request
 from pyechonext.response import Response
 from pyechonext.static import StaticFile, StaticFilesManager
 from pyechonext.urls import URL
 from pyechonext.utils import prepare_url
-from pyechonext.utils.exceptions import (MethodNotAllow, RoutePathExistsError,
-                                         TeapotError, URLNotFound, WebError)
+from pyechonext.utils.exceptions import (
+    MethodNotAllow,
+    RoutePathExistsError,
+    TeapotError,
+    URLNotFound,
+    WebError,
+)
 from pyechonext.utils.stack import LIFOStack
 
 
@@ -361,17 +365,14 @@ class EchoNext:
         """
         key = str(key)
         item = self.main_cache.get(key)
-        cache_key = key[:16].strip().replace('\n', '')
+        cache_key = key[:16].strip().replace("\n", "")
 
         if item is None:
-            logger.info(
-                f"Save item to cache: '{cache_key}...'"
-            )
+            logger.info(f"Save item to cache: '{cache_key}...'")
             self.main_cache.set(key, value)
             item = self.main_cache.get(key)
 
-        logger.info(
-            f"Get item from cache: '{cache_key}...'")
+        logger.info(f"Get item from cache: '{cache_key}...'")
 
         return item
 

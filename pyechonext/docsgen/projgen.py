@@ -1,9 +1,14 @@
 from typing import Any, Callable
 
 from pyechonext.app import EchoNext
-from pyechonext.docsgen.document import (DocumentFolder, DocumentSection,
-                                         InitiationSection, ProjectManager,
-                                         ProjectTemplate, RoutesSubsection)
+from pyechonext.docsgen.document import (
+    DocumentFolder,
+    DocumentSection,
+    InitiationSection,
+    ProjectManager,
+    ProjectTemplate,
+    RoutesSubsection,
+)
 
 
 class ProjDocumentation:

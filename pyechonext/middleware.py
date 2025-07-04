@@ -93,9 +93,11 @@ class SessionMiddleware(BaseMiddleware):
                 f"Set session_id={session_id} for response"
                 f" {response.status_code} {response.request.path}"
             )
-            response.add_headers([
-                ("Set-Cookie", f"session_id={session_id}"),
-            ])
+            response.add_headers(
+                [
+                    ("Set-Cookie", f"session_id={session_id}"),
+                ]
+            )
 
     def process_template(self, *args, **kwargs):
         """Process template with middleware
