@@ -1,3 +1,15 @@
+commit 6dbeb8a8e2ddef13157443b85ebb3fe337641415
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 07:03:26 2025 +0700
+
+    remove broken workflow
+
+commit f44808cf69abd32e1ea569aa20f7fdeec05824d5
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 07:02:11 2025 +0700
+
+    docs/fix: impove docs, fix code style
+
 commit 003ddcabbb77957942c5b90efe89ee9ef67753ff
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Fri Jul 4 06:28:01 2025 +0700

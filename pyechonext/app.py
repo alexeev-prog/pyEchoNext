@@ -361,16 +361,17 @@ class EchoNext:
         """
         key = str(key)
         item = self.main_cache.get(key)
+        cache_key = key[:16].strip().replace('\n', '')
 
         if item is None:
             logger.info(
-                f"Save item to cache: '{key[:16].strip().replace('\n', '')}...'"
+                f"Save item to cache: '{cache_key}...'"
             )
             self.main_cache.set(key, value)
             item = self.main_cache.get(key)
 
         logger.info(
-            f"Get item from cache: '{key[:16].strip().replace('\n', '')}...'")
+            f"Get item from cache: '{cache_key}...'")
 
         return item
 
