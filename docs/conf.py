@@ -9,8 +9,8 @@ sys.path.insert(0, os.path.abspath("pyechonext"))
 
 project = "pyEchoNext"
 author = "name"
-version = "0.7.18"
-release = "0.7"
+version = "0.8.0"
+release = "0.8"
 project_copyright = "2025, Alexeev Bronislaw"
 
 extensions = [

@@ -22,7 +22,7 @@ import requests
 from rich import print
 from rich.traceback import install
 
-__version__ = "0.7.18"
+__version__ = "0.8.0"
 install(show_locals=True)
 
 
@@ -38,7 +38,7 @@ def check_for_update():
         latest_digits = [int(n) for n in latest_version.split(".")]
         current_digits = [int(n) for n in __version__.split(".")]
 
-        if sum(latest_digits) > sum(current_digits):
+        if sum(latest_digits) > sum(current_digits) and current_digits[1] < latest_digits[1]:
             message = f"New version of library pyEchoNext available: {latest_version}"
 
             print(

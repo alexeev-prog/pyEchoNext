@@ -1,3 +1,15 @@
+commit dab0184ebe171a0a499c769b60b4b20ecdd33f14
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Jul 5 03:56:47 2025 +0700
+
+    add new format-lint file
+
+commit ce46dfd7f308dc16b3e8f17ee7051f5fa507937b
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Fri Jul 4 07:34:22 2025 +0700
+
+    fix workflow
+
 commit bbcb1c9423d6f948719a556b93bfc1e31c660f5f
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Fri Jul 4 07:33:02 2025 +0700
