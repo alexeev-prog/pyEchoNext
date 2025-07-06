@@ -1,6 +1,6 @@
 import time
 from dataclasses import dataclass, field
-from typing import Any, Dict, Optional
+from typing import Any
 
 
 @dataclass
@@ -22,20 +22,24 @@ class InMemoryCache:
     """
 
     def __init__(self, timeout: int = 300):
-        """Initialize InMemoryCace
-
-            Args:
-        timeout (int, optional): _description_. Defaults to 300.
         """
-        self._cache: Dict[str, CacheEntry] = {}
+        Initialize InMemoryCace
+
+        Args:
+        timeout (int, optional): _description_. Defaults to 300.
+
+        """
+        self._cache: dict[str, CacheEntry] = {}
         self._timeout: int = timeout
 
     def set(self, key: str, value: Any, **kwargs):
-        """Set item into cache
+        """
+        Set item into cache
 
-            Args:
+        Args:
         key (str): key
         value (Any): value
+
         """
         expiry_time = time.time() + self._timeout
 
@@ -43,29 +47,33 @@ class InMemoryCache:
             name=key, value=value, expiry=expiry_time, extra_params=kwargs
         )
 
-    def get(self, key: str) -> Optional[Any]:
-        """Get item by specified key
+    def get(self, key: str) -> Any | None:
+        """
+        Get item by specified key
 
-            Args:
+        Args:
         key (str): key item
 
-            Returns:
+        Returns:
         Optional[Any]: item value
+
         """
         entry = self._cache.get(str(key))
 
         if entry is not None and time.time() <= entry.expiry:
             return entry.value
-        elif entry is not None and time.time() > entry.expiry:
+        if entry is not None and time.time() > entry.expiry:
             self.invalidate(key)
 
         return None
 
     def invalidate(self, key: str):
-        """Invalidate item by key
+        """
+        Invalidate item by key
 
-            Args:
+        Args:
         key (str): item key
+
         """
         if key in self._cache:
             del self._cache[key]
@@ -95,36 +103,44 @@ class Cacheable:
     """
 
     def __init__(self, cache: InMemoryCache):
-        """Initialize Cachable Interace
+        """
+        Initialize Cachable Interace
 
-            Args:
+        Args:
         cache (InMemoryCache): cache instance
+
         """
         self.cache = cache
 
     def save(self, key: str, data: Any):
-        """Save item in cache
+        """
+        Save item in cache
 
-            Args:
+        Args:
         key (str): item key
         data (Any): item data
+
         """
         self.cache.set(key, data)
 
     def update(self, key: str, new_data: Any):
-        """Update item by key
+        """
+        Update item by key
 
-            Args:
+        Args:
         key (str): item key
         new_data (Any): new item data
+
         """
         self.clear_data(key)
         self.save(key, new_data)
 
     def clear_data(self, key: str):
-        """Clear item data by key
+        """
+        Clear item data by key
 
-            Args:
+        Args:
         key (str): item key
+
         """
         self.cache.invalidate(key)

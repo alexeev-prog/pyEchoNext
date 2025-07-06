@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, Union
+from typing import Any
 
 from pyechonext.mvc.models import PageModel
 from pyechonext.mvc.views import PageView
@@ -15,7 +15,8 @@ class BaseController(ABC):
 
     @abstractmethod
     def get(self, request: Request, response: Response, *args, **kwargs):
-        """Get method of route
+        """
+        Get method of route
 
         Args:
             request (Request): request object
@@ -23,12 +24,14 @@ class BaseController(ABC):
 
         Raises:
             NotImplementedError: abstract method
+
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
     def post(self, request: Request, response: Response, *args, **kwargs):
-        """Post method of route
+        """
+        Post method of route
 
         Args:
             request (Request): request object
@@ -36,8 +39,9 @@ class BaseController(ABC):
 
         Raises:
             NotImplementedError: abstract method
+
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
 class PageController(BaseController):
@@ -45,8 +49,9 @@ class PageController(BaseController):
     Controls the data flow into a page object and updates the view whenever data changes.
     """
 
-    def _create_model(self, request: Request, data: Union[Response, Any]) -> PageModel:
-        """Create model for page controller
+    def _create_model(self, request: Request, data: Response | Any) -> PageModel:
+        """
+        Create model for page controller
 
         Args:
             request (Request): request object
@@ -54,16 +59,16 @@ class PageController(BaseController):
 
         Returns:
             PageModel: page model
+
         """
         model = PageModel(request)
         model.response = model.get_response(data)
 
         return model
 
-    def get_rendered_view(
-        self, request: Request, data: Union[Response, Any]
-    ) -> str | dict:
-        """Get the rendered view
+    def get_rendered_view(self, request: Request, data: Response | Any) -> str | dict:
+        """
+        Get the rendered view
 
         Args:
             request (Request): request object
@@ -71,6 +76,7 @@ class PageController(BaseController):
 
         Returns:
             str | dict: rendered view
+
         """
         model = self._create_model(request, data)
 
@@ -79,7 +85,8 @@ class PageController(BaseController):
         return view.render(model)
 
     def get(self, request: Request, response: Response, *args, **kwargs):
-        """Get method
+        """
+        Get method
 
         Args:
             request (Request): request object
@@ -87,11 +94,13 @@ class PageController(BaseController):
 
         Raises:
             MethodNotAllow: this method not modified in child class
+
         """
         raise MethodNotAllow("Method Not Allow: GET")
 
     def post(self, request: Request, response: Response, *args, **kwargs):
-        """Post method
+        """
+        Post method
 
         Args:
             request (Request): request object
@@ -99,5 +108,6 @@ class PageController(BaseController):
 
         Raises:
             MethodNotAllow: this method not modified in child class
+
         """
         raise MethodNotAllow("Method Not Allow: Post")

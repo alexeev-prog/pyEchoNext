@@ -7,26 +7,32 @@ class APIDocumentation:
     """
 
     def __init__(self, app: EchoNext):
-        """Constructs a new instance
+        """
+        Constructs a new instance
 
         Args:
             app (Optional[EchoNext]): echonext WSGI app. Defaults to None.
+
         """
         self._app: EchoNext = app
 
     def init_app(self, app: EchoNext):
-        """Initialize application
+        """
+        Initialize application
 
         Args:
             app (EchoNext): echonext WSGI app
+
         """
         self._app = app
 
     def generate_spec(self) -> dict:
-        """Generate simple OpenAPI configuration from routes
+        """
+        Generate simple OpenAPI configuration from routes
 
         Returns:
             dict: openapi configuration
+
         """
         if not isinstance(self._app, EchoNext):
             raise AttributeError(

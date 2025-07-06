@@ -15,46 +15,54 @@ class BaseMiddleware(ABC):
 
     @abstractmethod
     def to_request(self, request: Request):
-        """Apply actions to request
+        """
+        Apply actions to request
 
         Args:
            request (Request): request object
 
         Raises:
            NotImplementedError: abstract method
+
         """
         raise NotImplementedError
 
     @abstractmethod
     def to_response(self, response: Response):
-        """Apply actions to response
+        """
+        Apply actions to response
 
         Args:
             response (Response): response object
 
         Raises:
            NotImplementedError: abstract method
+
         """
         raise NotImplementedError
 
     @abstractmethod
     def process_template(self, *args, **kwargs):
-        """Process template with middleware
+        """
+        Process template with middleware
 
         Raises:
             NotImplementedError: abstract method
+
         """
         raise NotImplementedError
 
     @abstractmethod
     def process_exception(self, exception: Exception):
-        """Process exception with middleware
+        """
+        Process exception with middleware
 
         Args:
            exception (Exception): exception class
 
         Raises:
            exception: exception from arguments
+
         """
         raise NotImplementedError
 
@@ -65,10 +73,12 @@ class SessionMiddleware(BaseMiddleware):
     """
 
     def to_request(self, request: Request):
-        """Apply cookies to request
+        """
+        Apply cookies to request
 
         Args:
             request (Request): request object
+
         """
         cookie = request.environ.get("HTTP_COOKIE", None)
 
@@ -82,10 +92,12 @@ class SessionMiddleware(BaseMiddleware):
         request.extra["session_id"] = session_id
 
     def to_response(self, response: Response):
-        """Get session uuid by response
+        """
+        Get session uuid by response
 
         Args:
             response (Response): response
+
         """
         if not response.request.session_id:
             session_id = uuid4()
@@ -100,21 +112,25 @@ class SessionMiddleware(BaseMiddleware):
             )
 
     def process_template(self, *args, **kwargs):
-        """Process template with middleware
+        """
+        Process template with middleware
 
         Raises:
             NotImplementedError: abstract method
+
         """
         raise NotImplementedError
 
     def process_exception(self, exception: Exception):
-        """Process exception with middleware
+        """
+        Process exception with middleware
 
         Args:
             exception (Exception): exception class
 
         Raises:
             exception: exception from arguments
+
         """
         if not isinstance(exception, pyEchoNextException) or not isinstance(
             exception, WebError

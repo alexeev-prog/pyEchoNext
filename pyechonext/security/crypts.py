@@ -13,8 +13,7 @@ def get_seed(seed: int, min_n: int = 1, max_n: int = 1000) -> int:
     """
     if seed is None:
         return randint(min_n, max_n)
-    else:
-        return seed
+    return seed
 
 
 class PSPCAlgorithm:

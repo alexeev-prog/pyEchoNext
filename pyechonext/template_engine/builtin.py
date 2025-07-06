@@ -46,7 +46,7 @@ class TemplateEngine:
             raise TemplateNotFileError(
                 f'Template "{template_name}" is not a file')
 
-        with open(template_name, "r") as file:
+        with open(template_name) as file:
             content = file.read()
 
         return content

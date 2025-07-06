@@ -1,3 +1,9 @@
+commit fae3e0ef353a5e87f07e58c78e167f814d0d2fe3
+Author: Alexeev Bronislav <alexeev.dev@mail.ru>
+Date:   Sat Jul 5 08:24:49 2025 +0700
+
+    migrate to uv, update version
+
 commit dab0184ebe171a0a499c769b60b4b20ecdd33f14
 Author: Alexeev Bronislav <alexeev.dev@mail.ru>
 Date:   Sat Jul 5 03:56:47 2025 +0700

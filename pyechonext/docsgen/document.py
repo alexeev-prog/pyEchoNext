@@ -1,19 +1,22 @@
 import os
 from abc import ABC
 from enum import Enum
-from typing import Any, Dict, List
+from typing import Any
+
+from pyminideprecator import deprecate
 
 from pyechonext.logging import logger
 from pyechonext.utils import get_current_datetime
 
 
+@deprecate("0.9.0", "This feature is deleted in 0.9.0", "0.8.0")
 class DocumentSubsection(ABC):
     """
     This class describes a document subsection.
     """
 
     def __init__(
-        self, title: str, content: Dict[str, Any], main_section: "DocumentSection"
+        self, title: str, content: dict[str, Any], main_section: "DocumentSection"
     ):
         """
         Constructs a new instance.
@@ -41,12 +44,13 @@ class DocumentSubsection(ABC):
         self.main_section = new_main_section
 
 
+@deprecate("0.9.0", "This feature is deleted in 0.9.0", "0.8.0")
 class DocumentSection(ABC):
     """
     This abstract metaclass describes a documentation section.
     """
 
-    def __init__(self, title: str, introduction: str, content: Dict[str, Any]):
+    def __init__(self, title: str, introduction: str, content: dict[str, Any]):
         """
         Constructs a new instance.
 
@@ -72,7 +76,6 @@ class DocumentSection(ABC):
         :param		linked_subsection:	The linked subsection
         :type		linked_subsection:	DocumentSubsection
         """
-
         self.linked_subsections[linked_subsection.title] = linked_subsection
         linked_subsection.set_new_main_section(self)
         logger.info(f'Linked new subsection: "{linked_subsection.title}"')
@@ -120,7 +123,7 @@ class DocumentSection(ABC):
         self.description = new_description
         self.modification_date = get_current_datetime()
 
-    def modify_content(self, new_content: Dict[str, Any]):
+    def modify_content(self, new_content: dict[str, Any]):
         """
         Modify section content
 
@@ -131,7 +134,7 @@ class DocumentSection(ABC):
         self.content = new_content
         self.modification_date = get_current_datetime()
 
-    def get_markdown_page(self) -> List[str]:
+    def get_markdown_page(self) -> list[str]:
         """
         Gets the page in markdown formatting
 
@@ -174,7 +177,7 @@ class RoutesSubsection(DocumentSubsection):
     """
 
     def __init__(
-        self, title: str, content: Dict[str, Any], main_section: "DocumentSection"
+        self, title: str, content: dict[str, Any], main_section: "DocumentSection"
     ):
         """
         Constructs a new instance.
@@ -197,7 +200,7 @@ class InitiationSection(DocumentSection):
     This class describes an initiation section.
     """
 
-    def __init__(self, title: str, introduction: str, content: Dict[str, Any]):
+    def __init__(self, title: str, introduction: str, content: dict[str, Any]):
         """
         Constructs a new instance.
 
@@ -223,7 +226,7 @@ class DocumentFolder:
     """
 
     def __init__(
-        self, name: str, project_root_dir: str, sections: List[DocumentSection]
+        self, name: str, project_root_dir: str, sections: list[DocumentSection]
     ):
         """
         Constructs a new instance.
@@ -251,8 +254,10 @@ class DocumentFolder:
         with open(os.path.join(self.folderpath, "index.md"), "w") as file:
             file.write(f"# {self.name}\n\n")
 
-            for section in self.sections:
-                file.write(f"## {section.title}\n{section.introduction}\n")
+            file.writelines(
+                f"## {section.title}\n{section.introduction}\n"
+                for section in self.sections
+            )
 
 
 class DocumentManager:
@@ -268,7 +273,7 @@ class DocumentManager:
         repo_author: str,
         repo_name: str,
         project_root_dir: str,
-        folders: List[DocumentFolder],
+        folders: list[DocumentFolder],
     ):
         """
         Constructs a new instance.
@@ -359,8 +364,7 @@ DocumentFolders (is not directories):\n
                 page = section.get_markdown_page()
 
                 with open(section_filename, "w") as file:
-                    for line in page:
-                        file.write(f"{line}\n")
+                    file.writelines(f"{line}\n" for line in page)
 
         logger.info("Pages successfully generated!")
 
@@ -390,7 +394,7 @@ class ProjectStructureGenerator:
         os.makedirs(self.project_root_dir, exist_ok=True)
         self.structure = {}
 
-    def add_directory(self, dir_name: str, dir_files: List[str]):
+    def add_directory(self, dir_name: str, dir_files: list[str]):
         """
         Adds a directory.
 
@@ -474,8 +478,8 @@ class ProjectManager:
         repo_name: str,
         project_root_dir: str,
         project_template: ProjectTemplate,
-        folders: List[DocumentFolder],
-        sections: List[DocumentSection],
+        folders: list[DocumentFolder],
+        sections: list[DocumentSection],
         github: bool = True,
     ):
         """
@@ -527,7 +531,7 @@ class ProjectManager:
             folders,
         )
 
-    def add_directory_to_structure(self, dir_name: str, files: List[str]):
+    def add_directory_to_structure(self, dir_name: str, files: list[str]):
         """
         Adds a directory to structure.
 

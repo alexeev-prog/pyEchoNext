@@ -1,6 +1,3 @@
-from typing import List, Optional
-
-
 class TrieNode:
     def __init__(self, text: str = "") -> None:
         self.text = text
@@ -21,7 +18,7 @@ class PrefixTree:
             current = current.children[char]
         current.is_word = True
 
-    def find(self, word: str) -> Optional[str]:
+    def find(self, word: str) -> str | None:
         current = self.root
 
         for char in word:
@@ -41,7 +38,7 @@ class PrefixTree:
         for letter in node.children:
             self._child_words_for(node.children[letter], words)
 
-    def starts_with(self, prefix: str) -> List[str]:
+    def starts_with(self, prefix: str) -> list[str]:
         words = list()
         current = self.root
 
@@ -54,7 +51,7 @@ class PrefixTree:
 
         return words
 
-    def size(self, current: Optional[TrieNode] = None) -> int:
+    def size(self, current: TrieNode | None = None) -> int:
         if not current:
             current = self.root
 

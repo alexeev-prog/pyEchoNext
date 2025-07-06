@@ -10,13 +10,15 @@ class BaseView(ABC):
 
     @abstractmethod
     def render(self, model: PageModel) -> str | dict:
-        """Render the given model
+        """
+        Render the given model
 
         Args:
             model (PageModel): model for render
 
         Returns:
             str: rendered content
+
         """
         raise NotImplementedError
 
@@ -27,12 +29,14 @@ class PageView(BaseView):
     """
 
     def render(self, model: PageModel) -> str | dict:
-        """Render the given model
+        """
+        Render the given model
 
         Args:
             model (PageModel): model for render
 
         Returns:
             str: rendered content
+
         """
         return model.response.body

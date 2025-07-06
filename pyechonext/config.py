@@ -14,13 +14,15 @@ from pyechonext.security.crypts import PSPCAlgorithm
 
 
 def dynamic_import(module: str):
-    """Dynamic import with importlib
+    """
+    Dynamic import with importlib
 
     Args:
         module (str): module name
 
     Returns:
         module: imported module
+
     """
     return importlib.import_module(str(module))
 
@@ -62,7 +64,8 @@ class SettingsLoader:
     __slots__ = ("config", "config_type", "filename")
 
     def __init__(self, config_type: SettingsConfigType, filename: str = None):
-        """Initialize a basic settings info
+        """
+        Initialize a basic settings info
 
         Args:
             config_type (SettingsConfigType): file config type
@@ -70,6 +73,7 @@ class SettingsLoader:
 
         Raises:
             FileNotFoundError: _description_
+
         """
         self.config = None
         self.config_type: SettingsConfigType = config_type
@@ -80,43 +84,51 @@ class SettingsLoader:
                 f'Config file "{self.filename}" don\'t exists.')
 
     def _load_yaml_config(self) -> dict:
-        """Loads a config data from YAML file
+        """
+        Loads a config data from YAML file
 
         Returns:
             dict: config data
+
         """
-        with open(self.filename, "r") as fh:
+        with open(self.filename) as fh:
             data = yaml.load(fh, Loader=yaml.FullLoader)
 
         return data
 
     def _load_toml_config(self) -> dict:
-        """Loads a config data from TOML file
+        """
+        Loads a config data from TOML file
 
         Returns:
             dict: config data
+
         """
-        with open(self.filename, "r") as fh:
+        with open(self.filename) as fh:
             data = toml.loads(fh)
 
         return data
 
     def _load_json_config(self) -> dict:
-        """Loads a config data from JSON file
+        """
+        Loads a config data from JSON file
 
         Returns:
             dict: config data
+
         """
-        with open(self.filename, "r") as fh:
+        with open(self.filename) as fh:
             data = json.load(fh)
 
         return data
 
     def _load_ini_config(self) -> SectionProxy:
-        """Loads a config data from INI file
+        """
+        Loads a config data from INI file
 
         Returns:
             dict: config data
+
         """
         config = ConfigParser()
         config.read(self.filename)
@@ -124,10 +136,12 @@ class SettingsLoader:
         return config["Settings"]
 
     def _load_env_config(self) -> dict:
-        """Loads a config data from ENV file
+        """
+        Loads a config data from ENV file
 
         Returns:
             dict: config data
+
         """
         load_dotenv(self.filename)
 
@@ -145,10 +159,12 @@ class SettingsLoader:
         return config
 
     def _load_pymodule_config(self) -> dict:
-        """Loads configuration from python module
+        """
+        Loads configuration from python module
 
         Returns:
             dict: _description_
+
         """
         config_module = dynamic_import(str(self.filename).replace(".py", ""))
 
@@ -164,10 +180,12 @@ class SettingsLoader:
         }
 
     def get_settings(self) -> Settings:
-        """Get the settings dataclass
+        """
+        Get the settings dataclass
 
         Returns:
             Settings: settings object
+
         """
         if self.config_type == SettingsConfigType.INI:
             self.config = self._load_ini_config()

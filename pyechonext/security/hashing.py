@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 from collections import Counter
 from enum import Enum, auto
 from hmac import compare_digest
-from typing import Union
 
 
 def distribute(items, num_containers, hash_function=hash):
@@ -64,9 +63,7 @@ class HashingBase(ABC):
     """
 
     @abstractmethod
-    def hash(
-        self, data: Union[bytes, str], hexdigest: bool = False
-    ) -> Union[bytes, str]:
+    def hash(self, data: bytes | str, hexdigest: bool = False) -> bytes | str:
         """
         Hash
 
@@ -80,10 +77,10 @@ class HashingBase(ABC):
 
         :raises		NotImplementedError:  abstract method
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
-    def verify(self, data: Union[bytes, str], hashed_data: Union[bytes, str]) -> bool:
+    def verify(self, data: bytes | str, hashed_data: bytes | str) -> bool:
         """
         Verify data and hashed data
 
@@ -97,7 +94,7 @@ class HashingBase(ABC):
 
         :raises		NotImplementedError:  { exception_description }
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
 
 class PlainHasher(HashingBase):
@@ -114,7 +111,7 @@ class PlainHasher(HashingBase):
         """
         self.algorithm = algorithm
 
-    def hash(self, data: Union[bytes, str]) -> bytes:
+    def hash(self, data: bytes | str) -> bytes:
         """
         Generate hash
 
@@ -130,7 +127,7 @@ class PlainHasher(HashingBase):
         hasher = self._get_hasher()
         return hasher(data).digest()
 
-    def verify(self, data: Union[bytes, str], hashed_data: Union[bytes, str]) -> bool:
+    def verify(self, data: bytes | str, hashed_data: bytes | str) -> bool:
         """
         Verify data and hashed data
 
@@ -172,8 +169,7 @@ class PlainHasher(HashingBase):
 
         if hash_function is None:
             raise ValueError(f"Unknown hash function type: {self.algorithm}")
-        else:
-            return hash_function
+        return hash_function
 
 
 class SaltedHasher(HashingBase):
@@ -195,7 +191,7 @@ class SaltedHasher(HashingBase):
         self.algorithm = algorithm
         self.salt = salt
 
-    def hash(self, data: Union[bytes, str]) -> bytes:
+    def hash(self, data: bytes | str) -> bytes:
         """
         Generate hash
 
@@ -211,11 +207,11 @@ class SaltedHasher(HashingBase):
             data = data.encode("utf-8")
 
         hasher = self._get_hasher()
-        value = f"{data}{salt}".encode("utf-8")
+        value = f"{data}{salt}".encode()
 
         return hasher(value).digest()
 
-    def verify(self, data: str, hashed_data: Union[bytes, str]) -> bool:
+    def verify(self, data: str, hashed_data: bytes | str) -> bool:
         """
         Verify data and hashed_data
 
@@ -255,5 +251,4 @@ class SaltedHasher(HashingBase):
 
         if hash_function is None:
             raise ValueError(f"Unknown hash function type: {self.algorithm}")
-        else:
-            return hash_function
+        return hash_function

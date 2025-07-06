@@ -52,7 +52,7 @@ class BooksResource(PageController):
 
     def get(self, request, response, **kwargs):
         """
-        get queries
+        Get queries
 
         :param		request:   The request
         :type		request:   Request
@@ -68,7 +68,7 @@ class BooksResource(PageController):
 
     def post(self, request, response, **kwargs):
         """
-        post queries
+        Post queries
 
         :param		request:   The request
         :type		request:   Request

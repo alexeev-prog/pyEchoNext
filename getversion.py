@@ -34,7 +34,7 @@ class GitVersion:
 
     @property
     def build(self):
-        stream = os.popen("git rev-list {}.. --count".format(self.tag))
+        stream = os.popen(f"git rev-list {self.tag}.. --count")
         return stream.read().strip()
 
     @property

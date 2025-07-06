@@ -83,7 +83,6 @@ class CommandManager:
 
         :raises		RuntimeError:  command failed
         """
-
         print_message(
             "info",
             f"[italic] Execute command: [/italic]: [white on black]{command}[/white on"
@@ -91,7 +90,10 @@ class CommandManager:
         )
 
         result = subprocess.run(
-            shlex.split(command), stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            shlex.split(command),
+            check=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
         )
 
         if result.returncode != 0:
@@ -99,9 +101,7 @@ class CommandManager:
                 f'Command "{command}" failed with exit code'
                 f" {result.returncode}:\n{result.stderr.decode()}"
             )
-        else:
-            print(
-                f'[green bold]Successfully run[/green bold] "{command}"'.strip())
+        print(f'[green bold]Successfully run[/green bold] "{command}"'.strip())
 
         return result.returncode
 

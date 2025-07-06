@@ -1,7 +1,6 @@
 import mimetypes
 import os
 from pathlib import Path
-from typing import List, Optional
 
 from pyechonext.cache import InMemoryCache
 from pyechonext.config import Settings
@@ -19,10 +18,11 @@ class StaticFile:
         self,
         settings: Settings,
         filename: str,
-        update_timeout: Optional[int] = 3600,
-        precache: Optional[bool] = False,
+        update_timeout: int | None = 3600,
+        precache: bool | None = False,
     ):
-        """Constructs a Static File
+        """
+        Constructs a Static File
 
         Args:
             settings (Settings): settings of webapp.
@@ -32,6 +32,7 @@ class StaticFile:
 
         Raises:
             StaticFileNotFoundError: static file at static dir not found
+
         """
         self.settings: Settings = settings
         self.filename: str = f"/{settings.STATIC_DIR}/{filename}".replace(
@@ -50,7 +51,7 @@ class StaticFile:
             timeout=update_timeout)
 
         self.precache: bool = precache
-        self.preloaded_value: Optional[str] = None
+        self.preloaded_value: str | None = None
 
         if self.precache:
             self.preloaded_value = self.caching_static_file()
@@ -71,29 +72,35 @@ class StaticFile:
         return item
 
     def _load_content(self) -> str:
-        """Load content of static file
+        """
+        Load content of static file
 
         Returns:
             str: content
+
         """
-        with open(self.abs_filename, "r") as file:
+        with open(self.abs_filename) as file:
             return file.read().strip()
 
     def get_content_type(self) -> str:
-        """Get content type
+        """
+        Get content type
 
         Returns:
             str: get mimetype
+
         """
         content_type, _ = mimetypes.guess_type(str(self.abs_filename))
 
         return content_type or "application/octet-stream"
 
     def get_file_size(self) -> int:
-        """Get file size
+        """
+        Get file size
 
         Returns:
             int: file st size
+
         """
         return self.abs_filename.stat().st_size
 
@@ -103,48 +110,56 @@ class StaticFilesManager:
     This class describes a static files manager.
     """
 
-    def __init__(self, static_files: List[StaticFile]):
-        """Initialize manager
+    def __init__(self, static_files: list[StaticFile]):
+        """
+        Initialize manager
 
         Args:
             static_files (List[StaticFile]): list of static files.
+
         """
         self.static_files = static_files
 
     def get_file_type(self, url: str) -> str | None:
-        """Get file content type
+        """
+        Get file content type
 
         Args:
             url (str): static file url
 
         Returns:
             str | None: content type
+
         """
         for static_file in self.static_files:
             if static_file.filename == url:
                 return static_file.get_content_type()
 
     def get_file_size(self, url: str) -> int | None:
-        """Get file size
+        """
+        Get file size
 
         Args:
             url (str): url of static page
 
         Returns:
             int | None: file size
+
         """
         for static_file in self.static_files:
             if static_file.filename == url:
                 return static_file.get_file_size()
 
     def serve_static_file(self, url: str) -> str | bool:
-        """Serve static files
+        """
+        Serve static files
 
         Args:
             url (str): URL for serving
 
         Returns:
             str | bool: static file content or False if static file not found
+
         """
         url = prepare_url(url)
 
@@ -156,7 +171,6 @@ class StaticFilesManager:
                     logger.debug(
                         f"Use preloaded value of static file {static_file}")
                     return static_file.preloaded_value
-                else:
-                    return static_file.caching_static_file()
+                return static_file.caching_static_file()
 
         return False

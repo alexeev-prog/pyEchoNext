@@ -1,7 +1,7 @@
 import inspect
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Callable, Dict, List, Optional, Tuple, Union
 
 import parse
 
@@ -32,18 +32,20 @@ class Route:
     handler: Callable | PageController
     route_type: RoutesTypes
     methods: list = field(default_factory=list)
-    summary: Optional[str] = None
+    summary: str | None = None
     is_dynamic: bool = False  # New flag to indicate dynamic route
 
 
 def _create_url_route(url: URL) -> Route:
-    """Create URL Route
+    """
+    Create URL Route
 
     Args:
         url (URL): URL instance
 
     Returns:
         Route: route instance
+
     """
     is_dynamic = "{" in url.path and "}" in url.path
     return Route(
@@ -58,10 +60,11 @@ def _create_url_route(url: URL) -> Route:
 def _create_page_route(
     page_path: str,
     handler: Callable,
-    methods: Optional[List[str]] = None,
-    summary: Optional[str] = None,
+    methods: list[str] | None = None,
+    summary: str | None = None,
 ) -> Route:
-    """Create page route
+    """
+    Create page route
 
     Args:
         page_path (str): path of page
@@ -71,6 +74,7 @@ def _create_page_route(
 
     Returns:
         Route: route
+
     """
     if methods is None:
         methods = ["GET"]
@@ -89,10 +93,11 @@ def _create_page_route(
 def generate_page_route(
     page_path: str,
     handler: Callable,
-    methods: Optional[List[str]] = None,
-    summary: Optional[str] = None,
+    methods: list[str] | None = None,
+    summary: str | None = None,
 ) -> Route:
-    """Generate page route
+    """
+    Generate page route
 
     Args:
         page_path (str): page path url
@@ -102,6 +107,7 @@ def generate_page_route(
 
     Returns:
         Route: created route
+
     """
     return _create_page_route(page_path, handler, methods, summary)
 
@@ -111,13 +117,15 @@ class Router:
     This class describes a router.
     """
 
-    __slots__ = ("prefix", "urls", "routes", "_trie", "dynamic_routes")
+    __slots__ = ("_trie", "dynamic_routes", "prefix", "routes", "urls")
 
-    def __init__(self, urls: Optional[List[URL]] = None, prefix: Optional[str] = None):
-        """Initialize a router with urls and routes
+    def __init__(self, urls: list[URL] | None = None, prefix: str | None = None):
+        """
+        Initialize a router with urls and routes
 
         Args:
             urls (Optional[List[URL]], optional): urls list. Defaults to [].
+
         """
         if urls is None:
             urls = []
@@ -132,10 +140,11 @@ class Router:
     def route_page(
         self,
         page_path: str,
-        methods: Optional[List[str]] = None,
-        summary: Optional[str] = None,
+        methods: list[str] | None = None,
+        summary: str | None = None,
     ) -> Callable:
-        """Route a page
+        """
+        Route a page
 
         Args:
             page_path (str): page path
@@ -144,8 +153,8 @@ class Router:
 
         Returns:
                 Callable: route page wrapper
-        """
 
+        """
         if methods is None:
             methods = ["GET"]
 
@@ -185,10 +194,11 @@ class Router:
         self,
         page_path: str,
         handler: Callable,
-        methods: Optional[List[str]] = None,
-        summary: Optional[str] = None,
+        methods: list[str] | None = None,
+        summary: str | None = None,
     ):
-        """Add page route
+        """
+        Add page route
 
         Args:
             page_path (str): page path URL
@@ -198,6 +208,7 @@ class Router:
 
         Raises:
             RoutePathExistsError: route with this path already exists
+
         """
         if methods is None:
             methods = ["GET"]
@@ -221,13 +232,15 @@ class Router:
         self.routes[page_path] = route
 
     def add_url(self, url: URL):
-        """Add a url
+        """
+        Add a url
 
         Args:
             url (URL): URL class instance
 
         Raises:
             RoutePathExistsError: route with url.path already exists
+
         """
         url_path = url.path if self.prefix is None else f"{self.prefix}{url.path}"
         if url_path in self.routes:
@@ -243,9 +256,10 @@ class Router:
         self.routes[url_path] = route
 
     def resolve(
-        self, request: Request, raise_404: Optional[bool] = True
-    ) -> Union[Tuple[Callable, Dict], tuple[None, None]]:
-        """Resolve path from request
+        self, request: Request, raise_404: bool | None = True
+    ) -> tuple[Callable, dict] | tuple[None, None]:
+        """
+        Resolve path from request
 
         Args:
             request (Request): request object
@@ -256,6 +270,7 @@ class Router:
 
         Returns:
             Union[Tuple[Callable, Dict], tuple[None, None]]: route and parse result or none tuple
+
         """
         url = prepare_url(request.path)
         url = url if self.prefix is None else f"{self.prefix}{url}"
@@ -277,5 +292,4 @@ class Router:
 
         if raise_404:
             raise URLNotFound(f'URL "{url}" not found.')
-        else:
-            return None, None
+        return None, None

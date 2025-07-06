@@ -1,6 +1,7 @@
 import json
 from ast import literal_eval
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
+from collections.abc import Iterable
+from typing import Any
 
 from socks import method
 
@@ -15,15 +16,15 @@ class Response:
     """
 
     __slots__ = (
-        "headers",
-        "status_code",
-        "content_type",
+        "_added_headers",
+        "_headerslist",
         "body",
         "charset",
-        "request",
+        "content_type",
         "extra",
-        "_headerslist",
-        "_added_headers",
+        "headers",
+        "request",
+        "status_code",
     )
 
     default_content_type: str = "text/html"
@@ -35,13 +36,14 @@ class Response:
     def __init__(
         self,
         request: Request = None,
-        status_code: Optional[int] = 200,
-        body: Optional[str | Dict] = None,
+        status_code: int | None = 200,
+        body: str | dict | None = None,
         headers=None,
-        content_type: Optional[str] = None,
-        charset: Optional[str] = None,
+        content_type: str | None = None,
+        charset: str | None = None,
     ):
-        """Initialize new response
+        """
+        Initialize new response
 
         Args:
             request (Request, optional): request object. Defaults to None.
@@ -52,6 +54,7 @@ class Response:
             content_type (Optional[str], optional): content type. Defaults to None.
             charset (Optional[str], optional): charset. Defaults to None.
             i18n_params (Optional[dict], optional): params for i18n. Defaults to {}.
+
         """
         if headers is None:
             headers = {}
@@ -76,29 +79,33 @@ class Response:
         else:
             self.body: str = ""
 
-        self._headerslist: List[Any] = headers
-        self._added_headers: List[Any] = []
+        self._headerslist: list[Any] = headers
+        self._added_headers: list[Any] = []
         self.request: Request = request
-        self.extra: Dict[Any, Any] = {}
+        self.extra: dict[Any, Any] = {}
 
         self._update_headers()
 
-    def __getattr__(self, item: Any) -> Union[Any, None]:
-        """Magic method for get attrs (from extra)
+    def __getattr__(self, item: Any) -> Any | None:
+        """
+        Magic method for get attrs (from extra)
 
         Args:
             item (Any): item key
 
         Returns:
             Union[Any, None]: value
+
         """
         return self.extra.get(item, None)
 
     def _structuring_headers(self, environ: dict):
-        """Structure headers
+        """
+        Structure headers
 
         Args:
             environ (dict): environ dictionary
+
         """
         headers = {
             "Host": environ.get("HTTP_HOST"),
@@ -121,11 +128,13 @@ class Response:
             ("Content-Length", str(len(self.body))),
         ]
 
-    def add_headers(self, headers: List[Tuple[str, str]]):
-        """Adds new headers
+    def add_headers(self, headers: list[tuple[str, str]]):
+        """
+        Adds new headers
 
         Args:
             headers (List[Tuple[str, str]]): new headers
+
         """
         for header in headers:
             self._added_headers.append(header)
@@ -143,16 +152,18 @@ class Response:
             self.body = str(self.body).encode("UTF-8")
 
     def __call__(self, environ: dict, start_response: method) -> Iterable:
-        """Makes the response callable.
+        """
+        Makes the response callable.
 
         This method calling another methods for encode body, fill headers and starting response.
 
-         Args:
+        Args:
              environ (dict): environ data
              start_response (method): start response method
 
-         Returns:
+        Returns:
              Iterable: iterable encoded body
+
         """
         self._encode_body()
 
@@ -170,10 +181,12 @@ class Response:
 
     @property
     def json(self) -> str | dict[Any, Any]:
-        """Get response body as JSON
+        """
+        Get response body as JSON
 
         Returns:
             dict: _description_
+
         """
         if self.body:
             if isinstance(self.body, str):
@@ -187,9 +200,11 @@ class Response:
         return {}
 
     def __repr__(self) -> str:
-        """Returns a unambiguous string representation of the object (for debug...).
+        """
+        Returns a unambiguous string representation of the object (for debug...).
 
         Returns:
             str: unambiguous string representation
+
         """
         return f"<{self.__class__.__name__} at 0x{abs(id(self)):x} {self.status_code}>"

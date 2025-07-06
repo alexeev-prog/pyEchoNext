@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any
 
 
 class LIFOStack:
@@ -12,22 +12,26 @@ class LIFOStack:
         """
         Constructs a new instance.
         """
-        self._stack_items: List[Any] = []
+        self._stack_items: list[Any] = []
 
     @property
     def items(self) -> Any:
-        """Get reversed stack items
+        """
+        Get reversed stack items
 
         Returns:
             Any: reversed stack items
+
         """
         return reversed(self._stack_items)
 
     def is_empty(self) -> bool:
-        """Determines is empty
+        """
+        Determines is empty
 
         Returns:
             bool: true is empty, false otherwise
+
         """
         return len(self._stack_items) == 0
 
@@ -36,13 +40,15 @@ class LIFOStack:
         self._stack_items += args
 
     def pop(self) -> Any:
-        """Pop the object
+        """
+        Pop the object
 
         Raises:
             IndexError: stack if empty
 
         Returns:
             Any: stack items with popped item
+
         """
         if self.is_empty():
             raise IndexError("LIFO Stack is empty")
@@ -50,13 +56,15 @@ class LIFOStack:
         return self._stack_items.pop()
 
     def peek(self) -> Any:
-        """Peek the last item
+        """
+        Peek the last item
 
         Raises:
             IndexError: stack is empty
 
         Returns:
             Any: stack item
+
         """
         if self.is_empty():
             raise IndexError("LIFO Stack is empty")
@@ -65,17 +73,21 @@ class LIFOStack:
 
     @property
     def size(self) -> int:
-        """Get stack length
+        """
+        Get stack length
 
         Returns:
             int: length of stack items
+
         """
         return len(self._stack_items)
 
     def __str__(self) -> str:
-        """String representation of object
+        """
+        String representation of object
 
         Returns:
             str: string representation
+
         """
         return " -> ".join(map(str, reversed(self._stack_items)))

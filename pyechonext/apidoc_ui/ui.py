@@ -27,7 +27,7 @@ class APIDocUI:
         value: dict,
     ) -> str:
         """
-        generate section
+        Generate section
 
         :param			route:			   The route
         :type		  route:				str
@@ -43,7 +43,6 @@ class APIDocUI:
         :returns:	  template section
         :rtype:			  str
         """
-
         template = f"""
 <div class="section">
 		<div class="section-header">

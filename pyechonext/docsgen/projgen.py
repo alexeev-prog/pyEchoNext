@@ -1,4 +1,5 @@
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from pyechonext.app import EchoNext
 from pyechonext.docsgen.document import (
@@ -129,7 +130,7 @@ class ProjDocumentation:
         :rtype:		Callable
         """
         if page_path in self.pages:
-            return
+            return None
 
         def wrapper(handler):
             """

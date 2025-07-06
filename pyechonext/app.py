@@ -1,7 +1,8 @@
 import inspect
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Callable, Iterable, List, Optional, Type
+from typing import Any
 
 from requests import Session as RequestsSession
 from socks import method
@@ -46,18 +47,21 @@ class HistoryEntry:
 
 
 def _default_response(response: Response, error: WebError) -> None:
-    """Get default response (HTTP 404)
+    """
+    Get default response (HTTP 404)
 
     Args:
         response (Response): Response object
         error (WebError): web error
+
     """
     response.status_code = str(error.code)
     response.body = str(error)
 
 
 def _check_handler(request: Request, route: Route) -> Callable:
-    """Check handler
+    """
+    Check handler
 
     Args:
         request (Request): request object
@@ -68,6 +72,7 @@ def _check_handler(request: Request, route: Route) -> Callable:
 
     Returns:
         Callable: handler object
+
     """
     handler = route.handler
 
@@ -95,29 +100,30 @@ class EchoNext:
     """
 
     __slots__ = (
-        "app_name",
-        "settings",
-        "middlewares",
-        "application_type",
-        "urls",
-        "router",
         "_included_routers",
+        "app_name",
+        "application_type",
         "history",
         "main_cache",
-        "static_files_manager",
+        "middlewares",
+        "router",
+        "settings",
         "static_files",
+        "static_files_manager",
+        "urls",
     )
 
     def __init__(
         self,
         app_name: str,
         settings: Settings,
-        middlewares: List[Type[BaseMiddleware]],
-        urls: Optional[List[URL]] = [],
-        application_type: Optional[ApplicationType] = ApplicationType.JSON,
-        static_files: Optional[List[StaticFile]] = [],
+        middlewares: list[type[BaseMiddleware]],
+        urls: list[URL] | None = [],
+        application_type: ApplicationType | None = ApplicationType.JSON,
+        static_files: list[StaticFile] | None = [],
     ):
-        """Initialize a WSGI
+        """
+        Initialize a WSGI
 
         Args:
             app_name (str): application name
@@ -128,20 +134,21 @@ class EchoNext:
 
         Raises:
             TeapotError: Easter Egg
+
         """
         self.app_name: str = app_name
         self.settings: Settings = settings
-        self.middlewares: List[Type[BaseMiddleware]] = middlewares
+        self.middlewares: list[type[BaseMiddleware]] = middlewares
         self.application_type: ApplicationType = application_type
-        self.static_files: List[StaticFile] = static_files
+        self.static_files: list[StaticFile] = static_files
         self.static_files_manager: StaticFilesManager = StaticFilesManager(
             self.static_files
         )
-        self.urls: List[URL] = urls
+        self.urls: list[URL] = urls
         self.router: Router = Router(self.urls)
-        self._included_routers: List[Router] = []
+        self._included_routers: list[Router] = []
         self.main_cache: InMemoryCache = InMemoryCache(timeout=60 * 10)
-        self.history: List[HistoryEntry] = []
+        self.history: list[HistoryEntry] = []
 
         if self.application_type == ApplicationType.TEAPOT:
             raise TeapotError("Where's my coffee?")
@@ -150,13 +157,15 @@ class EchoNext:
             f"Application {self.application_type.value}: {self.app_name}")
 
     def test_session(self, host: str = "echonext") -> RequestsSession:
-        """Test Session
+        """
+        Test Session
 
         Args:
             host (str, optional): hostname of session. Defaults to "echonext".
 
         Returns:
             RequestsSession: request session for tests
+
         """
         session = RequestsSession()
         session.mount(prefix=f"http://{host}",
@@ -164,24 +173,28 @@ class EchoNext:
         return session
 
     def _get_request(self, environ: dict) -> Request:
-        """Get request object
+        """
+        Get request object
 
         Args:
             environ (dict): environ info
 
         Returns:
             Request: request object
+
         """
         return Request(environ, self.settings)
 
     def _get_response(self, request: Request) -> Response:
-        """Get response object
+        """
+        Get response object
 
         Args:
             request (Request): basic request
 
         Returns:
             Response: response object
+
         """
         return Response(request, content_type=self.application_type.value)
 
@@ -189,16 +202,18 @@ class EchoNext:
         self,
         page_path: str,
         handler: Callable | PageController,
-        methods: Optional[List[str]] = None,
-        summary: Optional[str] = None,
+        methods: list[str] | None = None,
+        summary: str | None = None,
     ):
-        """Add page route without decorator
+        """
+        Add page route without decorator
 
         Args:
             page_path (str): page path url
             handler (Callable): handler of route
             methods (Optional[List[str]]): supported methods of handler. Defaults to None.
             summary (Optional[str], optional): summary documentation. Defaults to None.
+
         """
         if methods is None:
             methods = ["GET"]
@@ -210,10 +225,11 @@ class EchoNext:
     def route_page(
         self,
         page_path: str,
-        methods: Optional[List[str]] = None,
-        summary: Optional[str] = None,
+        methods: list[str] | None = None,
+        summary: str | None = None,
     ) -> Callable:
-        """Route page decorator
+        """
+        Route page decorator
 
         Args:
             page_path (str): page path url
@@ -222,8 +238,8 @@ class EchoNext:
 
         Returns:
             Callable: wrapper
-        """
 
+        """
         if methods is None:
             methods = ["GET"]
 
@@ -245,10 +261,12 @@ class EchoNext:
         return wrapper
 
     def _apply_middlewares_to_request(self, request: Request):
-        """Apply middlewares to request
+        """
+        Apply middlewares to request
 
         Args:
             request (Request): request for applying middlewares
+
         """
         stack = LIFOStack()
 
@@ -261,10 +279,12 @@ class EchoNext:
             stack.pop()
 
     def _apply_middlewares_to_response(self, response: Response):
-        """Apply middlewares to response
+        """
+        Apply middlewares to response
 
         Args:
             response (Response): request for applying middlewares
+
         """
         stack = LIFOStack()
 
@@ -277,10 +297,12 @@ class EchoNext:
             stack.pop()
 
     def _process_exceptions_from_middlewares(self, exception: Exception):
-        """Process exceptions from middlewares
+        """
+        Process exceptions from middlewares
 
         Args:
             exception (Exception): exception class
+
         """
         stack = LIFOStack()
 
@@ -293,10 +315,12 @@ class EchoNext:
             stack.pop()
 
     def include_router(self, new_router: Router):
-        """Include new router to additional routers list
+        """
+        Include new router to additional routers list
 
         Args:
             new_router (Router): new router object
+
         """
         new_router_routes = [path for path, _ in new_router.routes.items()]
         old_router_routes = [path for path, _ in self.router.routes.items()]
@@ -322,13 +346,15 @@ class EchoNext:
     def _find_handler(
         self, request: Request
     ) -> tuple[Any, Any] | tuple[Route, dict[Any, Any]]:
-        """Find handler by request
+        """
+        Find handler by request
 
         Args:
             request (Request): Request object
 
         Returns:
             Tuple[Callable, str]: handlers tuple
+
         """
         url = prepare_url(request.path)
 
@@ -354,7 +380,8 @@ class EchoNext:
         return route, parse_result
 
     def get_and_save_cache_item(self, key: str, value: Any) -> Any:
-        """Set and save item to cache
+        """
+        Set and save item to cache
 
         Args:
             key (str): key
@@ -362,6 +389,7 @@ class EchoNext:
 
         Returns:
             Any: item from cache
+
         """
         key = str(key)
         item = self.main_cache.get(key)
@@ -379,7 +407,8 @@ class EchoNext:
     def _serve_static_file(
         self, request: Request, response: Response, **kwargs
     ) -> Response:
-        """Serve static files
+        """
+        Serve static files
 
         Args:
             request (Request): request object
@@ -387,6 +416,7 @@ class EchoNext:
 
         Returns:
             Response: served response object
+
         """
         logger.debug(f"Serve static file by path: {request.path}")
         response.content_type = self.static_files_manager.get_file_type(
@@ -404,7 +434,8 @@ class EchoNext:
         result: Any,
         handler: Callable,
     ):
-        """Filling response
+        """
+        Filling response
 
         Args:
             route (Route): route
@@ -412,6 +443,7 @@ class EchoNext:
             request (Request): request object
             result (Any): result data
             handler (Callable): handler object
+
         """
         if route.route_type == RoutesTypes.URL_BASED:
             view = route.handler.get_rendered_view(request, result)
@@ -420,7 +452,8 @@ class EchoNext:
             response.body = self.get_and_save_cache_item(result, result)
 
     def _handle_request(self, request: Request) -> Response:
-        """Handle request
+        """
+        Handle request
 
         Args:
             request (Request): request object
@@ -430,6 +463,7 @@ class EchoNext:
 
         Returns:
             Response: response object
+
         """
         logger.debug(f"Handle request: {request.path}")
         response = self._get_response(request)
@@ -455,7 +489,8 @@ class EchoNext:
         return response
 
     def __call__(self, environ: dict, start_response: method) -> Iterable:
-        """Makes the application object callable
+        """
+        Makes the application object callable
 
         Args:
             environ (dict): environ dictionary
@@ -463,6 +498,7 @@ class EchoNext:
 
         Returns:
             Iterable: iterable response
+
         """
         request = self._get_request(environ)
         self._apply_middlewares_to_request(request)

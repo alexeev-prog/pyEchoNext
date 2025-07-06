@@ -1,11 +1,12 @@
 import time
+from collections.abc import Callable
 from functools import wraps
-from typing import Any, Callable, Type
+from typing import Any
 
 from pyechonext.utils.patterns import Singleton
 
 
-class PerformanceCacheBase(object):
+class PerformanceCacheBase:
     """
     An abstract base class for implementing a PerformanceCache.
 
@@ -92,9 +93,8 @@ class InMemoryPerformanceCache(PerformanceCacheBase):
         if key in self.performance_cache:
             if time.time() - self.timestamps[key] <= self.ttl:
                 return self.performance_cache[key]
-            else:
-                del self.performance_cache[key]
-                del self.timestamps[key]
+            del self.performance_cache[key]
+            del self.timestamps[key]
         return None
 
     def set(self, key: str, value: Any, timestamp: float) -> None:
@@ -123,7 +123,7 @@ class InMemoryPerformanceCache(PerformanceCacheBase):
         self.timestamps.clear()
 
 
-class PerformanceCacheFactory(object):
+class PerformanceCacheFactory:
     """
     A factory for creating different types of PerformanceCaches.
 
@@ -133,7 +133,7 @@ class PerformanceCacheFactory(object):
 
     @staticmethod
     def create_performance_cache(
-        performance_cache_type: Type[PerformanceCacheBase], *args, **kwargs
+        performance_cache_type: type[PerformanceCacheBase], *args, **kwargs
     ) -> PerformanceCacheBase:
         """
         Create a new PerformanceCache instance of the specified type.
@@ -168,7 +168,7 @@ class SingletonPerformanceCache(PerformanceCacheBase, metaclass=Singleton):
     """
 
     def __init__(
-        self, performance_cache_type: Type[PerformanceCacheBase], *args, **kwargs
+        self, performance_cache_type: type[PerformanceCacheBase], *args, **kwargs
     ) -> None:
         """
         Constructs a new instance.
@@ -251,10 +251,9 @@ def performance_cached(
             cached_value = performance_cache.get(key)
             if cached_value is not None:
                 return cached_value
-            else:
-                result = func(*args, **kwargs)
-                performance_cache.set(key, result, time.time())
-                return result
+            result = func(*args, **kwargs)
+            performance_cache.set(key, result, time.time())
+            return result
 
         return wrapper
 
