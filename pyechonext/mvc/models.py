@@ -6,14 +6,12 @@ from pyechonext.response import Response
 
 
 class BaseModel(ABC):
-    """
-    This class describes a base model.
-    """
+    """This class describes a base model."""
 
     @abstractmethod
     def get_response(self, *args, **kwargs) -> Response:
         """
-        Create a Response object
+        Create a Response object.
 
         Raises:
             NotImplementedError: abstract method
@@ -27,7 +25,7 @@ class BaseModel(ABC):
     @abstractmethod
     def get_request(self, *args, **kwargs) -> Request:
         """
-        Create a Request object
+        Create a Request object.
 
         Raises:
             NotImplementedError: abstract method
@@ -40,15 +38,13 @@ class BaseModel(ABC):
 
 
 class PageModel(BaseModel):
-    """
-    This class describes a page model.
-    """
+    """This class describes a page model."""
 
     def __init__(
         self, request: Request | None = None, response: Response | None = None
     ):
         """
-        Initializie a Page Model
+        Initializie a Page Model.
 
         Args:
             request (Request, optional): request object. Defaults to None.
@@ -60,7 +56,7 @@ class PageModel(BaseModel):
 
     def get_response(self, data: Response | Any, *args, **kwargs) -> Response:
         """
-        Get a response
+        Get a response.
 
         Args:
             data (Union[Response, Any]): response object or any data
@@ -78,7 +74,7 @@ class PageModel(BaseModel):
 
     def get_request(self, *args, **kwargs) -> Request:
         """
-        Create a request
+        Create a request.
 
         Returns:
             Request: request object

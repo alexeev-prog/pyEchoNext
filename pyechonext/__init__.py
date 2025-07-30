@@ -1,6 +1,6 @@
 """
 EchoNext is a lightweight, fast and scalable web framework for Python
-Copyright (C) 2024	Alexeev Bronislav (C) 2024
+Copyright (C) 2024	Alexeev Bronislav (C) 2024.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -29,9 +29,7 @@ set_current_version(__version__)
 
 
 def check_for_update():
-    """
-    Check for update in pypi
-    """
+    """Check for update in pypi."""
     try:
         response = requests.get("https://pypi.org/pypi/pyechonext/json").json()
 

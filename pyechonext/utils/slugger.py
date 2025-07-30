@@ -41,7 +41,7 @@ SLUG_MAX_LENGTH = 512
 
 def _transliterate_cyrillic(text: str) -> str:
     """
-    Transliterate cyrillic to latin
+    Transliterate cyrillic to latin.
 
     Args:
         text (str): text
@@ -54,13 +54,11 @@ def _transliterate_cyrillic(text: str) -> str:
 
 
 class SlugGenerator:
-    """
-    This class describes a slug generator.
-    """
+    """This class describes a slug generator."""
 
     def generate_slug(self, phrase: str) -> str:
         """
-        Generate slug
+        Generate slug.
 
         Args:
             phrase (str): phrase
@@ -69,12 +67,11 @@ class SlugGenerator:
             str: slug
 
         """
-        slug = self._convert_to_slug(phrase)
-        return slug
+        return self._convert_to_slug(phrase)
 
     def _convert_to_slug(self, phrase: str) -> str:
         """
-        Convert phrase to slug
+        Convert phrase to slug.
 
         Args:
             phrase (str): phrase for converting
@@ -88,12 +85,11 @@ class SlugGenerator:
         slug = _transliterate_cyrillic(slug)
         slug = self._remove_non_alphanumeric_chars(slug)
         slug = self._remove_consecutive_hyphens(slug)
-        slug = self._limit_length(slug)
-        return slug
+        return self._limit_length(slug)
 
     def _remove_non_alphanumeric_chars(self, text: str) -> str:
         """
-        Removes non alphanumeric chars
+        Removes non alphanumeric chars.
 
         Args:
             text (str): text
@@ -106,7 +102,7 @@ class SlugGenerator:
 
     def _replace_spaces_with_hyphens(self, text: str) -> str:
         """
-        Replace space with hyphens
+        Replace space with hyphens.
 
         Args:
             text (str): text
@@ -119,7 +115,7 @@ class SlugGenerator:
 
     def _remove_consecutive_hyphens(self, text: str) -> str:
         """
-        Remove consecutive hyphens
+        Remove consecutive hyphens.
 
         Args:
             text (str): text of slug
@@ -132,7 +128,7 @@ class SlugGenerator:
 
     def _limit_length(self, slug: str) -> str:
         """
-        Split slug by length limit
+        Split slug by length limit.
 
         Args:
             slug (str): slug phrase

@@ -19,10 +19,10 @@ def get_seed(seed: int, min_n: int = 1, max_n: int = 1000) -> int:
 class PSPCAlgorithm:
     """
     This class describes a pspc algorithm (Point Simple Password Crypt
-    Algorithm)
+    Algorithm).
     """
 
-    def __init__(self, seed: int = None):
+    def __init__(self, seed: int | None = None):
         """
         Constructs a new instance.
 
@@ -33,7 +33,7 @@ class PSPCAlgorithm:
 
     def crypt(self, password: str) -> str:
         """
-        Crypt password
+        Crypt password.
 
         :param		password:  The password
         :type		password:  str
@@ -49,11 +49,11 @@ class PSPCAlgorithm:
         crypted = " ".join(password).split()
         crypted = list(map(ord, crypted))
 
-        return ".".join(list(map(lambda x: str(x * self.seed), crypted)))[::-1]
+        return ".".join([str(x * self.seed) for x in crypted])[::-1]
 
     def decrypt(self, crypted: str) -> str:
         """
-        Decrypt password
+        Decrypt password.
 
         :param		crypted:  The crypted
         :type		crypted:  str
@@ -64,6 +64,5 @@ class PSPCAlgorithm:
         if not crypted:
             return ""
 
-        password = list(map(lambda x: int(x) // self.seed,
-                        crypted[::-1].split(".")))
+        password = [int(x) // self.seed for x in crypted[::-1].split(".")]
         return "".join(list(map(chr, password)))

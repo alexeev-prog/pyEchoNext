@@ -5,9 +5,7 @@ from pyechonext.mvc.controllers import PageController
 
 @dataclass(frozen=True)
 class URL:
-    """
-    This dataclass describes an url.
-    """
+    """This dataclass describes an url."""
 
     path: str
     controller: PageController | type

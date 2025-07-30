@@ -4,9 +4,7 @@ from pyechonext.response import Response
 
 
 class APIDocUI:
-    """
-    This class describes an api document ui.
-    """
+    """This class describes an api document ui."""
 
     def __init__(self, specification: dict):
         """
@@ -27,7 +25,7 @@ class APIDocUI:
         value: dict,
     ) -> str:
         """
-        Generate section
+        Generate section.
 
         :param			route:			   The route
         :type		  route:				str
@@ -43,7 +41,7 @@ class APIDocUI:
         :returns:	  template section
         :rtype:			  str
         """
-        template = f"""
+        return f"""
 <div class="section">
 		<div class="section-header">
 			<span>{route}</span>
@@ -54,7 +52,7 @@ class APIDocUI:
 			<div class="method">
 				<strong>GET</strong>
 				<p class='summary'>{summary_get}</p>
-				
+
 				<div class="responses">
 					{"".join([f"<div class='response-item'><span class='span-key'>{key}</span>: {value['description']}.</div>" for key, value in get_responses.items()])}
 				</div>
@@ -72,11 +70,9 @@ class APIDocUI:
 	</div>
 				   """
 
-        return template
-
     def generate_html_page(self) -> str:
         """
-        Generate html page template
+        Generate html page template.
 
         :returns:	  template
         :rtype:			  str
@@ -109,7 +105,7 @@ class APIDocUI:
 			padding: 10px 0;
 		}
 		pre {
-		
+
 			margin-bottom: 10px;
   padding: 5px;
 			font-family: monospace;
@@ -287,7 +283,7 @@ hue-6-2: #c18401
   text-decoration: underline
 }
 	</style>
-	
+
 </head>
 <body>
 

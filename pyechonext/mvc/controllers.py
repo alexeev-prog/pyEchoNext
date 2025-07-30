@@ -9,14 +9,12 @@ from pyechonext.utils.exceptions import MethodNotAllow
 
 
 class BaseController(ABC):
-    """
-    Controls the data flow into a base object and updates the view whenever data changes.
-    """
+    """Controls the data flow into a base object and updates the view whenever data changes."""
 
     @abstractmethod
     def get(self, request: Request, response: Response, *args, **kwargs):
         """
-        Get method of route
+        Get method of route.
 
         Args:
             request (Request): request object
@@ -31,7 +29,7 @@ class BaseController(ABC):
     @abstractmethod
     def post(self, request: Request, response: Response, *args, **kwargs):
         """
-        Post method of route
+        Post method of route.
 
         Args:
             request (Request): request object
@@ -45,13 +43,11 @@ class BaseController(ABC):
 
 
 class PageController(BaseController):
-    """
-    Controls the data flow into a page object and updates the view whenever data changes.
-    """
+    """Controls the data flow into a page object and updates the view whenever data changes."""
 
     def _create_model(self, request: Request, data: Response | Any) -> PageModel:
         """
-        Create model for page controller
+        Create model for page controller.
 
         Args:
             request (Request): request object
@@ -68,7 +64,7 @@ class PageController(BaseController):
 
     def get_rendered_view(self, request: Request, data: Response | Any) -> str | dict:
         """
-        Get the rendered view
+        Get the rendered view.
 
         Args:
             request (Request): request object
@@ -86,7 +82,7 @@ class PageController(BaseController):
 
     def get(self, request: Request, response: Response, *args, **kwargs):
         """
-        Get method
+        Get method.
 
         Args:
             request (Request): request object
@@ -100,7 +96,7 @@ class PageController(BaseController):
 
     def post(self, request: Request, response: Response, *args, **kwargs):
         """
-        Post method
+        Post method.
 
         Args:
             request (Request): request object

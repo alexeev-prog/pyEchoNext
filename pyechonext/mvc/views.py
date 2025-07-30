@@ -4,14 +4,12 @@ from pyechonext.mvc.models import PageModel
 
 
 class BaseView(ABC):
-    """
-    Base visualization of the data that model contains.
-    """
+    """Base visualization of the data that model contains."""
 
     @abstractmethod
     def render(self, model: PageModel) -> str | dict:
         """
-        Render the given model
+        Render the given model.
 
         Args:
             model (PageModel): model for render
@@ -24,13 +22,11 @@ class BaseView(ABC):
 
 
 class PageView(BaseView):
-    """
-    Page visualization of the data that model contains.
-    """
+    """Page visualization of the data that model contains."""
 
     def render(self, model: PageModel) -> str | dict:
         """
-        Render the given model
+        Render the given model.
 
         Args:
             model (PageModel): model for render

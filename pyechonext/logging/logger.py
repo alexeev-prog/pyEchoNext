@@ -147,6 +147,5 @@ def create_logger(
 
     """
     logger_manager = LoggerManager()
-    logger_manager.configure_logging(
-        level, stream_handler, file_handler, formatter)
+    logger_manager.configure_logging(level, stream_handler, file_handler, formatter)
     return logger_manager.get_logger()

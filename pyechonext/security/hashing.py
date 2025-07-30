@@ -7,7 +7,7 @@ from hmac import compare_digest
 
 def distribute(items, num_containers, hash_function=hash):
     """
-    Distribute hash function
+    Distribute hash function.
 
     :param		items:			 The items
     :param		num_containers:	 The number containers
@@ -18,7 +18,7 @@ def distribute(items, num_containers, hash_function=hash):
 
 def plot(histogram):
     """
-    Plot simple historgram
+    Plot simple historgram.
 
     :param		histogram:	The histogram
     :type		histogram:	dict
@@ -31,7 +31,7 @@ def plot(histogram):
 
 def hash_function(key):
     """
-    Hash function
+    Hash function.
 
     :param		key:  The key
     :type		key:  str
@@ -46,9 +46,7 @@ def hash_function(key):
 
 
 class HashAlgorithm(Enum):
-    """
-    This class describes a hash algorithms.
-    """
+    """This class describes a hash algorithms."""
 
     SHA256 = auto()
     SHA512 = auto()
@@ -58,14 +56,12 @@ class HashAlgorithm(Enum):
 
 
 class HashingBase(ABC):
-    """
-    This class describes a hashing base.
-    """
+    """This class describes a hashing base."""
 
     @abstractmethod
     def hash(self, data: bytes | str, hexdigest: bool = False) -> bytes | str:
         """
-        Hash
+        Hash.
 
         :param		data:				  The data
         :type		data:				  Union[bytes, str]
@@ -82,7 +78,7 @@ class HashingBase(ABC):
     @abstractmethod
     def verify(self, data: bytes | str, hashed_data: bytes | str) -> bool:
         """
-        Verify data and hashed data
+        Verify data and hashed data.
 
         :param		data:				  The data
         :type		data:				  Union[bytes, str]
@@ -98,9 +94,7 @@ class HashingBase(ABC):
 
 
 class PlainHasher(HashingBase):
-    """
-    This class describes a plain hasher.
-    """
+    """This class describes a plain hasher."""
 
     def __init__(self, algorithm: HashAlgorithm = HashAlgorithm.SHA256):
         """
@@ -113,7 +107,7 @@ class PlainHasher(HashingBase):
 
     def hash(self, data: bytes | str) -> bytes:
         """
-        Generate hash
+        Generate hash.
 
         :param		data:  The data
         :type		data:  Union[bytes, str]
@@ -129,7 +123,7 @@ class PlainHasher(HashingBase):
 
     def verify(self, data: bytes | str, hashed_data: bytes | str) -> bool:
         """
-        Verify data and hashed data
+        Verify data and hashed data.
 
         :param		data:		  The data
         :type		data:		  Union[bytes, str]
@@ -173,9 +167,7 @@ class PlainHasher(HashingBase):
 
 
 class SaltedHasher(HashingBase):
-    """
-    This class describes a salted hasher.
-    """
+    """This class describes a salted hasher."""
 
     def __init__(
         self, algorithm: HashAlgorithm = HashAlgorithm.SHA256, salt: str = "SOMESALT"
@@ -193,7 +185,7 @@ class SaltedHasher(HashingBase):
 
     def hash(self, data: bytes | str) -> bytes:
         """
-        Generate hash
+        Generate hash.
 
         :param		data:  The data
         :type		data:  Union[bytes, str]
@@ -213,7 +205,7 @@ class SaltedHasher(HashingBase):
 
     def verify(self, data: str, hashed_data: bytes | str) -> bool:
         """
-        Verify data and hashed_data
+        Verify data and hashed_data.
 
         :param		data:		  The data
         :type		data:		  str

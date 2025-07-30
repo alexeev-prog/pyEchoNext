@@ -13,13 +13,12 @@ def echonext():
     settings = Settings(
         BASE_DIR=os.path.dirname(os.path.abspath(__file__)), TEMPLATES_DIR="templates"
     )
-    echonext = EchoNext(
+    return EchoNext(
         __name__,
         settings,
         middlewares,
         application_type=ApplicationType.HTML,
     )
-    return echonext
 
 
 @pytest.fixture

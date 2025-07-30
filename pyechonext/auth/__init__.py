@@ -1,3 +1,1 @@
-"""
-@todo Add authentication extensions (jwt tokens)
-"""
+"""@todo Add authentication extensions (jwt tokens)."""

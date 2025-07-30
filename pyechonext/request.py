@@ -8,7 +8,7 @@ from pyechonext.logging import logger
 
 def _build_get_params_dict(raw_params: str) -> dict:
     """
-    Build GET params dictionary
+    Build GET params dictionary.
 
     Args:
     raw_params (str): raw params string
@@ -22,7 +22,7 @@ def _build_get_params_dict(raw_params: str) -> dict:
 
 def _build_post_params_dict(raw_params: bytes) -> dict:
     """
-    Build POST params dictionary
+    Build POST params dictionary.
 
     Args:
     raw_params (bytes): raw parameters
@@ -42,9 +42,7 @@ def _build_post_params_dict(raw_params: bytes) -> dict:
 
 
 class Request:
-    """
-    This class describes a request.
-    """
+    """This class describes a request."""
 
     __slots__ = (
         "GET",
@@ -57,15 +55,17 @@ class Request:
         "user_agent",
     )
 
-    def __init__(self, environ: dict = {}, settings: Settings = None):
+    def __init__(self, environ: dict | None = None, settings: Settings = None):
         """
-        Constructs a new request
+        Constructs a new request.
 
         Args:
         environ (dict, optional): environ info. Defaults to {}.
         settings (Settings, optional): settings of app. Defaults to None.
 
         """
+        if environ is None:
+            environ = {}
         self.environ: dict[str, Any] = environ
         self.settings: Settings = settings
         self.method: str = self.environ.get("REQUEST_METHOD")
@@ -83,7 +83,7 @@ class Request:
 
     def __getattr__(self, item: Any) -> Any | None:
         """
-        Magic method for get attrs (from extra)
+        Magic method for get attrs (from extra).
 
         Args:
         item (Any): item key

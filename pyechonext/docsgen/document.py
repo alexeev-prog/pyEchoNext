@@ -11,9 +11,7 @@ from pyechonext.utils import get_current_datetime
 
 @deprecate("0.9.0", "This feature is deleted in 0.9.0", "0.8.0")
 class DocumentSubsection(ABC):
-    """
-    This class describes a document subsection.
-    """
+    """This class describes a document subsection."""
 
     def __init__(
         self, title: str, content: dict[str, Any], main_section: "DocumentSection"
@@ -46,9 +44,7 @@ class DocumentSubsection(ABC):
 
 @deprecate("0.9.0", "This feature is deleted in 0.9.0", "0.8.0")
 class DocumentSection(ABC):
-    """
-    This abstract metaclass describes a documentation section.
-    """
+    """This abstract metaclass describes a documentation section."""
 
     def __init__(self, title: str, introduction: str, content: dict[str, Any]):
         """
@@ -102,7 +98,7 @@ class DocumentSection(ABC):
 
     def modify_title(self, new_title: str):
         """
-        Modify section title
+        Modify section title.
 
         :param		new_title:	The new title
         :type		new_title:	str
@@ -113,19 +109,18 @@ class DocumentSection(ABC):
 
     def modify_description(self, new_description: str):
         """
-        Modify section description
+        Modify section description.
 
         :param		new_description:  The new description
         :type		new_description:  str
         """
-        logger.debug(
-            f"Description modified: {self.description} -> {new_description}")
+        logger.debug(f"Description modified: {self.description} -> {new_description}")
         self.description = new_description
         self.modification_date = get_current_datetime()
 
     def modify_content(self, new_content: dict[str, Any]):
         """
-        Modify section content
+        Modify section content.
 
         :param		new_content:  The new content
         :type		new_content:  Dict[str, Any]
@@ -136,7 +131,7 @@ class DocumentSection(ABC):
 
     def get_markdown_page(self) -> list[str]:
         """
-        Gets the page in markdown formatting
+        Gets the page in markdown formatting.
 
         :returns:	The markdown page.
         :rtype:		List[str]
@@ -163,8 +158,7 @@ class DocumentSection(ABC):
                     page.append(f"#### {key}\n{value}\n")
 
         page.append("---\n")
-        page.append(
-            "Created by [JustProj](https://github.com/alexeev-prog/JustProj)")
+        page.append("Created by [JustProj](https://github.com/alexeev-prog/JustProj)")
 
         logger.info(f"Document section [{self.title}] successfully generated!")
 
@@ -172,9 +166,7 @@ class DocumentSection(ABC):
 
 
 class RoutesSubsection(DocumentSubsection):
-    """
-    This class describes a routes section.
-    """
+    """This class describes a routes section."""
 
     def __init__(
         self, title: str, content: dict[str, Any], main_section: "DocumentSection"
@@ -196,9 +188,7 @@ class RoutesSubsection(DocumentSubsection):
 
 
 class InitiationSection(DocumentSection):
-    """
-    This class describes an initiation section.
-    """
+    """This class describes an initiation section."""
 
     def __init__(self, title: str, introduction: str, content: dict[str, Any]):
         """
@@ -221,9 +211,7 @@ class InitiationSection(DocumentSection):
 
 
 class DocumentFolder:
-    """
-    This class describes a document folder.
-    """
+    """This class describes a document folder."""
 
     def __init__(
         self, name: str, project_root_dir: str, sections: list[DocumentSection]
@@ -248,9 +236,7 @@ class DocumentFolder:
         self._create_index_file()
 
     def _create_index_file(self):
-        """
-        Creates an index file.
-        """
+        """Creates an index file."""
         with open(os.path.join(self.folderpath, "index.md"), "w") as file:
             file.write(f"# {self.name}\n\n")
 
@@ -261,9 +247,7 @@ class DocumentFolder:
 
 
 class DocumentManager:
-    """
-    This class describes a document manager.
-    """
+    """This class describes a document manager."""
 
     def __init__(
         self,
@@ -298,9 +282,7 @@ class DocumentManager:
         os.makedirs(self.project_root_dir, exist_ok=True)
 
     def generate_readme(self):
-        """
-        Generate readme file
-        """
+        """Generate readme file."""
         logger.debug("Generate README...")
         page = f"""# {self.repo_name}
 
@@ -346,9 +328,7 @@ DocumentFolders (is not directories):\n
         logger.info("README generated successfully!")
 
     def generate_pages(self):
-        """
-        Generate pages of sections in folders
-        """
+        """Generate pages of sections in folders."""
         docs_dir = os.path.join(self.project_root_dir, "docs")
         os.makedirs(docs_dir, exist_ok=True)
 
@@ -359,8 +339,7 @@ DocumentFolders (is not directories):\n
                 section_filename = os.path.join(
                     folder.folderpath, section.get_filename()
                 )
-                logger.debug(
-                    f'Generating page "{section.title}" [{section_filename}]')
+                logger.debug(f'Generating page "{section.title}" [{section_filename}]')
                 page = section.get_markdown_page()
 
                 with open(section_filename, "w") as file:
@@ -376,9 +355,7 @@ class ProjectTemplate(Enum):
 
 
 class ProjectStructureGenerator:
-    """
-    This class describes a project structure generator.
-    """
+    """This class describes a project structure generator."""
 
     def __init__(self, project_root_dir: str, project_template: ProjectTemplate):
         """
@@ -407,9 +384,7 @@ class ProjectStructureGenerator:
         logger.info(f"Add new directory: {dir_name}")
 
     def generate_structure(self):
-        """
-        Generate project file structure
-        """
+        """Generate project file structure."""
         logger.debug("Generate structure...")
         self.structure["."] = {
             "basic": [
@@ -465,9 +440,7 @@ class ProjectStructureGenerator:
 
 
 class ProjectManager:
-    """
-    This class describes a project manager.
-    """
+    """This class describes a project manager."""
 
     def __init__(
         self,
@@ -543,9 +516,7 @@ class ProjectManager:
         self.structure_manager.add_directory(dir_name, files)
 
     def process_project(self, skip_readme: bool = False):
-        """
-        Process project creation
-        """
+        """Process project creation."""
         logger.info(f'Process project "{self.project_name}" creation...')
         self.structure_manager.generate_structure()
         self.document_manager.generate_pages()

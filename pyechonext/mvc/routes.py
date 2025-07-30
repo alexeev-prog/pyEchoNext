@@ -14,9 +14,7 @@ from pyechonext.utils.trie import PrefixTree
 
 
 class RoutesTypes(Enum):
-    """
-    This class describes routes types.
-    """
+    """This class describes routes types."""
 
     URL_BASED = 0
     PAGE = 1
@@ -24,9 +22,7 @@ class RoutesTypes(Enum):
 
 @dataclass(frozen=True)
 class Route:
-    """
-    This class describes a route.
-    """
+    """This class describes a route."""
 
     page_path: str
     handler: Callable | PageController
@@ -38,7 +34,7 @@ class Route:
 
 def _create_url_route(url: URL) -> Route:
     """
-    Create URL Route
+    Create URL Route.
 
     Args:
         url (URL): URL instance
@@ -64,7 +60,7 @@ def _create_page_route(
     summary: str | None = None,
 ) -> Route:
     """
-    Create page route
+    Create page route.
 
     Args:
         page_path (str): path of page
@@ -97,7 +93,7 @@ def generate_page_route(
     summary: str | None = None,
 ) -> Route:
     """
-    Generate page route
+    Generate page route.
 
     Args:
         page_path (str): page path url
@@ -113,15 +109,13 @@ def generate_page_route(
 
 
 class Router:
-    """
-    This class describes a router.
-    """
+    """This class describes a router."""
 
     __slots__ = ("_trie", "dynamic_routes", "prefix", "routes", "urls")
 
     def __init__(self, urls: list[URL] | None = None, prefix: str | None = None):
         """
-        Initialize a router with urls and routes
+        Initialize a router with urls and routes.
 
         Args:
             urls (Optional[List[URL]], optional): urls list. Defaults to [].
@@ -144,7 +138,7 @@ class Router:
         summary: str | None = None,
     ) -> Callable:
         """
-        Route a page
+        Route a page.
 
         Args:
             page_path (str): page path
@@ -166,8 +160,7 @@ class Router:
             )
 
             if inspect.isclass(handler):
-                self.add_url(
-                    URL(path=page_path, controller=handler, summary=summary))
+                self.add_url(URL(path=page_path, controller=handler, summary=summary))
             else:
                 self.add_page_route(page_path, handler, methods, summary)
 
@@ -176,9 +169,7 @@ class Router:
         return wrapper
 
     def _prepare_urls(self):
-        """
-        Prepare URLs (add to routes)
-        """
+        """Prepare URLs (add to routes)."""
         for url in self.urls:
             path = url.path if self.prefix is None else f"{self.prefix}{url.path}"
             route = _create_url_route(url)
@@ -198,7 +189,7 @@ class Router:
         summary: str | None = None,
     ):
         """
-        Add page route
+        Add page route.
 
         Args:
             page_path (str): page path URL
@@ -233,7 +224,7 @@ class Router:
 
     def add_url(self, url: URL):
         """
-        Add a url
+        Add a url.
 
         Args:
             url (URL): URL class instance
@@ -259,7 +250,7 @@ class Router:
         self, request: Request, raise_404: bool | None = True
     ) -> tuple[Callable, dict] | tuple[None, None]:
         """
-        Resolve path from request
+        Resolve path from request.
 
         Args:
             request (Request): request object

@@ -5,9 +5,7 @@ from typing import Any
 
 @dataclass
 class CacheEntry:
-    """
-    This class describes a cache entry.
-    """
+    """This class describes a cache entry."""
 
     name: str
     value: Any
@@ -17,13 +15,11 @@ class CacheEntry:
 
 
 class InMemoryCache:
-    """
-    This class describes in memory cache.
-    """
+    """This class describes in memory cache."""
 
     def __init__(self, timeout: int = 300):
         """
-        Initialize InMemoryCace
+        Initialize InMemoryCace.
 
         Args:
         timeout (int, optional): _description_. Defaults to 300.
@@ -34,7 +30,7 @@ class InMemoryCache:
 
     def set(self, key: str, value: Any, **kwargs):
         """
-        Set item into cache
+        Set item into cache.
 
         Args:
         key (str): key
@@ -49,7 +45,7 @@ class InMemoryCache:
 
     def get(self, key: str) -> Any | None:
         """
-        Get item by specified key
+        Get item by specified key.
 
         Args:
         key (str): key item
@@ -69,7 +65,7 @@ class InMemoryCache:
 
     def invalidate(self, key: str):
         """
-        Invalidate item by key
+        Invalidate item by key.
 
         Args:
         key (str): item key
@@ -79,9 +75,7 @@ class InMemoryCache:
             del self._cache[key]
 
     def clean_up(self):
-        """
-        Clean up cache
-        """
+        """Clean up cache."""
         current_time = time.time()
         keys_to_delete = [
             key for key, entry in self._cache.items() if entry.expiry < current_time
@@ -91,20 +85,16 @@ class InMemoryCache:
             del self._cache[key]
 
     def clear(self):
-        """
-        Clears all items
-        """
+        """Clears all items."""
         self._cache.clear()
 
 
 class Cacheable:
-    """
-    This class describes a Interface for caching.
-    """
+    """This class describes a Interface for caching."""
 
     def __init__(self, cache: InMemoryCache):
         """
-        Initialize Cachable Interace
+        Initialize Cachable Interace.
 
         Args:
         cache (InMemoryCache): cache instance
@@ -114,7 +104,7 @@ class Cacheable:
 
     def save(self, key: str, data: Any):
         """
-        Save item in cache
+        Save item in cache.
 
         Args:
         key (str): item key
@@ -125,7 +115,7 @@ class Cacheable:
 
     def update(self, key: str, new_data: Any):
         """
-        Update item by key
+        Update item by key.
 
         Args:
         key (str): item key
@@ -137,7 +127,7 @@ class Cacheable:
 
     def clear_data(self, key: str):
         """
-        Clear item data by key
+        Clear item data by key.
 
         Args:
         key (str): item key

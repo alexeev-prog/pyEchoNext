@@ -2,13 +2,11 @@ from pyechonext.app import EchoNext
 
 
 class APIDocumentation:
-    """
-    This class describes an API documentation.
-    """
+    """This class describes an API documentation."""
 
     def __init__(self, app: EchoNext):
         """
-        Constructs a new instance
+        Constructs a new instance.
 
         Args:
             app (Optional[EchoNext]): echonext WSGI app. Defaults to None.
@@ -18,7 +16,7 @@ class APIDocumentation:
 
     def init_app(self, app: EchoNext):
         """
-        Initialize application
+        Initialize application.
 
         Args:
             app (EchoNext): echonext WSGI app
@@ -28,15 +26,14 @@ class APIDocumentation:
 
     def generate_spec(self) -> dict:
         """
-        Generate simple OpenAPI configuration from routes
+        Generate simple OpenAPI configuration from routes.
 
         Returns:
             dict: openapi configuration
 
         """
         if not isinstance(self._app, EchoNext):
-            raise AttributeError(
-                f"Unknown application type: {type(self._app)}")
+            raise AttributeError(f"Unknown application type: {type(self._app)}")
 
         spec = {
             "openapi": "3.0.0",

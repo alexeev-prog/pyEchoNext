@@ -1,7 +1,7 @@
 class TrieNode:
     def __init__(self, text: str = "") -> None:
         self.text = text
-        self.children = dict()
+        self.children = {}
         self.is_word = False
 
 
@@ -13,7 +13,7 @@ class PrefixTree:
         current = self.root
         for i, char in enumerate(word):
             if char not in current.children:
-                prefix = word[0: i + 1]
+                prefix = word[0 : i + 1]
                 current.children[char] = TrieNode(prefix)
             current = current.children[char]
         current.is_word = True
@@ -39,12 +39,12 @@ class PrefixTree:
             self._child_words_for(node.children[letter], words)
 
     def starts_with(self, prefix: str) -> list[str]:
-        words = list()
+        words = []
         current = self.root
 
         for char in prefix:
             if char not in current.children:
-                return list()
+                return []
             current = current.children[char]
 
         self._child_words_for(current, words)

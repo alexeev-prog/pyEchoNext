@@ -10,9 +10,7 @@ from pyechonext.utils.exceptions import StaticFileNotFoundError
 
 
 class StaticFile:
-    """
-    This class describes a static file.
-    """
+    """This class describes a static file."""
 
     def __init__(
         self,
@@ -22,7 +20,7 @@ class StaticFile:
         precache: bool | None = False,
     ):
         """
-        Constructs a Static File
+        Constructs a Static File.
 
         Args:
             settings (Settings): settings of webapp.
@@ -35,11 +33,9 @@ class StaticFile:
 
         """
         self.settings: Settings = settings
-        self.filename: str = f"/{settings.STATIC_DIR}/{filename}".replace(
-            "//", "/")
+        self.filename: str = f"/{settings.STATIC_DIR}/{filename}".replace("//", "/")
         self.abs_filename: Path = Path(
-            os.path.join(self.settings.BASE_DIR,
-                         self.settings.STATIC_DIR, filename)
+            os.path.join(self.settings.BASE_DIR, self.settings.STATIC_DIR, filename)
         )
 
         if not self.abs_filename.exists():
@@ -47,8 +43,7 @@ class StaticFile:
                 f'Static file "{self.abs_filename}" not found.'
             )
 
-        self.content_cache: InMemoryCache = InMemoryCache(
-            timeout=update_timeout)
+        self.content_cache: InMemoryCache = InMemoryCache(timeout=update_timeout)
 
         self.precache: bool = precache
         self.preloaded_value: str | None = None
@@ -57,7 +52,7 @@ class StaticFile:
             self.preloaded_value = self.caching_static_file()
 
     def caching_static_file(self):
-        """Set and save static file to cache"""
+        """Set and save static file to cache."""
         content = self._load_content()
 
         item = self.content_cache.get(self.filename)
@@ -73,7 +68,7 @@ class StaticFile:
 
     def _load_content(self) -> str:
         """
-        Load content of static file
+        Load content of static file.
 
         Returns:
             str: content
@@ -84,7 +79,7 @@ class StaticFile:
 
     def get_content_type(self) -> str:
         """
-        Get content type
+        Get content type.
 
         Returns:
             str: get mimetype
@@ -96,7 +91,7 @@ class StaticFile:
 
     def get_file_size(self) -> int:
         """
-        Get file size
+        Get file size.
 
         Returns:
             int: file st size
@@ -106,13 +101,11 @@ class StaticFile:
 
 
 class StaticFilesManager:
-    """
-    This class describes a static files manager.
-    """
+    """This class describes a static files manager."""
 
     def __init__(self, static_files: list[StaticFile]):
         """
-        Initialize manager
+        Initialize manager.
 
         Args:
             static_files (List[StaticFile]): list of static files.
@@ -122,7 +115,7 @@ class StaticFilesManager:
 
     def get_file_type(self, url: str) -> str | None:
         """
-        Get file content type
+        Get file content type.
 
         Args:
             url (str): static file url
@@ -134,10 +127,11 @@ class StaticFilesManager:
         for static_file in self.static_files:
             if static_file.filename == url:
                 return static_file.get_content_type()
+        return None
 
     def get_file_size(self, url: str) -> int | None:
         """
-        Get file size
+        Get file size.
 
         Args:
             url (str): url of static page
@@ -149,10 +143,11 @@ class StaticFilesManager:
         for static_file in self.static_files:
             if static_file.filename == url:
                 return static_file.get_file_size()
+        return None
 
     def serve_static_file(self, url: str) -> str | bool:
         """
-        Serve static files
+        Serve static files.
 
         Args:
             url (str): URL for serving
@@ -168,8 +163,7 @@ class StaticFilesManager:
                 logger.info(f"Found static file: {static_file.filename}")
 
                 if static_file.precache:
-                    logger.debug(
-                        f"Use preloaded value of static file {static_file}")
+                    logger.debug(f"Use preloaded value of static file {static_file}")
                     return static_file.preloaded_value
                 return static_file.caching_static_file()
 

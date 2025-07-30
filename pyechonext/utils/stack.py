@@ -2,22 +2,18 @@ from typing import Any
 
 
 class LIFOStack:
-    """
-    This class describes a LIFO-stack.
-    """
+    """This class describes a LIFO-stack."""
 
     __slots__ = "_stack_items"
 
     def __init__(self):
-        """
-        Constructs a new instance.
-        """
+        """Constructs a new instance."""
         self._stack_items: list[Any] = []
 
     @property
     def items(self) -> Any:
         """
-        Get reversed stack items
+        Get reversed stack items.
 
         Returns:
             Any: reversed stack items
@@ -27,7 +23,7 @@ class LIFOStack:
 
     def is_empty(self) -> bool:
         """
-        Determines is empty
+        Determines is empty.
 
         Returns:
             bool: true is empty, false otherwise
@@ -36,12 +32,12 @@ class LIFOStack:
         return len(self._stack_items) == 0
 
     def push(self, *args):
-        """Push item to stack items"""
+        """Push item to stack items."""
         self._stack_items += args
 
     def pop(self) -> Any:
         """
-        Pop the object
+        Pop the object.
 
         Raises:
             IndexError: stack if empty
@@ -57,7 +53,7 @@ class LIFOStack:
 
     def peek(self) -> Any:
         """
-        Peek the last item
+        Peek the last item.
 
         Raises:
             IndexError: stack is empty
@@ -74,7 +70,7 @@ class LIFOStack:
     @property
     def size(self) -> int:
         """
-        Get stack length
+        Get stack length.
 
         Returns:
             int: length of stack items
@@ -84,7 +80,7 @@ class LIFOStack:
 
     def __str__(self) -> str:
         """
-        String representation of object
+        String representation of object.
 
         Returns:
             str: string representation

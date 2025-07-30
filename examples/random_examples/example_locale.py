@@ -46,13 +46,11 @@ def api_docs(request, response):
 
 @echonext.route_page("/book")
 class BooksResource(PageController):
-    """
-    This class describes a books resource.
-    """
+    """This class describes a books resource."""
 
     def get(self, request, response, **kwargs):
         """
-        Get queries
+        Get queries.
 
         :param		request:   The request
         :type		request:   Request
@@ -68,7 +66,7 @@ class BooksResource(PageController):
 
     def post(self, request, response, **kwargs):
         """
-        Post queries
+        Post queries.
 
         :param		request:   The request
         :type		request:   Request

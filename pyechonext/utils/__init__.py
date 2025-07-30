@@ -66,14 +66,12 @@ def print_message(msg_type: str, text: str):
 
 
 class CommandManager:
-    """
-    This class describes an command manager.
-    """
+    """This class describes an command manager."""
 
     @staticmethod
     def run_command(command: str) -> int:
         """
-        Run a command in the shell
+        Run a command in the shell.
 
         :param		command:	   The command
         :type		command:	   str
@@ -92,8 +90,7 @@ class CommandManager:
         result = subprocess.run(
             shlex.split(command),
             check=False,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+            capture_output=True,
         )
 
         if result.returncode != 0:
@@ -108,19 +105,18 @@ class CommandManager:
     @staticmethod
     def change_directory(path: str):
         """
-        Change current directory
+        Change current directory.
 
         :param		path:  The path
         :type		path:  str
         """
         os.chdir(path)
-        print_message("CHANGE DIRECTORY",
-                      f"[bold]Directory changed: {path}[/bold]")
+        print_message("CHANGE DIRECTORY", f"[bold]Directory changed: {path}[/bold]")
 
 
 def validate_project_name(project_name: str):
     """
-    Validate project name
+    Validate project name.
 
     :param		project_name:  The project name
     :type		project_name:  str
@@ -157,7 +153,7 @@ def get_current_datetime() -> str:
 
 def prepare_url(url: str) -> str:
     """
-    Prepare URL (remove ending /)
+    Prepare URL (remove ending /).
 
     :param		url:  The url
     :type		url:  str

@@ -51,9 +51,7 @@ class PerformanceCacheBase:
         raise NotImplementedError
 
     def clear(self) -> None:
-        """
-        Clear all entries from the PerformanceCache.
-        """
+        """Clear all entries from the PerformanceCache."""
         raise NotImplementedError
 
 
@@ -99,7 +97,7 @@ class InMemoryPerformanceCache(PerformanceCacheBase):
 
     def set(self, key: str, value: Any, timestamp: float) -> None:
         """
-        Set new PerformanceCache element
+        Set new PerformanceCache element.
 
         :param		key:		The new value
         :type		key:		str
@@ -116,9 +114,7 @@ class InMemoryPerformanceCache(PerformanceCacheBase):
         self.timestamps[key] = timestamp
 
     def clear(self) -> None:
-        """
-        Clears the PerformanceCache
-        """
+        """Clears the PerformanceCache."""
         self.performance_cache.clear()
         self.timestamps.clear()
 
@@ -198,7 +194,7 @@ class SingletonPerformanceCache(PerformanceCacheBase, metaclass=Singleton):
 
     def set(self, key: str, value: Any, timestamp: float) -> None:
         """
-        Set new PerformanceCache element
+        Set new PerformanceCache element.
 
         :param		key:		The new value
         :type		key:		str
@@ -210,9 +206,7 @@ class SingletonPerformanceCache(PerformanceCacheBase, metaclass=Singleton):
         self.performance_cache.set(key, value, timestamp)
 
     def clear(self) -> None:
-        """
-        Clear PerformanceCache
-        """
+        """Clear PerformanceCache."""
         self.performance_cache.clear()
 
 

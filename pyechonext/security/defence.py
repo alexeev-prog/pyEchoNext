@@ -152,7 +152,7 @@ class HTTPHeaderManager:
             Dict[str, str]: security headers
 
         """
-        headers = {
+        return {
             "Content-Security-Policy": "default-src 'self';",
             "X-Content-Type-Options": "nosniff",
             "X-XSS-Protection": "1; mode=block",
@@ -161,15 +161,13 @@ class HTTPHeaderManager:
             "Referrer-Policy": "no-referrer",
         }
 
-        return headers
-
 
 class RateLimiter:
     """Manages request counting and rate limiting."""
 
     def __init__(self, request_limit: int = 100):
         """
-        Initialize a RateLimiter
+        Initialize a RateLimiter.
 
         Args:
             request_limit (int) - requests count limit

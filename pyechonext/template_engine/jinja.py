@@ -7,9 +7,7 @@ from pyechonext.request import Request
 
 
 class TemplateLoader(BaseLoader):
-    """
-    This class describes a jinja2 template loader.
-    """
+    """This class describes a jinja2 template loader."""
 
     def __init__(self, path: str):
         """
@@ -35,9 +33,7 @@ class TemplateLoader(BaseLoader):
 
 
 class TemplateEngine:
-    """
-    This class describes a jinja template engine.
-    """
+    """This class describes a jinja template engine."""
 
     def __init__(self, base_dir: str, templates_dir: str):
         """
@@ -62,7 +58,7 @@ class TemplateEngine:
 
 def render_template(request: Request, template_name: str, **kwargs) -> str:
     """
-    Render template
+    Render template.
 
     :param		request:		 The request
     :type		request:		 Request
@@ -79,10 +75,8 @@ def render_template(request: Request, template_name: str, **kwargs) -> str:
     assert request.settings.BASE_DIR
     assert request.settings.TEMPLATES_DIR
 
-    engine = TemplateEngine(request.settings.BASE_DIR,
-                            request.settings.TEMPLATES_DIR)
+    engine = TemplateEngine(request.settings.BASE_DIR, request.settings.TEMPLATES_DIR)
 
-    logger.debug(
-        f"Jinja2 template engine: render {template_name} ({request.path})")
+    logger.debug(f"Jinja2 template engine: render {template_name} ({request.path})")
 
     return engine.build(template_name, **kwargs)

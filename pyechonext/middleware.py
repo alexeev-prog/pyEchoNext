@@ -9,14 +9,12 @@ from pyechonext.utils.exceptions import WebError, pyEchoNextException
 
 
 class BaseMiddleware(ABC):
-    """
-    This abstract class describes a base middleware.
-    """
+    """This abstract class describes a base middleware."""
 
     @abstractmethod
     def to_request(self, request: Request):
         """
-        Apply actions to request
+        Apply actions to request.
 
         Args:
            request (Request): request object
@@ -30,7 +28,7 @@ class BaseMiddleware(ABC):
     @abstractmethod
     def to_response(self, response: Response):
         """
-        Apply actions to response
+        Apply actions to response.
 
         Args:
             response (Response): response object
@@ -44,7 +42,7 @@ class BaseMiddleware(ABC):
     @abstractmethod
     def process_template(self, *args, **kwargs):
         """
-        Process template with middleware
+        Process template with middleware.
 
         Raises:
             NotImplementedError: abstract method
@@ -55,7 +53,7 @@ class BaseMiddleware(ABC):
     @abstractmethod
     def process_exception(self, exception: Exception):
         """
-        Process exception with middleware
+        Process exception with middleware.
 
         Args:
            exception (Exception): exception class
@@ -68,13 +66,11 @@ class BaseMiddleware(ABC):
 
 
 class SessionMiddleware(BaseMiddleware):
-    """
-    This class describes a session (cookie) middleware.
-    """
+    """This class describes a session (cookie) middleware."""
 
     def to_request(self, request: Request):
         """
-        Apply cookies to request
+        Apply cookies to request.
 
         Args:
             request (Request): request object
@@ -93,7 +89,7 @@ class SessionMiddleware(BaseMiddleware):
 
     def to_response(self, response: Response):
         """
-        Get session uuid by response
+        Get session uuid by response.
 
         Args:
             response (Response): response
@@ -113,7 +109,7 @@ class SessionMiddleware(BaseMiddleware):
 
     def process_template(self, *args, **kwargs):
         """
-        Process template with middleware
+        Process template with middleware.
 
         Raises:
             NotImplementedError: abstract method
@@ -123,7 +119,7 @@ class SessionMiddleware(BaseMiddleware):
 
     def process_exception(self, exception: Exception):
         """
-        Process exception with middleware
+        Process exception with middleware.
 
         Args:
             exception (Exception): exception class

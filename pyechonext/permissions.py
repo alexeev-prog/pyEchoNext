@@ -3,9 +3,7 @@ from typing import Any
 
 
 class AbstractPermission(ABC):
-    """
-    This class describes an abstract permission.
-    """
+    """This class describes an abstract permission."""
 
     @abstractmethod
     def __str__(self):
@@ -20,13 +18,11 @@ class AbstractPermission(ABC):
 
 
 class Permission(AbstractPermission):
-    """
-    This class describes a permission.
-    """
+    """This class describes a permission."""
 
     def __init__(self, name: str):
         """
-        Initialize a permission
+        Initialize a permission.
 
         Args:
         name (str): permission name
@@ -46,14 +42,12 @@ class Permission(AbstractPermission):
 
 
 class AbstractRole(ABC):
-    """
-    This class describes an abstract role.
-    """
+    """This class describes an abstract role."""
 
     @abstractmethod
     def has_permission(self, permission: type[AbstractPermission]) -> bool:
         """
-        Determines if permission
+        Determines if permission.
 
         Args:
         permission (AbstractPermission): permission object
@@ -70,7 +64,7 @@ class AbstractRole(ABC):
     @abstractmethod
     def get_permissions(self) -> set[AbstractPermission]:
         """
-        Get list of permissions
+        Get list of permissions.
 
         Raises:
         NotImplementedError: abstract method
@@ -84,7 +78,7 @@ class AbstractRole(ABC):
     @abstractmethod
     def get_name(self) -> str:
         """
-        Get the role name
+        Get the role name.
 
         Raises:
         NotImplementedError: abstract method
@@ -97,13 +91,11 @@ class AbstractRole(ABC):
 
 
 class Role(AbstractRole):
-    """
-    This class describes a role.
-    """
+    """This class describes a role."""
 
     def __init__(self, name: str):
         """
-        Constructs a new instance
+        Constructs a new instance.
 
         Args:
         name (str): role name
@@ -114,7 +106,7 @@ class Role(AbstractRole):
 
     def add_permission(self, permission: AbstractPermission):
         """
-        Add a permission
+        Add a permission.
 
         Args:
         permission (AbstractPermission): permission object
@@ -124,7 +116,7 @@ class Role(AbstractRole):
 
     def remove_permission(self, permission: AbstractPermission):
         """
-        Remove a permission
+        Remove a permission.
 
         Args:
         permission (AbstractPermission): permission object
@@ -134,7 +126,7 @@ class Role(AbstractRole):
 
     def has_permission(self, permission: AbstractPermission) -> bool:
         """
-        Determines if permission
+        Determines if permission.
 
         Args:
         permission (AbstractPermission): permission object
@@ -146,7 +138,7 @@ class Role(AbstractRole):
 
     def get_permissions(self) -> set[AbstractPermission]:
         """
-        Get list of permissions
+        Get list of permissions.
 
         Returns:
         Set[AbstractPermission]: set with abstract permissions
@@ -156,7 +148,7 @@ class Role(AbstractRole):
 
     def get_name(self) -> str:
         """
-        Get the role name
+        Get the role name.
 
         Returns:
         str: role name
@@ -166,26 +158,26 @@ class Role(AbstractRole):
 
 
 class User:
-    """
-    This class describes an user.
-    """
+    """This class describes an user."""
 
-    def __init__(self, username: str, attributes: dict[str, Any] = {}):
+    def __init__(self, username: str, attributes: dict[str, Any] | None = None):
         """
-        Constructs a new instance
+        Constructs a new instance.
 
         Args:
         username (str): name of user
         attributes (Dict[str, Any], optional): attributes for user. Defaults to {}.
 
         """
+        if attributes is None:
+            attributes = {}
         self.username: str = username
         self.roles: set[AbstractRole] = set()
         self.attributes: dict[str, Any] = attributes
 
     def add_role(self, role: AbstractRole):
         """
-        Adds a role
+        Adds a role.
 
         Args:
         role (AbstractRole): role object
@@ -195,7 +187,7 @@ class User:
 
     def remove_role(self, role: AbstractRole):
         """
-        Remove a role
+        Remove a role.
 
         Args:
         role (Type[AbstractRole]): role object
@@ -205,7 +197,7 @@ class User:
 
     def has_permission(self, permission: AbstractPermission) -> bool:
         """
-        Determines if permission
+        Determines if permission.
 
         Args:
         permission (Type[AbstractPermission]): permission object
@@ -219,7 +211,7 @@ class User:
 
     def get_roles(self) -> set[AbstractRole]:
         """
-        Get roles
+        Get roles.
 
         Returns:
         Set[AbstractRole]: roles set
@@ -229,7 +221,7 @@ class User:
 
     def get_username(self) -> str:
         """
-        Get username
+        Get username.
 
         Returns:
         str: username
@@ -239,13 +231,11 @@ class User:
 
 
 class Resource:
-    """
-    This class describes a resource.
-    """
+    """This class describes a resource."""
 
     def __init__(self, name: str):
         """
-        Constructs a new resource
+        Constructs a new resource.
 
         Args:
         name (str): resource name
@@ -265,9 +255,7 @@ class Resource:
 
 
 class AccessControlRule:
-    """
-    This class describes an access control rule.
-    """
+    """This class describes an access control rule."""
 
     def __init__(
         self,
@@ -277,7 +265,7 @@ class AccessControlRule:
         allowed: bool,
     ):
         """
-        Constructs a new instance
+        Constructs a new instance.
 
         Args:
         role (Type[AbstractRole]): role object
@@ -295,7 +283,7 @@ class AccessControlRule:
         self, user: User, resource: type[Resource], permission: type[AbstractPermission]
     ) -> bool:
         """
-        Applies to user
+        Applies to user.
 
         Args:
         user (User): user
@@ -324,19 +312,15 @@ class AccessControlRule:
 
 
 class Policy:
-    """
-    This class describes a policy.
-    """
+    """This class describes a policy."""
 
     def __init__(self):
-        """
-        Constructs a new instance.
-        """
+        """Constructs a new instance."""
         self.rules: list[AccessControlRule] = []
 
     def add_rule(self, rule: AccessControlRule):
         """
-        Add a new rule
+        Add a new rule.
 
         Args:
         rule (AccessControlRule): new rule
@@ -348,7 +332,7 @@ class Policy:
         self, user: User, resource: type[Resource], permission: type[AbstractPermission]
     ) -> bool:
         """
-        Evaluate policty access
+        Evaluate policty access.
 
         Args:
         user (User): user object
@@ -367,13 +351,11 @@ class Policy:
 
 
 class AttributeBasedPolicy(Policy):
-    """
-    This class describes an attribute based policy.
-    """
+    """This class describes an attribute based policy."""
 
     def __init__(self, conditions: dict[str, Any]):
         """
-        Constructs a new instance
+        Constructs a new instance.
 
         Args:
         conditions (Dict[str, Any]): conditions dictionary
@@ -386,7 +368,7 @@ class AttributeBasedPolicy(Policy):
         self, user: User, resource: type[Resource], permission: type[AbstractPermission]
     ) -> bool:
         """
-        Evaluate policy access
+        Evaluate policy access.
 
         Args:
         user (User): user model
@@ -397,7 +379,7 @@ class AttributeBasedPolicy(Policy):
         bool: evaluation status
 
         """
-        for condition, value in self.conditions.items():
+        for condition in self.conditions:
             if user.attributes.get(condition, None) is None:
                 continue
 
@@ -405,13 +387,11 @@ class AttributeBasedPolicy(Policy):
 
 
 class AgeRestrictionsABP(Policy):
-    """
-    This class describes an age restrictions abp.
-    """
+    """This class describes an age restrictions abp."""
 
     def __init__(self, conditions: dict[str, Any], rules: list[AccessControlRule]):
         """
-        Initialize a Age Policy
+        Initialize a Age Policy.
 
         Args:
         conditions (Dict[str, Any]): conditions
@@ -426,7 +406,7 @@ class AgeRestrictionsABP(Policy):
         self, user: User, resource: type[Resource], permission: type[AbstractPermission]
     ) -> bool:
         """
-        Evaluate policy access
+        Evaluate policy access.
 
         Args:
         user (User): user object
@@ -445,16 +425,14 @@ class AgeRestrictionsABP(Policy):
 
 
 class PermissionChecker(ABC):
-    """
-    This class describes a permission checker.
-    """
+    """This class describes a permission checker."""
 
     @abstractmethod
     def check(
         self, user: User, resource: type[Resource], permission: type[AbstractPermission]
     ) -> bool:
         """
-        Check permissions for user
+        Check permissions for user.
 
         Args:
         user (User): user object
@@ -472,13 +450,11 @@ class PermissionChecker(ABC):
 
 
 class DefaultPermissionChecker(PermissionChecker):
-    """
-    This class describes a default permission checker.
-    """
+    """This class describes a default permission checker."""
 
     def __init__(self, policy: Policy):
         """
-        Initialize a checker
+        Initialize a checker.
 
         Args:
         policy (Policy): policy for checkr
@@ -490,7 +466,7 @@ class DefaultPermissionChecker(PermissionChecker):
         self, user: User, resource: type[Resource], permission: type[AbstractPermission]
     ) -> bool:
         """
-        Check user permissions
+        Check user permissions.
 
         Args:
         user (User): user object
@@ -508,14 +484,12 @@ class DefaultPermissionChecker(PermissionChecker):
 
 
 class AbstractController(ABC):
-    """
-    This class describes a abstract controller.
-    """
+    """This class describes a abstract controller."""
 
     @abstractmethod
     def __init__(self, permission_checker: PermissionChecker):
         """
-        Constructs a new instance
+        Constructs a new instance.
 
         Args:
         permission_checker (PermissionChecker): permission checker class
@@ -527,7 +501,7 @@ class AbstractController(ABC):
         self, current_user: User, resource: type[Resource], permission: Permission
     ) -> bool:
         """
-        Check permissions for user
+        Check permissions for user.
 
         Args:
         current_user (User): user object
@@ -545,13 +519,11 @@ class AbstractController(ABC):
 
 
 class UserController(AbstractController):
-    """
-    Controls the data flow into an user object and updates the view whenever data changes.
-    """
+    """Controls the data flow into an user object and updates the view whenever data changes."""
 
     def __init__(self, permission_checker: PermissionChecker):
         """
-        Constructs a new instance
+        Constructs a new instance.
 
         Args:
         permission_checker (PermissionChecker): permission checker class
@@ -563,7 +535,7 @@ class UserController(AbstractController):
         self, current_user: User, resource: type[Resource], permission: Permission
     ) -> bool:
         """
-        Check permissions for user
+        Check permissions for user.
 
         Args:
         current_user (User): current user object
@@ -578,7 +550,7 @@ class UserController(AbstractController):
 
     def view_users(self, current_user: User, resource: type[Resource]) -> tuple[str]:
         """
-        View users by current user and resource
+        View users by current user and resource.
 
         Args:
         current_user (User): current user object
@@ -597,7 +569,7 @@ class UserController(AbstractController):
 
     def edit_users(self, current_user: User, resource: type[Resource]) -> tuple[str]:
         """
-        Edit users with current user and resource
+        Edit users with current user and resource.
 
         Args:
         current_user (User): user object

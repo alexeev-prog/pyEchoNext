@@ -42,7 +42,7 @@ user_controller = UserController(permission_checker)
 
 
 def test_controller():
-    """Test Controller"""
+    """Test Controller."""
     assert user_controller.view_users(admin_user, user_resource) == (
         "200 OK",
         "User edit form",
@@ -58,6 +58,6 @@ def test_controller():
 
 
 def test_age_policy():
-    """Test Age Policy"""
+    """Test Age Policy."""
     assert age_policy.evaluate(young_user, user_resource, view_users_perm) is False
     assert age_policy.evaluate(admin_user, user_resource, view_users_perm) is True

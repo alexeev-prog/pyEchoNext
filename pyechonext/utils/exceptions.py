@@ -2,9 +2,7 @@ from pyechonext.logging import logger
 
 
 class pyEchoNextException(Exception):
-    """
-    Exception for signaling pyechonext errors.
-    """
+    """Exception for signaling pyechonext errors."""
 
     def __init__(self, message: str, *args):
         self.message = message

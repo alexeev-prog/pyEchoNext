@@ -13,9 +13,7 @@ from pyechonext.docsgen.document import (
 
 
 class ProjDocumentation:
-    """
-    This class describes an api documentation.
-    """
+    """This class describes an api documentation."""
 
     def __init__(self, echonext_app: EchoNext):
         """
@@ -29,9 +27,7 @@ class ProjDocumentation:
         self.pages = {}
 
     def generate_documentation(self):
-        """
-        Generate documentation
-        """
+        """Generate documentation."""
         section = self._generate_introduction()
         self._generate_subsections(section)
         folder = DocumentFolder(
@@ -58,21 +54,20 @@ class ProjDocumentation:
 
     def _generate_introduction(self) -> InitiationSection:
         """
-        Generate introduction
+        Generate introduction.
 
         :returns:	The initiation section.
         :rtype:		InitiationSection
         """
-        section = InitiationSection(
+        return InitiationSection(
             f"Project {self.app_name}",
             f"Project Documentation for {self.app_name}",
             {"Routes": ", ".join(self.app.router.routes.keys())},
         )
-        return section
 
     def _generate_subsections(self, section: DocumentSection):
         """
-        Generate subsections
+        Generate subsections.
 
         :param		section:  The section
         :type		section:  DocumentSection
@@ -110,10 +105,10 @@ class ProjDocumentation:
         return_type: Any,
         params: dict,
         methods: list,
-        extra: dict = {},
+        extra: dict | None = None,
     ) -> Callable:
         """
-        Add routed page to documentation
+        Add routed page to documentation.
 
         :param		page_path:	  The page path
         :type		page_path:	  str
@@ -129,12 +124,14 @@ class ProjDocumentation:
         :returns:	wrapper handler
         :rtype:		Callable
         """
+        if extra is None:
+            extra = {}
         if page_path in self.pages:
             return None
 
         def wrapper(handler):
             """
-            Wrapper for handler
+            Wrapper for handler.
 
             :param		handler:  The handler
             :type		handler:  callable

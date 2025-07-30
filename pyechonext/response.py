@@ -11,9 +11,7 @@ from pyechonext.security.defence import Security
 
 
 class Response:
-    """
-    This dataclass describes a response.
-    """
+    """This dataclass describes a response."""
 
     __slots__ = (
         "_added_headers",
@@ -43,7 +41,7 @@ class Response:
         charset: str | None = None,
     ):
         """
-        Initialize new response
+        Initialize new response.
 
         Args:
             request (Request, optional): request object. Defaults to None.
@@ -88,7 +86,7 @@ class Response:
 
     def __getattr__(self, item: Any) -> Any | None:
         """
-        Magic method for get attrs (from extra)
+        Magic method for get attrs (from extra).
 
         Args:
             item (Any): item key
@@ -101,7 +99,7 @@ class Response:
 
     def _structuring_headers(self, environ: dict):
         """
-        Structure headers
+        Structure headers.
 
         Args:
             environ (dict): environ dictionary
@@ -122,7 +120,7 @@ class Response:
             self._headerslist.append(header_tuple)
 
     def _update_headers(self) -> None:
-        """Update headers by response data"""
+        """Update headers by response data."""
         self._headerslist = [
             ("Content-Type", f"{self.content_type}; charset={self.charset}"),
             ("Content-Length", str(len(self.body))),
@@ -130,7 +128,7 @@ class Response:
 
     def add_headers(self, headers: list[tuple[str, str]]):
         """
-        Adds new headers
+        Adds new headers.
 
         Args:
             headers (List[Tuple[str, str]]): new headers
@@ -140,9 +138,7 @@ class Response:
             self._added_headers.append(header)
 
     def _encode_body(self):
-        """
-        Encodes a body.
-        """
+        """Encodes a body."""
         if self.content_type == "application/json":
             self.body = self.json
 
@@ -182,7 +178,7 @@ class Response:
     @property
     def json(self) -> str | dict[Any, Any]:
         """
-        Get response body as JSON
+        Get response body as JSON.
 
         Returns:
             dict: _description_
