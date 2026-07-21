@@ -65,6 +65,5 @@ class PSPCAlgorithm:
         if not crypted:
             return ""
 
-        password = list(map(lambda x: int(x) // self.seed,
-                        crypted[::-1].split(".")))
+        password = list(map(lambda x: int(x) // self.seed, crypted[::-1].split(".")))
         return "".join(list(map(chr, password)))

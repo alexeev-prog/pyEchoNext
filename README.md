@@ -1,7 +1,7 @@
-# 🌟 **EchoNext: The Future of Web** 🚀
-<a id="readme-top"></a> 
+# pyEchoNext - the web framework
+<a id="readme-top"></a>
 
-<div align="center">  
+<div align="center">
   <p align="center">
     EchoNext is a lightweight, fast and scalable web framework for Python
     <br />
@@ -54,10 +54,6 @@
 > [!NOTE]
 > Versions below 0.7.14a are not recommended for use with gunicorn <23.0 due to the fact that they used an older version of gunicorn (<23.0), which was [vulnerable](https://deps.dev/advisory/osv/GHSA-hc5x-x2vx-497g).
 
- > Next big update: 0.8.0 - Hybrid Performance Core: async + multithread + multiprocess
-
-You want see hybrid core before release? See [DevGuide Specs for HybridCore](./devguide/hybrid_core.md).
-
 ## Check Other My Projects
 
  + [SQLSymphony](https://github.com/alexeev-prog/SQLSymphony) - simple and fast ORM in sqlite (and you can add other DBMS)
@@ -70,7 +66,7 @@ You want see hybrid core before release? See [DevGuide Specs for HybridCore](./d
 ## 🤔 Why Choose pyEchoNext?
 
 - **🔥 Featherweight Performance**: No bloat, just speed! Our framework is designed to optimize performance, making it a breeze to create and scale your applications without the overhead.
-  
+
 - **💼 Unmatched Scalability**: Handle thousands of connections effortlessly! Echonext is built for performance in high-demand environments, making it the perfect choice for startups or enterprise applications.
 
 - **🔧 Customizable Architecture**: Tailor your framework to suit your unique needs. Whether it’s middleware, routing, or authentication, make it yours with minimal effort!
@@ -555,7 +551,7 @@ for password in passwords:
 ```
 
 #### Hashing
- 
+
  + Module: `pyechonext.security.hashing`
 
 ##### HashAlgorithm
@@ -787,10 +783,10 @@ We welcome PRs addressing:
 ### License & Support
 This project operates under **GNU LGPL 2.1** - see [LICENSE](https://github.com/alexeev-prog/pyEchoNext/blob/main/LICENSE). For enterprise support, contact [alexeev.dev@mail.ru](mailto:alexeev.dev@mail.ru).
 
-**PyEchoNext** - Build robust web applications with Pythonic elegance.  
+**PyEchoNext** - Build robust web applications with Pythonic elegance.
 
-[Explore Documentation](https://alexeev-prog.github.io/pyEchoNext) | 
-[Report Issue](https://github.com/alexeev-prog/pyEchoNext/issues) | 
+[Explore Documentation](https://alexeev-prog.github.io/pyEchoNext) |
+[Report Issue](https://github.com/alexeev-prog/pyEchoNext/issues) |
 [View Examples](/examples)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -1,45 +1,44 @@
-[tool.poetry]
+[project]
 name = "pyechonext"
-version = "0.7.18"
-description = "EchoNext is a lightweight, fast and scalable web framework for Python"
-authors = ["alexeev-prog <alexeev.dev@mail.ru>"]
-license = "LGPL-2.1"
+version = "0.8.0"
+description = "Add your description here"
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = ">=3.12,<4.0"
-rich = "^14.0.0"
-gunicorn = "^23.0"
-pysocks = "^1.7"
-parse = "^1.20"
-jinja2 = "^3.1"
-python-dotenv = "^1.0"
-toml = "^0.10"
-pyyaml = "^6.0"
-requests = "^2.32"
-orjson = "^3.9"
-requests-wsgi-adapter = "^0.4"
-echonextdi = "^0.2.0"
-hermes-langlib = "^0.1.4"
-pyjwt = "^2.10.1"
-ty = "^0.0.1a9"
-structlog = "^25.4.0"
-tqdm = "^4.67.1"
-pylint = "^3.3.7"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.3.0"
-black = "^24.10.0"
-pylint = "^3.3"
-pytest-cov = "^6.0.0"
-furo = "^2024.8.6"
-mypy = "^1.15.0"
-wemake-python-styleguide = "^1.1.0"
-flake8 = "^7.3.0"
+authors = [{ name = "Alexeev Bronislav", email = "alexeev.dev@mail.ru" }]
+requires-python = ">=3.13"
+dependencies = [
+    "echonextdi>=0.2.0",
+    "gunicorn>=26.0.0",
+    "hermes-langlib>=0.1.4",
+    "jinja2>=3.1.6",
+    "pyjwt>=2.13.0",
+    "pysocks>=1.7.1",
+    "python-dotenv>=1.2.2",
+    "pyyaml>=6.0.3",
+    "requests>=2.34.2",
+    "structlog>=26.1.0",
+    "toml>=0.10.2",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.10.12,<0.11.0"]
+build-backend = "uv_build"
 
-[virtualenvs]
-in-project = true
+[dependency-groups]
+dev = [
+    "black>=26.5.1",
+    "flake8>=7.3.0",
+    "furo>=2025.12.19",
+    "git-cliff>=2.13.1",
+    "mutmut>=3.6.0",
+    "mypy>=2.3.0",
+    "nox>=2026.7.11",
+    "pylint>=4.0.6",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "pytest-mock>=3.15.1",
+    "pytest-sugar>=1.1.1",
+    "ruff>=0.15.22",
+    "sphinx>=9.1.0",
+    "sphinx-polyversion>=2.0.0",
+    "wemake-python-styleguide>=1.6.2",
+]

@@ -1,15 +1,19 @@
 version: 2
 updates:
-  - package-ecosystem: "cargo"
-    # Look for `Cargo.toml` and `Cargo.lock` in the root directory
+  - package-ecosystem: uv
     directory: "/"
-    # Check for updates every Monday
     schedule:
-      interval: "weekly"
+      interval: daily
+      time: "02:00"
     open-pull-requests-limit: 10
-  - package-ecosystem: "github-actions"
+    cooldown:
+      default-days: 7
+
+  - package-ecosystem: github-actions
     directory: "/"
-    # Check for updates every Monday
     schedule:
-      interval: "weekly"
+      interval: daily
+      time: "02:00"
     open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7

@@ -157,8 +157,7 @@ class Router:
             )
 
             if inspect.isclass(handler):
-                self.add_url(
-                    URL(path=page_path, controller=handler, summary=summary))
+                self.add_url(URL(path=page_path, controller=handler, summary=summary))
             else:
                 self.add_page_route(page_path, handler, methods, summary)
 

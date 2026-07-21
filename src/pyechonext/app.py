@@ -146,8 +146,7 @@ class EchoNext:
         if self.application_type == ApplicationType.TEAPOT:
             raise TeapotError("Where's my coffee?")
 
-        logger.debug(
-            f"Application {self.application_type.value}: {self.app_name}")
+        logger.debug(f"Application {self.application_type.value}: {self.app_name}")
 
     def test_session(self, host: str = "echonext") -> RequestsSession:
         """Test Session
@@ -159,8 +158,7 @@ class EchoNext:
             RequestsSession: request session for tests
         """
         session = RequestsSession()
-        session.mount(prefix=f"http://{host}",
-                      adapter=RequestsWSGIAdapter(self))
+        session.mount(prefix=f"http://{host}", adapter=RequestsWSGIAdapter(self))
         return session
 
     def _get_request(self, environ: dict) -> Request:
@@ -389,8 +387,7 @@ class EchoNext:
             Response: served response object
         """
         logger.debug(f"Serve static file by path: {request.path}")
-        response.content_type = self.static_files_manager.get_file_type(
-            request.path)
+        response.content_type = self.static_files_manager.get_file_type(request.path)
         response.body = self.static_files_manager.serve_static_file(
             prepare_url(request.path)
         )

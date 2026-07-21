@@ -100,8 +100,7 @@ class CommandManager:
                 f" {result.returncode}:\n{result.stderr.decode()}"
             )
         else:
-            print(
-                f'[green bold]Successfully run[/green bold] "{command}"'.strip())
+            print(f'[green bold]Successfully run[/green bold] "{command}"'.strip())
 
         return result.returncode
 
@@ -114,8 +113,7 @@ class CommandManager:
         :type		path:  str
         """
         os.chdir(path)
-        print_message("CHANGE DIRECTORY",
-                      f"[bold]Directory changed: {path}[/bold]")
+        print_message("CHANGE DIRECTORY", f"[bold]Directory changed: {path}[/bold]")
 
 
 def validate_project_name(project_name: str):

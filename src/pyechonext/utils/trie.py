@@ -16,7 +16,7 @@ class PrefixTree:
         current = self.root
         for i, char in enumerate(word):
             if char not in current.children:
-                prefix = word[0: i + 1]
+                prefix = word[0 : i + 1]
                 current.children[char] = TrieNode(prefix)
             current = current.children[char]
         current.is_word = True

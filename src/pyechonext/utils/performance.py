@@ -218,8 +218,9 @@ class SingletonPerformanceCache(PerformanceCacheBase, metaclass=Singleton):
 
 def performance_cached(
     performance_cache: SingletonPerformanceCache,
-    key_func: Callable[[Any, Any], str] = lambda *args, **kwargs: str(args)
-    + str(kwargs),
+    key_func: Callable[[Any, Any], str] = lambda *args, **kwargs: (
+        str(args) + str(kwargs)
+    ),
 ) -> Callable:
     """
     A decorator that PerformanceCaches the results of a function or method.
