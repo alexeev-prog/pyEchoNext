@@ -39,6 +39,6 @@ dev = [
     "pytest-sugar>=1.1.1",
     "ruff>=0.15.22",
     "sphinx>=9.1.0",
-    "sphinx-polyversion>=2.0.0",
+    "sphinx-polyversion>=3.0.0",
     "wemake-python-styleguide>=1.6.2",
 ]
