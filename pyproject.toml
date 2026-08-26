@@ -7,7 +7,7 @@ authors = [{ name = "Alexeev Bronislav", email = "alexeev.dev@mail.ru" }]
 requires-python = ">=3.13"
 dependencies = [
     "echonextdi>=0.2.0",
-    "gunicorn>=26.0.0",
+    "gunicorn>=26.1.0",
     "hermes-langlib>=0.1.4",
     "jinja2>=3.1.6",
     "pyjwt>=2.13.0",
